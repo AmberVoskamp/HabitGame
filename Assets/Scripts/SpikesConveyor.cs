@@ -1,11 +1,12 @@
 using DG.Tweening;
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//[RequireComponent(typeof())]
 public class SpikesConveyor : MonoBehaviour
 {
+    [SerializeField] private PlayerMovement m_player;
     [SerializeField] private SpikeRow m_spikeRowPrefab;
 
     [Header("Settings")]
@@ -15,11 +16,27 @@ public class SpikesConveyor : MonoBehaviour
 
     private List<SpikeRow> _spikeRowList = new List<SpikeRow>();
     private List<SpikeRow> _disabledSpikeRows = new List<SpikeRow>();
+    private Coroutine _spikeCoroutine;
+    private bool _isActive = false;
 
     private void Start()
     {
+        _isActive = true;
         SpawnSpikeRow();
     }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject == m_player.gameObject)
+        {
+            _isActive = false;
+            if (_spikeCoroutine != null)
+            {
+                StopCoroutine(_spikeCoroutine);
+            }
+        }
+    }
+
 
     private void SpawnSpikeRow()
     {
@@ -56,12 +73,18 @@ public class SpikesConveyor : MonoBehaviour
             });
         #endregion
 
-        StartCoroutine(WaitSpawnSpikeRow());
+        if (!_isActive)
+        {
+            return;
+        }
+
+        _spikeCoroutine = StartCoroutine(WaitSpawnSpikeRow());
     }
 
     IEnumerator WaitSpawnSpikeRow()
     {
         yield return new WaitForSeconds(m_spawnEverySeconds);
         SpawnSpikeRow();
+        _spikeCoroutine = null;
     }
 }

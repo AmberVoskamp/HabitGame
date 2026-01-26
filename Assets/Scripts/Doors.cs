@@ -3,7 +3,8 @@ using UnityEngine;
 public class Doors : MonoBehaviour
 {
     [SerializeField] private PlayerMovement m_player;
-    [SerializeField] private GameObject m_endPopup;
+    [SerializeField] private UIManager m_uiManager;
+    [SerializeField] private MinigamePopup m_popup;
 
     private bool _isInRange;
 
@@ -27,8 +28,16 @@ public class Doors : MonoBehaviour
     {
         if (_isInRange)
         {
-            m_endPopup.SetActive(true);
+            m_uiManager.EndGame(true);
             Destroy(m_player.gameObject);
+        }
+    }
+
+    public void OpenMinigamePopup()
+    {
+        if (_isInRange)
+        {
+            m_popup.ShowPopup(true);
         }
     }
 }
