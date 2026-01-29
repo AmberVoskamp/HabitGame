@@ -10,8 +10,13 @@ public class CountDown : MonoBehaviour
     [SerializeField] private TMP_Text m_timeLostPrefab;
     [SerializeField] private float m_lostTimeToTimer = 1f;
 
-    private float m_counter;
-    private bool m_isPlaying;
+    private float _time;
+    private bool _isPlaying;
+
+    public float CurrentTime
+    {
+        get { return _time; }
+    }
 
     private void Start()
     {
@@ -20,14 +25,14 @@ public class CountDown : MonoBehaviour
 
     public void StartCountdown(float timer)
     {
-        m_counter = timer;
+        _time = timer;
         UpdateTimer();
-        m_isPlaying = true;
+        _isPlaying = true;
     }
 
     public void LoseTime(float lostTime, Vector3 screenPosition)
     {
-        if (!m_isPlaying)
+        if (!_isPlaying)
         {
             return;
         }
@@ -43,7 +48,7 @@ public class CountDown : MonoBehaviour
             .OnComplete(() =>
             {
                 Destroy(timeLost);
-                m_counter -= lostTime;
+                _time -= lostTime;
                 UpdateTimer();
             });
         #endregion
@@ -51,13 +56,13 @@ public class CountDown : MonoBehaviour
 
     public void StopTimer()
     {
-        m_isPlaying = false;
+        _isPlaying = false;
     }
 
     private void UpdateTimer()
     {
         #region Check if there is still time left
-        if (m_counter <= 0f)
+        if (_time <= 0f)
         {
             m_uiManager.EndGame(false);
             m_countdownText.text = "00:00";
@@ -65,19 +70,19 @@ public class CountDown : MonoBehaviour
         }
         #endregion
 
-        int minutes = Mathf.FloorToInt(m_counter / 60);
-        int seconds = Mathf.FloorToInt(m_counter % 60);
+        int minutes = Mathf.FloorToInt(_time / 60);
+        int seconds = Mathf.FloorToInt(_time % 60);
         m_countdownText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
     private void Update()
     {
-        if (!m_isPlaying || m_counter <= 0)
+        if (!_isPlaying || _time <= 0)
         {
             return;
         }
 
-        m_counter -= Time.deltaTime;
+        _time -= Time.deltaTime;
         UpdateTimer();
     }
 }

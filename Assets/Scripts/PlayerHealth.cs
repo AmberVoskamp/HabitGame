@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 /*
@@ -11,6 +12,7 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] private CountDown m_countdown;
     [SerializeField] private float m_timer = 60f;
+    [SerializeField] private Vector2 m_timeLeftAfterSpikes;
     [SerializeField, Tooltip("The seconds that will be removed")] private float m_damageSeconds;
     [SerializeField] private float m_damageTime;
     [SerializeField] private Color m_takeDamageColor;
@@ -44,6 +46,35 @@ public class PlayerHealth : MonoBehaviour
         Vector3 screenPosition = m_mainCamera.WorldToScreenPoint(transform.position);
         m_countdown.LoseTime(damage * m_damageSeconds, screenPosition);
         StartCoroutine(Damage());
+    }
+
+    public void PastSpikes(int currentDificulty, int maxDificulty)
+    {
+        float currentTime = m_countdown.CurrentTime;
+        //Todo we are at the end of the spikes check if we have around enough time 
+        //If we have to much time we can up the dificulty
+        //If we have to litle time we should make it easier 
+        bool updateDificulty = false;
+        if (currentTime < m_timeLeftAfterSpikes.x) //To little time left
+        {
+            updateDificulty = true;
+            currentDificulty--;
+        }
+        else if (currentTime > m_timeLeftAfterSpikes.y) //To much time left
+        {
+            updateDificulty = true;
+            currentDificulty++;
+        }
+
+        if (updateDificulty)
+        {
+            currentDificulty = math.clamp(currentDificulty, 0, maxDificulty);
+            Debug.Log($"New dificulty {currentDificulty}");
+            if (ConfigManager.Instance != null)
+            {
+                ConfigManager.Instance.UpdateSpikeDificulty(currentDificulty);
+            }
+        }
     }
 
     IEnumerator Damage()
