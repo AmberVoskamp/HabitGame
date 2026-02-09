@@ -4,8 +4,6 @@ public class Spikes : MonoBehaviour
 {
     [SerializeField] private int m_damage;
     [SerializeField] private SpriteRenderer m_spriteRenderer;
-    [SerializeField] private Sprite m_retractSprite;
-    [SerializeField] private Sprite m_spikeSprite;
 
     private bool m_spikes;
     private PlayerHealth m_playerHealth;
@@ -18,7 +16,7 @@ public class Spikes : MonoBehaviour
     public void SpikeUp(bool up)
     {
         m_spikes = up;
-        m_spriteRenderer.sprite = up ? m_spikeSprite : m_retractSprite;
+        gameObject.SetActive(up);
     }
 
     void OnTriggerEnter2D(Collider2D collider)
