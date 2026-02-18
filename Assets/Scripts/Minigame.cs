@@ -85,7 +85,6 @@ public class Minigame : MonoBehaviour
     //Might add a way you can lose point is you miss 
     private void Point(bool hit)
     {
-        Debug.Log($"[Minigame] {hit}");
         if (!hit || _points.IsNullOrEmpty())
         {
             return;

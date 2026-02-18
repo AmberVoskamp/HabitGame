@@ -1,9 +1,9 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MinigamePopup : MonoBehaviour
 {
-    [SerializeField] private Button m_closeButton;
+    [SerializeField] private TMP_Text m_turotial;
     [SerializeField] private Minigame m_minigame;
 
     private bool _minigameDone;
@@ -11,7 +11,11 @@ public class MinigamePopup : MonoBehaviour
     private void Start()
     {
         ShowPopup(false);
-        m_closeButton.onClick.AddListener(() => { ShowPopup(false); });
+    }
+
+    public void ShowTutorial(bool show)
+    {
+        m_turotial.gameObject.SetActive(show);
     }
 
     public void ShowPopup(bool show, bool minigameSucces = false)

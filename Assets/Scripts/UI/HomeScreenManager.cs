@@ -13,6 +13,6 @@ public class HomeScreenManager : MonoBehaviour
 
     private void GameScene()
     {
-        SceneManager.LoadScene(1);
+        SceneSwitchManager.Instance.SwitchScene(Scenes.GameScene);
     }
 }

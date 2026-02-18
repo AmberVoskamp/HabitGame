@@ -3,23 +3,29 @@ using UnityEngine;
 public class ConfigManager : MonoBehaviour
 {
     public static ConfigManager Instance;
-    public Config m_config;
+    public Config config;
 
     public int SpikeDificulty
     {
-        get { return m_config.spikeDificulty; }
+        get { return config.spikeDificulty; }
     }
 
-    void Start()
+    void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        m_config = Config.Load();
+        config = Config.Load();
     }
 
     public void UpdateSpikeDificulty(int newDificulty)
     {
-        m_config.spikeDificulty = newDificulty;
-        Config.Save(m_config);
+        config.spikeDificulty = newDificulty;
+        Config.Save(config);
+    }
+
+    public void TutorialDone(bool done = true)
+    {
+        config.tutorialFinished = done;
+        Config.Save(config);
     }
 }

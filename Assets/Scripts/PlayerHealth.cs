@@ -69,7 +69,6 @@ public class PlayerHealth : MonoBehaviour
         if (updateDificulty)
         {
             currentDificulty = math.clamp(currentDificulty, 0, maxDificulty);
-            Debug.Log($"New dificulty {currentDificulty}");
             if (ConfigManager.Instance != null)
             {
                 ConfigManager.Instance.UpdateSpikeDificulty(currentDificulty);

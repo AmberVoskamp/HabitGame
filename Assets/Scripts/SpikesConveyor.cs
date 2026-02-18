@@ -1,7 +1,6 @@
-using DG.Tweening;
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -11,13 +10,18 @@ public class SpikesConveyor : MonoBehaviour
     [SerializeField] private SpikeRow m_spikeRowPrefab;
 
     [Header("Settings")]
-    [SerializeField] private float m_spawnEverySeconds;
-    [SerializeField] private float m_spikeMoveY;
-    [SerializeField] private float m_spikeMoveTime;
+    [SerializeField] private int m_spikesInRow = 16;
+    [SerializeField] private int m_spawnRows;
+    [SerializeField] private float m_spawnRowsYDistance;
+
+    [Space]
+    [SerializeField] private int m_openSpace = 5;
+    [SerializeField] private int m_spawnEveryRows;
+    [SerializeField] private float m_spikeMoveNextTime;
+    [SerializeField] private float m_spikesUpSeconds;
     [SerializeField] private ConveyorSettings[] m_dificultySettings;
 
-    private List<SpikeRow> _spikeRowList = new List<SpikeRow>();
-    private List<SpikeRow> _disabledSpikeRows = new List<SpikeRow>();
+    private SpikeRow[] _spikeRows;
     private Coroutine _spikeCoroutine;
     private bool _isActive = false;
     private int _currentDificulty;
@@ -37,7 +41,7 @@ public class SpikesConveyor : MonoBehaviour
             _currentDificulty = ConfigManager.Instance.SpikeDificulty;
         }
 
-        SpawnSpikeRow();
+        SpawnSpikeRows();
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -49,70 +53,72 @@ public class SpikesConveyor : MonoBehaviour
 
         if (col.gameObject == m_player.gameObject)
         {
-            Debug.Log("End spikesConveyor");
             _isActive = false;
             if (_spikeCoroutine != null)
             {
                 StopCoroutine(_spikeCoroutine);
             }
 
-            PlayerHealth.Instance.PastSpikes(_currentDificulty, m_dificultySettings.Length -1);
+            PlayerHealth.Instance.PastSpikes(_currentDificulty, m_dificultySettings.Length - 1);
         }
     }
 
 
-    private void SpawnSpikeRow()
+    private void SpawnSpikeRows()
+    {
+        _spikeRows = new SpikeRow[m_spawnRows];
+        float yOffset = 0;
+        for (int i = 0; i < m_spawnRows; i++)
+        {
+            var spikeRow = Instantiate(m_spikeRowPrefab, transform);
+            spikeRow.transform.localPosition = new Vector3(0, yOffset, 0);
+            yOffset += m_spawnRowsYDistance;
+            spikeRow.SpawnSpikes(m_spikesInRow);
+            _spikeRows[i] = spikeRow;
+        }
+
+        StartSpike();
+    }
+
+    private void StartSpike()
+    {
+        int index = 0;
+        while (index < _spikeRows.Length)
+        {
+            Spike(index);
+            index += m_spawnEveryRows;
+        }
+
+       /* Spike(_spikeRows.Length / 2);
+        Spike(0);*/
+    }
+
+    private void Spike(int index)
     {
         if (!_isActive)
         {
             return;
         }
 
-        SpikeRow spikeRow = null;
-        if (_disabledSpikeRows.Count == 0)
-        {
-            spikeRow = Instantiate(m_spikeRowPrefab, transform);
-            _spikeRowList.Add(spikeRow); //Check if you need this!!!
-        }
-        else
-        {
-            spikeRow = _disabledSpikeRows[0];
-            _disabledSpikeRows.RemoveAt(0);
-            spikeRow.transform.localPosition = Vector3.zero;
-            spikeRow.gameObject.SetActive(true);
-        }
+        int2 openSpace = new int2();
+        int maxStartIndex = m_spikesInRow - m_openSpace;
+        openSpace.x = UnityEngine.Random.Range(0, maxStartIndex);
+        openSpace.y = openSpace.x + m_openSpace;
 
-        if (spikeRow == null)
+        StartCoroutine(WaitSpikeNext(openSpace, index));
+    }
+
+    IEnumerator WaitSpikeNext(int2 openSpace, int startRow)
+    {
+        for (int i = startRow; i < _spikeRows.Length; i++)
         {
-            Debug.LogWarning("[SpikesConveyor.cs] Something went wrong with spawning the spike row");
-            return;
-        }
+            yield return new WaitForSeconds(m_spikeMoveNextTime);
+            _spikeRows[i].SetSpikeSection(openSpace, m_spikesUpSeconds);
 
-        spikeRow.SetSpikeSection();
-
-        #region MoveSpikeRow
-        var test = spikeRow.transform.DOMoveY(m_spikeMoveY, m_spikeMoveTime)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
+            if (i == m_spawnEveryRows && startRow == 0)
             {
-                // This code runs ONLY when the movement finishes
-                _disabledSpikeRows.Add(spikeRow);
-                spikeRow.gameObject.SetActive(false);
-            });
-        #endregion
-
-        if (!_isActive)
-        {
-            return;
+                Spike(0);
+            }
         }
-
-        _spikeCoroutine = StartCoroutine(WaitSpawnSpikeRow());
-    }
-
-    IEnumerator WaitSpawnSpikeRow()
-    {
-        yield return new WaitForSeconds(m_spawnEverySeconds);
-        SpawnSpikeRow();
-        _spikeCoroutine = null;
     }
 }

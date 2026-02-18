@@ -1,46 +1,39 @@
 using DTT.Utils.Extensions;
+using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class SpikeRow : MonoBehaviour
 {
     [SerializeField] private Spikes m_spikePrefab;
     [SerializeField] private float m_spaceBetweenSpikes;
-    [SerializeField] private int m_spikeRowSize;
-
-    [SerializeField] private int m_openSpace = 5;
 
     private Spikes[] m_spikeArray;
-    private int2 m_test;
 
-    public void SetSpikeSection()
+    public void SetSpikeSection(int2 openSpace, float upTime)
     {
-        SpawnSpikes();
-
-        #region Reset old spikes
-        if (m_test.y != 0)
+        for (int i = 0; i < m_spikeArray.Length; i++)
         {
-            for (int i = m_test.x; i < m_test.y + 1; i++)
+            if (i >= openSpace.x && i <= openSpace.y)
             {
-                m_spikeArray[i].SpikeUp(true);
+                continue;
             }
+
+            m_spikeArray[i].SpikeUp(true);
         }
-        #endregion
 
-        #region Get index
-        int maxStartIndex = m_spikeRowSize - m_openSpace;
-        m_test.x = Random.Range(0, maxStartIndex);
-        m_test.y = m_test.x + m_openSpace;
+        StartCoroutine(SpikeUp(upTime));
+    }
 
-        for (int i = m_test.x; i < m_test.y + 1; i++)
+    private void SpikesDown()
+    {
+        for (int i = 0; i < m_spikeArray.Length; i++)
         {
             m_spikeArray[i].SpikeUp(false);
         }
-        #endregion
     }
 
-    private void SpawnSpikes()
+    public void SpawnSpikes(int size)
     {
         if (!m_spikeArray.IsNullOrEmpty())
         {
@@ -48,9 +41,9 @@ public class SpikeRow : MonoBehaviour
         }
 
         #region spawn spikes
-        m_spikeArray = new Spikes[m_spikeRowSize];
+        m_spikeArray = new Spikes[size];
         float oldSpikePlacement = -m_spaceBetweenSpikes;
-        for (int i = 0; i < m_spikeRowSize; i++)
+        for (int i = 0; i < size; i++)
         {
             Spikes spike = Instantiate(m_spikePrefab, transform);
             float newSpikePlacement = oldSpikePlacement + m_spaceBetweenSpikes;
@@ -59,5 +52,11 @@ public class SpikeRow : MonoBehaviour
             m_spikeArray[i] = spike;
         }
         #endregion
+    }
+
+    IEnumerator SpikeUp(float upTime)
+    {
+        yield return new WaitForSeconds(upTime);
+        SpikesDown();
     }
 }

@@ -18,7 +18,7 @@ public class SpikeSection : MonoBehaviour
         if (m_goesWithTimer)
         {
             Spikes(false);
-            StartCoroutine(StartAfter());
+            //StartCoroutine(StartAfter());
         }
         else
         {
@@ -37,10 +37,10 @@ public class SpikeSection : MonoBehaviour
     IEnumerator StartAfter()
     {
         yield return new WaitForSeconds(m_startAfterSeconds);
-        StartCoroutine(SpikesRoutine());
+       /* StartCoroutine(SpikesRoutine());*/
     }
 
-    IEnumerator SpikesRoutine()
+ /*   IEnumerator SpikesRoutine()
     {
         //spikes up
         Spikes(true);
@@ -50,5 +50,5 @@ public class SpikeSection : MonoBehaviour
         yield return new WaitForSeconds(m_spikesDownTime);
         //repeat
         StartCoroutine(SpikesRoutine());
-    }
+    }*/
 }

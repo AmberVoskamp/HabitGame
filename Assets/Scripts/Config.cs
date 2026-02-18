@@ -28,7 +28,12 @@ public class Config
 
     public static Config Load()
     {
-        string jsonText = File.ReadAllText(SaveFilenName());
+        string saveFile = SaveFilenName();
+        if (!File.Exists(saveFile))
+        {
+            Save(new Config());
+        }
+        string jsonText = File.ReadAllText(saveFile);
         Config config = JsonUtility.FromJson<Config>(jsonText);
         return config;
     }

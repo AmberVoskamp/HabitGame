@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f11918064a59b33469b64351b0e9903a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_spikePrefab: {fileID: 2503358420696258039, guid: e6c780f4c993d664e9aeb36b5bf765ee, type: 3}
-  m_spaceBetweenSpikes: 1.3
-  m_spikeRowSize: 37
+  m_spikePrefab: {fileID: 6110889295394878736, guid: 4cb355592dc04d54dacd29a5af888e9c, type: 3}
+  m_spaceBetweenSpikes: 0.157
+  m_spikeRowSize: 16
   m_openSpace: 5

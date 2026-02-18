@@ -38,6 +38,6 @@ public class UIManager : MonoBehaviour
 
     private void HomeScreen()
     {
-        SceneManager.LoadScene(0);
+        SceneSwitchManager.Instance.SwitchScene(Scenes.HomeScene);
     }
 }

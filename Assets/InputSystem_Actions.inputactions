@@ -704,10 +704,10 @@
                 {
                     "name": "",
                     "id": "4faf7dc9-b979-4210-aa8c-e808e1ef89f5",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";Keyboard&Mouse;Touch",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
