@@ -1,5 +1,10 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+/// <summary>
+/// Scene Switch Manager is for all the scene switches
+/// </summary>
 
 public class SceneSwitchManager : MonoBehaviour
 {
@@ -22,6 +27,7 @@ public class SceneSwitchManager : MonoBehaviour
             _ => 0,
         };
 
+        DOTween.KillAll();
         SceneManager.LoadScene(sceneIndex);
     }
 }

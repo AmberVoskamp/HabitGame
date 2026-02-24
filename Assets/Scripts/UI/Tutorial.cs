@@ -1,6 +1,10 @@
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// This tutorial script is to toggle and showcase the tutorial 
+/// </summary>
+
 public class Tutorial : MonoBehaviour
 {
     [SerializeField] private MinigamePopup m_minigamePopup;
@@ -8,17 +12,17 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private string[] m_tutorialText;
     [SerializeField] private bool m_doTutorial;
 
-    private int m_tutorialIndex = 0;
-    private ConfigManager m_configManager;
+    private int _tutorialIndex = 0;
+    private ConfigManager _configManager;
 
     private void Start()
     {
         gameObject.SetActive(false);
 
-        m_configManager = ConfigManager.Instance;
-        if (m_configManager != null)
+        _configManager = ConfigManager.Instance;
+        if (_configManager != null)
         {
-            m_doTutorial = !m_configManager.config.tutorialFinished;
+            m_doTutorial = !_configManager.config.tutorialFinished;
         }
         
         if (m_doTutorial)
@@ -30,13 +34,13 @@ public class Tutorial : MonoBehaviour
 
     public void ShowTutorial()
     {
-        if (!m_doTutorial || m_tutorialIndex >= m_tutorialText.Length)
+        if (!m_doTutorial || _tutorialIndex >= m_tutorialText.Length)
         {
             return;
         }
 
-        m_text.text = m_tutorialText[m_tutorialIndex];
-        m_tutorialIndex++;
+        m_text.text = m_tutorialText[_tutorialIndex];
+        _tutorialIndex++;
         gameObject.SetActive(true);
         Time.timeScale = 0;
     }
@@ -47,9 +51,9 @@ public class Tutorial : MonoBehaviour
         gameObject.SetActive(false);
         Time.timeScale = 1;
 
-        if (m_configManager != null && m_tutorialIndex >= m_tutorialText.Length)
+        if (_configManager != null && _tutorialIndex >= m_tutorialText.Length)
         {
-            m_configManager.TutorialDone();
+            _configManager.TutorialDone();
         }
     }
 }

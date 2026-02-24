@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// This boss attack script will spawn projectles that attack the player
+/// </summary>
+
 public class BossAttack : MonoBehaviour
 {
     [SerializeField] private float m_timeBetweenAttacks;
@@ -8,12 +12,13 @@ public class BossAttack : MonoBehaviour
 
     private Coroutine _coroutine;
 
-    //Activated on trigger boss room
+    //Activated once the player enters the boss room
     public void BossActivate()
     {
         SpawnProjectle();
     }
 
+    //Every [m_timeBetweenAttacks] seconds a projectile will spawn and attack the player
     private void SpawnProjectle()
     {
         Projectle projectle = Instantiate(m_projectlePrefab, transform);
@@ -21,6 +26,7 @@ public class BossAttack : MonoBehaviour
         _coroutine = StartCoroutine(HelperWait.ActionAfterWait(m_timeBetweenAttacks, SpawnProjectle));
     }
 
+    //Stops the projectiles from spawning 
     public void StopProjectles()
     {
         StopCoroutine(_coroutine);

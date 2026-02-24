@@ -1,8 +1,11 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+
+/// <summary>
+/// This is the script where all the players data is stored, saved and read
+/// </summary>
 
 [Serializable]
 public class Config

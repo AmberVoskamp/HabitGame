@@ -2,6 +2,10 @@ using DTT.Utils.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// The minigame this script takes care of everything in the minigame
+/// </summary>
+
 public class Minigame : MonoBehaviour
 {
     [SerializeField] private MinigamePopup m_minigamePopup;

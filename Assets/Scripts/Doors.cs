@@ -1,9 +1,11 @@
 using UnityEngine;
 
+/// <summary>
+/// The Doors script is for the trigger to open the doors and open the minigame
+/// </summary>
+
 public class Doors : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement m_player;
-    [SerializeField] private UIManager m_uiManager;
     [SerializeField] private MinigamePopup m_popup;
     [SerializeField] private Tutorial m_tutorial;
 
@@ -18,7 +20,7 @@ public class Doors : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (!_isInRange && col.gameObject == m_player.gameObject)
+        if (!_isInRange && col.gameObject.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth))
         {
             _isInRange = true;
 
@@ -29,14 +31,6 @@ public class Doors : MonoBehaviour
             m_rightDoor.sprite = m_rightDoorOpen;
             //m_doorCollider.enabled = false;
             #endregion
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D col)
-    {
-        if (_isInRange && col.gameObject == m_player.gameObject)
-        {
-            _isInRange = false;
         }
     }
 

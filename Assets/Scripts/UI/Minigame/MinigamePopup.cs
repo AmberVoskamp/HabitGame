@@ -1,6 +1,10 @@
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// This minigame popup is for showing or not showing the popup
+/// </summary>
+
 public class MinigamePopup : MonoBehaviour
 {
     [SerializeField] private GameManager m_gameManager;

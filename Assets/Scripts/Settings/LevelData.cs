@@ -1,5 +1,9 @@
 using System;
 
+/// <summary>
+/// This is the level data we collect while playing a level
+/// </summary>
+
 [Serializable]
 public class LevelData
 {

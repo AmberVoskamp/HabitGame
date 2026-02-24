@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Projectiles will attack the player and do damage once they hit
+/// </summary>
+
 [RequireComponent(typeof(Rigidbody2D))]
 public class Projectle : DamageObject
 {

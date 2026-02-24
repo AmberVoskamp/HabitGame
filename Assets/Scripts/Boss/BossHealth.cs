@@ -1,11 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// BossHealth is derived from Health and takes care of 
+/// showcasing the health and what happens if the boss is dead
+/// </summary>
+
 [RequireComponent(typeof(BossAttack))]
 public class BossHealth : Health
 {
     [SerializeField] private GameManager m_gameManager;
-    [SerializeField] private CountDown m_countDown;
+    [SerializeField] private PlayerHealth m_playerHealth;
 
     [SerializeField] private Animator m_animator;
     [SerializeField] private Slider m_healthSlider;
@@ -19,6 +24,7 @@ public class BossHealth : Health
         SetHealthSlider();
     }
 
+    //Activated on trigger boss room
     public void StartBossBattle()
     {
         _attack.BossActivate();
@@ -53,7 +59,7 @@ public class BossHealth : Health
 
     private void EndGame()
     {
-        m_gameManager.EndGame(true, m_countDown.CurrentTime);
+        m_gameManager.EndGame(true, m_playerHealth.CurrentHealth);
     }
 
     private void SetHealthSlider()

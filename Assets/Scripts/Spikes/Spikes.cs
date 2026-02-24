@@ -1,11 +1,16 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// These are the individual spikes which deprives from DamageObjects
+/// If the player hits the spikes when they are up they take damage
+/// </summary>
+
 public class Spikes : DamageObject
 {
     [SerializeField] private Animator m_animator;
 
-    private bool m_spikes;
+    private bool _spikes;
 
     void Start()
     {
@@ -14,12 +19,12 @@ public class Spikes : DamageObject
 
     public void SpikeUp(bool up)
     {
-        if (m_spikes == up)
+        if (_spikes == up)
         {
             return;
         }
 
-        m_spikes = up;
+        _spikes = up;
         string animation = up ? "Open" : "Close";
         m_animator.SetTrigger(animation);
 

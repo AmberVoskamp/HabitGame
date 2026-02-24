@@ -2,6 +2,11 @@ using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
+/// <summary>
+/// Health is the script is an overall script for anything with health
+/// For example the player health and boss health 
+/// </summary>
+
 public class Health : MonoBehaviour
 {
     [SerializeField] protected float m_health;
@@ -12,6 +17,8 @@ public class Health : MonoBehaviour
     private Color _basicColor;
     protected bool _isTakingDamage;
     protected float _currentHealth;
+
+    public float CurrentHealth { get { return _currentHealth; } }
 
     protected virtual void Start()
     {

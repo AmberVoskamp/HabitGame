@@ -1,6 +1,11 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// This script is to trigger a action 
+/// </summary>
+
+[RequireComponent(typeof(BoxCollider2D))]
 public class ActionOnTrigger : MonoBehaviour
 {
     [SerializeField] private PlayerMovement m_player;

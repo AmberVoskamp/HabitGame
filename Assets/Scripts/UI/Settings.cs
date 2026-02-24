@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This settings script is to showcase some of the settings and let players change them
+/// </summary>
+
 public class Settings : MonoBehaviour
 {
     [SerializeField] private Toggle m_tutorialToggle;

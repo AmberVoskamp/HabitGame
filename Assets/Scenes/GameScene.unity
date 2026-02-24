@@ -12464,8 +12464,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02795a8a54dbebc428179a7223077307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 0.5, z: -10}
-  target: {fileID: 1321557165}
+  m_offset: {x: 0, y: 0.3, z: -10}
+  m_target: {fileID: 1321557165}
 --- !u!1 &539743938
 GameObject:
   m_ObjectHideFlags: 0
@@ -12512,8 +12512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_gameManager: {fileID: 380437865}
-  m_countDown: {fileID: 1916513571}
-  m_player: {fileID: 1321557161}
+  m_playerHealth: {fileID: 1321557167}
   m_spikeRowPrefab: {fileID: 8921881951941325424, guid: fb3a7ec9c4e83c843a297229af5bfae2, type: 3}
   m_spikesInRow: 16
   m_spawnRows: 25
@@ -15614,8 +15613,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 780de2987c5e5d14ab33418cd80bffa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_player: {fileID: 1321557161}
-  m_uiManager: {fileID: 2071993103}
   m_popup: {fileID: 238827020}
   m_tutorial: {fileID: 1496004725}
   m_leftDoor: {fileID: 1753619282}
@@ -15914,7 +15911,7 @@ MonoBehaviour:
   m_sprite: {fileID: 2135534187}
   m_takeDamageColor: {r: 1, g: 0, b: 0, a: 1}
   m_gameManager: {fileID: 380437865}
-  m_countDown: {fileID: 1916513571}
+  m_playerHealth: {fileID: 1321557167}
   m_animator: {fileID: 2135534188}
   m_healthSlider: {fileID: 703052038}
 --- !u!114 &1685246278
@@ -16959,7 +16956,6 @@ GameObject:
   - component: {fileID: 2071993101}
   - component: {fileID: 2071993100}
   - component: {fileID: 2071993099}
-  - component: {fileID: 2071993103}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -17053,24 +17049,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &2071993103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2071993098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1824bc1d5b1a89b4db3f4fd76cfc49a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_countdown: {fileID: 1916513571}
-  m_endGamePanel: {fileID: 0}
-  m_homeButton: {fileID: 0}
-  m_endText: {fileID: 0}
-  m_winningEndText: The end
-  m_losingEndText: Times up
 --- !u!1 &2097071881
 GameObject:
   m_ObjectHideFlags: 0

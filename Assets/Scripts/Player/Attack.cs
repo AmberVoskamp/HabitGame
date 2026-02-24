@@ -1,5 +1,8 @@
-using System.Collections;
 using UnityEngine;
+
+/// <summary>
+/// Player attack script is so that the player can attack the boss
+/// </summary>
 
 public class Attack : MonoBehaviour
 {
@@ -11,6 +14,7 @@ public class Attack : MonoBehaviour
     private bool _bossInRange;
     private BossHealth _bossHealth;
 
+    //Gets triggerd on input
     public void DoAttack()
     {
         if (!_isInBossRoom)
@@ -27,6 +31,7 @@ public class Attack : MonoBehaviour
         }
     }
 
+    //Gets triggerd when you enter the boss room
     public void BossRoom()
     {
         _isInBossRoom = true;
@@ -42,7 +47,6 @@ public class Attack : MonoBehaviour
             {
                 _bossHealth = bossHealth;
             }
-            //m_action.Invoke();
         }
     }
 

@@ -1,6 +1,9 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+/// <summary>
+/// The home screen manager handels the home screen UI inputs
+/// </summary>
 
 public class HomeScreenManager : MonoBehaviour
 {

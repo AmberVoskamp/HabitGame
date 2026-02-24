@@ -1,25 +1,29 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// The players movement script takes the input and sets them to velocity
+/// </summary>
+
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float m_movementSpeed = 5f;
 
-    private Rigidbody2D m_rigidbody;
-    private Vector2 m_moveInput;
+    private Rigidbody2D _rigidbody;
+    private Vector2 _moveInput;
 
     void Start()
     {
-        m_rigidbody = GetComponent<Rigidbody2D>();
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate()
     {
-        m_rigidbody.linearVelocity = m_moveInput * m_movementSpeed;
+        _rigidbody.linearVelocity = _moveInput * m_movementSpeed;
     }
 
     public void Move(InputAction.CallbackContext callbackContext)
     {
-        m_moveInput = callbackContext.ReadValue<Vector2>();
+        _moveInput = callbackContext.ReadValue<Vector2>();
     }
 }

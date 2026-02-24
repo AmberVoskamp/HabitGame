@@ -3,12 +3,17 @@ using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
+/// <summary>
+/// The spike converyor manages all the spikes
+/// It will spawn all the spikes in and when you trigger the box collider the spikes will stop
+/// This will also take care of where the spikes in a row will be up and down
+/// </summary>
+
 [RequireComponent(typeof(BoxCollider2D))]
 public class SpikesConveyor : MonoBehaviour
 {
     [SerializeField] private GameManager m_gameManager;
-    [SerializeField] private CountDown m_countDown;
-    [SerializeField] private PlayerMovement m_player;
+    [SerializeField] private PlayerHealth m_playerHealth;
     [SerializeField] private SpikeRow m_spikeRowPrefab;
 
     [Header("Settings")]
@@ -59,7 +64,7 @@ public class SpikesConveyor : MonoBehaviour
             StopCoroutine(_spikeCoroutine);
         }
 
-        m_gameManager.SpikeSectionDone(m_countDown.CurrentTime, m_dificultySettings.Length - 1);
+        m_gameManager.SpikeSectionDone(m_playerHealth.CurrentHealth, m_dificultySettings.Length - 1);
     }
 
     private void SpawnSpikeRows()

@@ -3,6 +3,10 @@ using System;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// This countdown visualizes the time the player has left
+/// </summary>
+
 public class CountDown : MonoBehaviour
 {
     [SerializeField] private GameManager m_gameManager;
@@ -11,17 +15,12 @@ public class CountDown : MonoBehaviour
     [SerializeField] private TMP_Text m_timeLostPrefab;
     [SerializeField] private float m_lostTimeToTimer = 1f;
 
-    //should remove
-    public float CurrentTime
-    {
-        get { return 10; }
-    }
-
     private void Start()
     {
-        gameObject.SetActive(false);
+        gameObject.SetActive(true);
     }
 
+    //Updates the time shown in the countdown and will visualize like 1:00 for one minute
     public void UpdateTimer(float time)
     {
         #region Check if there is still time left
@@ -38,6 +37,7 @@ public class CountDown : MonoBehaviour
         m_countdownText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
+    //Spawns a text object that shows how much time you lost when you got hit
     public void LoseTime(float lostTime, Vector3 screenPosition, Action completeAction)
     {
         //Spawn the time you lose at the player position on the canvas
@@ -52,8 +52,6 @@ public class CountDown : MonoBehaviour
             {
                 Destroy(timeLost);
                 completeAction?.Invoke();
-                /*_time -= lostTime;
-                UpdateTimer();*/
             });
         #endregion
     }

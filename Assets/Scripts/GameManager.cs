@@ -1,6 +1,10 @@
 using Unity.Mathematics;
 using UnityEngine;
 
+/// <summary>
+/// GameManager is the script where the level data gets saved
+/// </summary>
+
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private FadeToBlack m_fadeToBlack;

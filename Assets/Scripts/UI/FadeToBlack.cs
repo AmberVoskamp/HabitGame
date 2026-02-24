@@ -1,7 +1,10 @@
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+/// <summary>
+/// The script will fade the screen to black 
+/// </summary>
 
 [RequireComponent(typeof(Image))]
 public class FadeToBlack : MonoBehaviour
@@ -15,7 +18,7 @@ public class FadeToBlack : MonoBehaviour
         _image = GetComponent<Image>();
         Color color = _image.color;
         color.a = 0f;
-        _image.color= color;
+        _image.color = color;
     }
 
     public void Fade()

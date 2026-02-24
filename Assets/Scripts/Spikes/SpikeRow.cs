@@ -3,23 +3,28 @@ using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
+/// <summary>
+/// Spikerow are the rows of spikes and here comes in what the open space is 
+/// and set the spikes up or down
+/// </summary>
+
 public class SpikeRow : MonoBehaviour
 {
     [SerializeField] private Spikes m_spikePrefab;
     [SerializeField] private float m_spaceBetweenSpikes;
 
-    private Spikes[] m_spikeArray;
+    private Spikes[] _spikeArray;
 
     public void SetSpikeSection(int2 openSpace, float upTime)
     {
-        for (int i = 0; i < m_spikeArray.Length; i++)
+        for (int i = 0; i < _spikeArray.Length; i++)
         {
             if (i >= openSpace.x && i <= openSpace.y)
             {
                 continue;
             }
 
-            m_spikeArray[i].SpikeUp(true);
+            _spikeArray[i].SpikeUp(true);
         }
 
         StartCoroutine(SpikeUp(upTime));
@@ -27,21 +32,21 @@ public class SpikeRow : MonoBehaviour
 
     private void SpikesDown()
     {
-        for (int i = 0; i < m_spikeArray.Length; i++)
+        for (int i = 0; i < _spikeArray.Length; i++)
         {
-            m_spikeArray[i].SpikeUp(false);
+            _spikeArray[i].SpikeUp(false);
         }
     }
 
     public void SpawnSpikes(int size)
     {
-        if (!m_spikeArray.IsNullOrEmpty())
+        if (!_spikeArray.IsNullOrEmpty())
         {
             return;
         }
 
         #region spawn spikes
-        m_spikeArray = new Spikes[size];
+        _spikeArray = new Spikes[size];
         float oldSpikePlacement = -m_spaceBetweenSpikes;
         for (int i = 0; i < size; i++)
         {
@@ -49,7 +54,7 @@ public class SpikeRow : MonoBehaviour
             float newSpikePlacement = oldSpikePlacement + m_spaceBetweenSpikes;
             spike.transform.localPosition = new Vector3(newSpikePlacement, 0, 0);
             oldSpikePlacement = newSpikePlacement;
-            m_spikeArray[i] = spike;
+            _spikeArray[i] = spike;
         }
         #endregion
     }

@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 
-/*
- * This player health script will take care of taking damage
- * The health of the player isn't hearts but the time they have left
- */
+/// <summary>
+/// This player health script is derived from health
+/// The health of the player isn't hearts but the time they have left
+/// </summary>
+
 public class PlayerHealth : Health
 {
     public static PlayerHealth Instance;
@@ -16,15 +17,11 @@ public class PlayerHealth : Health
 
     public float Health { get { return m_health; } }
 
-    private void Awake()
+    protected override void Start()
     {
+        base.Start();
         Instance = this;
         _mainCamera = Camera.main;
-        gameObject.SetActive(false);
-    }
-
-    public void StartGame()
-    {
         m_countdown.gameObject.SetActive(true);
         _isPlaying = true;
     }
@@ -49,6 +46,7 @@ public class PlayerHealth : Health
         m_countdown.LoseTime(m_damageTime, screenPosition, action);
     }
 
+    //If we have started, the timer will go down
     private void Update()
     {
         if (!_isPlaying || _currentHealth <= 0)
