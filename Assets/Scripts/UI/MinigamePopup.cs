@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class MinigamePopup : MonoBehaviour
 {
+    [SerializeField] private GameManager m_gameManager;
     [SerializeField] private TMP_Text m_turotial;
     [SerializeField] private Minigame m_minigame;
 
@@ -24,6 +25,8 @@ public class MinigamePopup : MonoBehaviour
         {
             return;
         }
+
+        m_gameManager.MiniGameData(true, minigameSucces);
 
         _minigameDone = minigameSucces;
         gameObject.SetActive(show);

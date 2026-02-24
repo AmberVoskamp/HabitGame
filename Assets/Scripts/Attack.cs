@@ -1,8 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
     [SerializeField] private Animator m_attackAnimator;
+    [SerializeField] private float m_doDamage;
+    [SerializeField] private float m_timeBetweenAttack;
 
     private bool _isInBossRoom;
     private bool _bossInRange;
@@ -17,9 +20,10 @@ public class Attack : MonoBehaviour
 
         m_attackAnimator.SetTrigger("Attack");
 
-        if (_bossInRange)
+        if (_bossInRange && _bossHealth != null)
         {
             //Damage boss
+            _bossHealth.TakeDamage(m_doDamage);
         }
     }
 

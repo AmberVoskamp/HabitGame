@@ -1,0 +1,26 @@
+using System;
+
+[Serializable]
+public class LevelData
+{
+    public int index;
+    public float levelTime;
+
+    #region spikes
+    public int spikeDificulty;
+    public float endSpikeTime;
+    #endregion
+
+    #region Minigame
+    public bool opendMinigame;
+    public bool finishedMinigame;
+    #endregion
+
+    #region Boss
+    public bool enteredBossRoom;
+    public bool killedTheBoss;
+    public float timeLeft;
+    #endregion
+
+
+}

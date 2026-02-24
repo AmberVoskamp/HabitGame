@@ -9,11 +9,9 @@ public class Spikes : MonoBehaviour
     [SerializeField] private BoxCollider2D m_boxCollider2D;
 
     private bool m_spikes;
-    private PlayerHealth m_playerHealth;
 
     void Start()
     {
-        m_playerHealth = PlayerHealth.Instance;
         m_boxCollider2D.enabled = false;
     }
 
@@ -40,25 +38,27 @@ public class Spikes : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (!m_spikes)
-        {
-            return;
-        }
-        m_playerHealth.TakeDamage(m_damage);
+        HitPlayer(collider);
     }
 
     void OnTriggerStay2D(Collider2D collider)
     {
-        if (!m_spikes)
-        {
-            return;
-        }
-        m_playerHealth.TakeDamage(m_damage);
+        HitPlayer(collider);
     }
 
     IEnumerator WaitForAnimation(float animationTime, bool colliderActive)
     {
         yield return new WaitForSeconds(animationTime);
         m_boxCollider2D.enabled = colliderActive;
+    }
+
+    private void HitPlayer(Collider2D collider)
+    {
+        if (!m_spikes || !collider.gameObject.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth))
+        {
+            return;
+        }
+        //When hit up the hitcount in leveldata
+        playerHealth.TakeDamage(m_damage);
     }
 }

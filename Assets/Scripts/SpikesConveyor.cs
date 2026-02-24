@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class SpikesConveyor : MonoBehaviour
 {
+    [SerializeField] private GameManager m_gameManager;
+    [SerializeField] private CountDown m_countDown;
     [SerializeField] private PlayerMovement m_player;
     [SerializeField] private SpikeRow m_spikeRowPrefab;
 
@@ -46,23 +48,19 @@ public class SpikesConveyor : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (!_isActive)
+        if (!_isActive || !col.gameObject.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth))
         {
             return;
         }
 
-        if (col.gameObject == m_player.gameObject)
+        _isActive = false;
+        if (_spikeCoroutine != null)
         {
-            _isActive = false;
-            if (_spikeCoroutine != null)
-            {
-                StopCoroutine(_spikeCoroutine);
-            }
-
-            PlayerHealth.Instance.PastSpikes(_currentDificulty, m_dificultySettings.Length - 1);
+            StopCoroutine(_spikeCoroutine);
         }
-    }
 
+        m_gameManager.SpikeSectionDone(m_countDown.CurrentTime, m_dificultySettings.Length - 1);
+    }
 
     private void SpawnSpikeRows()
     {
@@ -88,9 +86,6 @@ public class SpikesConveyor : MonoBehaviour
             Spike(index);
             index += m_spawnEveryRows;
         }
-
-       /* Spike(_spikeRows.Length / 2);
-        Spike(0);*/
     }
 
     private void Spike(int index)

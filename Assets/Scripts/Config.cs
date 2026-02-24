@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -6,7 +8,8 @@ using UnityEngine;
 public class Config
 {
     public bool tutorialFinished;
-    public int spikeDificulty;
+    public int currentSpikeDificulty;
+    public List<LevelData> levelsData;
 
     private static string SaveFilenName()
     {

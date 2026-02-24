@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CountDown : MonoBehaviour
 {
-    [SerializeField] private FadeToBlack m_fadeToBlack;
+    [SerializeField] private GameManager m_gameManager;
 
     [SerializeField] private TMP_Text m_countdownText;
     [SerializeField] private TMP_Text m_timeLostPrefab;
@@ -65,7 +65,7 @@ public class CountDown : MonoBehaviour
         if (_time <= 0f)
         {
             m_countdownText.text = "00:00";
-            m_fadeToBlack.Fade();
+            m_gameManager.EndGame();
             return;
         }
         #endregion
