@@ -102,6 +102,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a8f9955e00bc0749a9f509d05325103, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_damage: 10
+  m_spriteRenderer: {fileID: 8888820996983832579}
+  m_boxCollider2D: {fileID: 4415970363533664228}
   m_liveTime: 3
   m_speed: 1
 --- !u!61 &4415970363533664228

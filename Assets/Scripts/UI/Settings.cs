@@ -18,7 +18,6 @@ public class Settings : MonoBehaviour
 
         m_configManager = ConfigManager.Instance;
 
-        Debug.Log($"m_configManager.config {m_configManager.config == null}");
         m_tutorialToggle.isOn = m_configManager.config.tutorialFinished;
         m_tutorialToggle.onValueChanged.AddListener(UpdateTutorialCheck);
 

@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
         {
             _configManager = ConfigManager.Instance;
             //Set start data
-            _configManager.StartLevelData(m_playerHealth.Time);
+            _configManager.StartLevelData(m_playerHealth.Health);
         }
     }
 

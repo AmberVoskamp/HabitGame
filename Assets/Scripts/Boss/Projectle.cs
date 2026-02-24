@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Projectle : MonoBehaviour
+public class Projectle : DamageObject
 {
     [SerializeField] private float m_liveTime;
     [SerializeField] private float m_speed;
@@ -27,15 +27,16 @@ public class Projectle : MonoBehaviour
         StartCoroutine(HelperWait.ActionAfterWait(m_liveTime, DestroyProjectile));
     }
 
-    private void HitPlayer(Collider2D collider)
+    protected override bool HitPlayer(Collider2D collider)
     {
-        if (!collider.gameObject.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth))
+        bool hitPlayer = base.HitPlayer(collider);
+
+        if (hitPlayer)
         {
-            return;
+            DestroyProjectile();
         }
 
-        playerHealth.TakeDamage(10);
-        Destroy(gameObject);
+        return hitPlayer;
     }
 
     private void DestroyProjectile()
