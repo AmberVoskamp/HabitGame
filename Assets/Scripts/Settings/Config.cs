@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// This is the script where all the players data is stored, saved and read
@@ -10,13 +11,16 @@ using UnityEngine;
 [Serializable]
 public class Config
 {
+    [DllImport("__Internal")]
+    private static extern void SyncFiles();
+
     public bool tutorialFinished;
     public int currentSpikeDificulty;
     public List<LevelData> levelsData;
 
     private static string SaveFilenName()
     {
-        string saveFile = $"{Application.persistentDataPath}/save.text";
+        string saveFile = Path.Combine(Application.persistentDataPath, "save.json");
         return saveFile;
     }
 
@@ -24,12 +28,18 @@ public class Config
     {
         string saveFile = SaveFilenName();
 
-        if (!File.Exists(saveFile))
+      /*  if (!Directory.Exists(saveFile))
         {
-            File.CreateText(saveFile);
+            Directory.CreateDirectory(saveFile);
         }
+*/
+        string json = JsonUtility.ToJson(config, true);
+        File.WriteAllText(saveFile, json);
 
-        File.WriteAllText(saveFile, JsonUtility.ToJson(config, true));
+#if UNITY_WEBGL
+        SyncFiles();
+        //PlayerPrefs.Save();
+#endif
     }
 
     public static Config Load()
@@ -41,6 +51,9 @@ public class Config
         }
         string jsonText = File.ReadAllText(saveFile);
         Config config = JsonUtility.FromJson<Config>(jsonText);
+
+        Debug.Log($"JSON CONFIG \n {jsonText}");
+
         return config;
     }
 }
