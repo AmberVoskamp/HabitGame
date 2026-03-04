@@ -12,6 +12,7 @@ public class HomeScreenManager : MonoBehaviour
     private void Start()
     {
         m_playButton.onClick.AddListener(GameScene);
+        ///m_playButton.hove
     }
 
     private void GameScene()

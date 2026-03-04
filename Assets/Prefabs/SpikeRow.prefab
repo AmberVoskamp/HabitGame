@@ -45,6 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_spikePrefab: {fileID: 6110889295394878736, guid: 4cb355592dc04d54dacd29a5af888e9c, type: 3}
-  m_spaceBetweenSpikes: 0.157
-  m_spikeRowSize: 16
-  m_openSpace: 5
+  m_spaceBetweenSpikes: 0.15

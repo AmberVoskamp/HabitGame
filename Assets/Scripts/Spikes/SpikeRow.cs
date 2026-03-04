@@ -45,6 +45,15 @@ public class SpikeRow : MonoBehaviour
             return;
         }
 
+        if (transform.childCount > 0)
+        {
+            for (int i = transform.childCount - (1); i >= 0; i--)
+            {
+                GameObject child = transform.GetChild(i).gameObject;
+                DestroyImmediate(child);
+            }
+        }
+
         #region spawn spikes
         _spikeArray = new Spikes[size];
         float oldSpikePlacement = -m_spaceBetweenSpikes;
