@@ -1,0 +1,25 @@
+using UnityEngine;
+
+public class PlayerSpawnpoint : MonoBehaviour
+{
+    [SerializeField] private PlayerHealth m_playerPrefab;
+
+    private CameraFollow _cameraFollow;
+
+    private void Awake()
+    {
+        _cameraFollow = Camera.main.gameObject.GetComponent<CameraFollow>();
+    }
+
+    public PlayerHealth SpawnPlayer()
+    {
+        PlayerHealth player = Instantiate(m_playerPrefab, transform.position, Quaternion.identity);
+
+        if (_cameraFollow != null)
+        {
+            _cameraFollow.Target = player.transform;
+        }
+
+        return player;
+    }
+}

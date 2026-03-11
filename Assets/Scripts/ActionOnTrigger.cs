@@ -8,12 +8,11 @@ using UnityEngine.Events;
 [RequireComponent(typeof(BoxCollider2D))]
 public class ActionOnTrigger : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement m_player;
     [SerializeField] private UnityEvent m_action;
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject == m_player.gameObject)
+        if (col.gameObject.TryGetComponent<PlayerMovement>(out PlayerMovement player))
         {
             m_action.Invoke();
         }

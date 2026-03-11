@@ -10,7 +10,7 @@ public class PlayerHealth : Health
 {
     public static PlayerHealth Instance;
 
-    [SerializeField] private CountDown m_countdown;
+    private CountDown _countdown;
 
     private Camera _mainCamera;
     private bool _isPlaying;
@@ -22,7 +22,11 @@ public class PlayerHealth : Health
         base.Start();
         Instance = this;
         _mainCamera = Camera.main;
-        m_countdown.gameObject.SetActive(true);
+    }
+
+    public void SetCountDown(CountDown countdown)
+    {
+        _countdown = countdown;
         _isPlaying = true;
     }
 
@@ -39,11 +43,11 @@ public class PlayerHealth : Health
         {
             base.TakeDamage(damage);
             //Update current counter
-            m_countdown.UpdateTimer(_currentHealth);
+            _countdown.UpdateTimer(_currentHealth);
         };
 
         Vector3 screenPosition = _mainCamera.WorldToScreenPoint(transform.position);
-        m_countdown.LoseTime(m_damageTime, screenPosition, action);
+        _countdown.LoseTime(m_damageTime, screenPosition, action);
     }
 
     //If we have started, the timer will go down
@@ -55,6 +59,6 @@ public class PlayerHealth : Health
         }
 
         _currentHealth -= Time.deltaTime;
-        m_countdown.UpdateTimer(_currentHealth);
+        _countdown.UpdateTimer(_currentHealth);
     }
 }

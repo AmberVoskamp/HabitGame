@@ -13,7 +13,6 @@ using UnityEngine;
 public class SpikesConveyor : MonoBehaviour
 {
     [SerializeField] private GameManager m_gameManager;
-    [SerializeField] private PlayerHealth m_playerHealth;
     [SerializeField] private SpikeRow m_spikeRowPrefab;
 
     [Header("Settings")]
@@ -64,7 +63,7 @@ public class SpikesConveyor : MonoBehaviour
             StopCoroutine(_spikeCoroutine);
         }
 
-        m_gameManager.SpikeSectionDone(m_playerHealth.CurrentHealth, m_dificultySettings.Length - 1);
+        m_gameManager.SpikeSectionDone(playerHealth.CurrentHealth, m_dificultySettings.Length - 1);
     }
 
     private void SpawnSpikeRows()

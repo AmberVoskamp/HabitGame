@@ -8,7 +8,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private FadeToBlack m_fadeToBlack;
-    [SerializeField] private PlayerHealth m_playerHealth;
+    [SerializeField] private PlayerSpawnpoint m_spawnpoint;
+    [SerializeField] private CountDown m_countDown;
 
     [Space]
     [SerializeField] private Vector2 m_timeLeftAfterSpikes;
@@ -17,11 +18,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        PlayerHealth playerHealth = m_spawnpoint.SpawnPlayer();
+        playerHealth.SetCountDown(m_countDown);
+
         if (ConfigManager.Instance != null)
         {
             _configManager = ConfigManager.Instance;
             //Set start data
-            _configManager.StartLevelData(m_playerHealth.Health);
+            _configManager.StartLevelData(playerHealth.Health);
         }
     }
 
@@ -64,9 +68,9 @@ public class GameManager : MonoBehaviour
 
     public void MiniGameData(bool hasOpend, bool hasFinished)
     {
-        if (ConfigManager.Instance == null) 
+        if (ConfigManager.Instance == null)
         {
-            return; 
+            return;
         }
 
         _configManager.MinigameData(hasOpend, hasFinished);

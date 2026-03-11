@@ -10,11 +10,11 @@ using UnityEngine.UI;
 public class BossHealth : Health
 {
     [SerializeField] private GameManager m_gameManager;
-    [SerializeField] private PlayerHealth m_playerHealth;
 
     [SerializeField] private Animator m_animator;
     [SerializeField] private Slider m_healthSlider;
 
+    private PlayerHealth _playerHealth;
     private BossAttack _attack;
 
     protected override void Start()
@@ -27,7 +27,8 @@ public class BossHealth : Health
     //Activated on trigger boss room
     public void StartBossBattle()
     {
-        _attack.BossActivate();
+        _playerHealth = PlayerHealth.Instance;
+        _attack.BossActivate(_playerHealth);
 
         m_gameManager.EnterBossRoom();
     }
@@ -59,7 +60,7 @@ public class BossHealth : Health
 
     private void EndGame()
     {
-        m_gameManager.EndGame(true, m_playerHealth.CurrentHealth);
+        m_gameManager.EndGame(true, _playerHealth.CurrentHealth);
     }
 
     private void SetHealthSlider()
