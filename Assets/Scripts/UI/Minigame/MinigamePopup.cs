@@ -7,14 +7,22 @@ using UnityEngine;
 
 public class MinigamePopup : MonoBehaviour
 {
+    public static MinigamePopup Instance;
+
     [SerializeField] private GameManager m_gameManager;
     [SerializeField] private TMP_Text m_turotial;
     [SerializeField] private Minigame m_minigame;
 
     private bool _minigameDone;
 
+    public Minigame Minigame
+    {
+        get { return m_minigame; } 
+    }
+
     private void Start()
     {
+        Instance = this;
         ShowPopup(false);
     }
 

@@ -10,6 +10,8 @@ public class PlayerHealth : Health
 {
     public static PlayerHealth Instance;
 
+    [SerializeField] private Attack m_playerAttack;
+
     private CountDown _countdown;
 
     private Camera _mainCamera;
@@ -22,6 +24,11 @@ public class PlayerHealth : Health
         base.Start();
         Instance = this;
         _mainCamera = Camera.main;
+    }
+
+    public void ActivateAttack()
+    {
+        m_playerAttack.BossRoom();
     }
 
     public void SetCountDown(CountDown countdown)

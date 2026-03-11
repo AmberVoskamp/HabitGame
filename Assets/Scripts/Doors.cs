@@ -35,12 +35,4 @@ public class Doors : MonoBehaviour
         m_leftDoor.sprite = m_leftDoorOpen;
         m_rightDoor.sprite = m_rightDoorOpen;
     }
-
-    public void OpenMinigamePopup()
-    {
-        if (_isInRange)
-        {
-            m_popup.ShowPopup(true);
-        }
-    }
 }

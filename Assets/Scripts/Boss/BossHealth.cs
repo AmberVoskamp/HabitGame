@@ -29,6 +29,7 @@ public class BossHealth : Health
     {
         _playerHealth = PlayerHealth.Instance;
         _attack.BossActivate(_playerHealth);
+        _playerHealth.ActivateAttack();
 
         m_gameManager.EnterBossRoom();
     }

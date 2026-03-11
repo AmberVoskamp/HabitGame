@@ -521,8 +521,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Attack[/Mouse/leftButton,/Keyboard/enter]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Doors, Assembly-CSharp
+      - m_Target: {fileID: 124921279656349536}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: OpenMinigamePopup
         m_Mode: 1
         m_Arguments:
@@ -537,9 +537,9 @@ MonoBehaviour:
     m_ActionName: 'Player/Interact[/Keyboard/e]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Minigame, Assembly-CSharp
-        m_MethodName: Tap
+      - m_Target: {fileID: 1435333490057795155}
+        m_TargetAssemblyTypeName: Attack, Assembly-CSharp
+        m_MethodName: DoAttack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -549,9 +549,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1435333490057795155}
-        m_TargetAssemblyTypeName: Attack, Assembly-CSharp
-        m_MethodName: DoAttack
+      - m_Target: {fileID: 124921279656349536}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: MinigameTap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -649,7 +649,7 @@ MonoBehaviour:
   m_damageTime: 0.5
   m_sprite: {fileID: 4435582346095242965}
   m_takeDamageColor: {r: 0.99215686, g: 0.26666668, b: 0.26666668, a: 1}
-  m_countdown: {fileID: 0}
+  m_playerAttack: {fileID: 1435333490057795155}
 --- !u!1 &7752689015207229620
 GameObject:
   m_ObjectHideFlags: 0

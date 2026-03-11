@@ -15,8 +15,8 @@ public class BossAttack : MonoBehaviour
     //Activated once the player enters the boss room
     public void BossActivate(PlayerHealth player)
     {
-        SpawnProjectle();
         _player = player;
+        SpawnProjectle();
     }
 
     //Every [m_timeBetweenAttacks] seconds a projectile will spawn and attack the player
