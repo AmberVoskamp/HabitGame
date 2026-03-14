@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
 
     public void SpikeSectionDone(float spikeFinishTimeLeft, int maxDificulty)
     {
-        if (ConfigManager.Instance == null)
+        if (!TrySetConfig(out ConfigManager config))
         {
             return;
         }
@@ -63,17 +63,17 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
-        _configManager.SpikeLevelData(spikeFinishTimeLeft, currentDificulty);
+        config.SpikeLevelData(spikeFinishTimeLeft, currentDificulty);
     }
 
     public void MiniGameData(bool hasOpend, bool hasFinished)
     {
-        if (ConfigManager.Instance == null)
+        if (!TrySetConfig(out ConfigManager config))
         {
             return;
         }
 
-        _configManager.MinigameData(hasOpend, hasFinished);
+        config.MinigameData(hasOpend, hasFinished);
     }
 
     public void EnterBossRoom()
@@ -90,11 +90,27 @@ public class GameManager : MonoBehaviour
     {
         m_fadeToBlack.Fade();
 
-        if (ConfigManager.Instance == null)
+        if (!TrySetConfig(out ConfigManager config))
         {
             return;
         }
 
-        _configManager.BossFight(killedBoss, timeLeft);
+        config.BossFight(killedBoss, timeLeft);
+    }
+
+    private bool TrySetConfig(out ConfigManager config)
+    {
+        if (_configManager == null)
+        {
+            _configManager = ConfigManager.Instance;
+            if (_configManager == null)
+            {
+                config = null;
+                return false;
+            }
+        }
+
+        config = _configManager;
+        return true;
     }
 }

@@ -36,7 +36,7 @@ public class Config
         string json = JsonUtility.ToJson(config, true);
         File.WriteAllText(saveFile, json);
 
-#if UNITY_WEBGL
+#if UNITY_WEBGL && !UNITY_EDITOR
         SyncFiles();
         //PlayerPrefs.Save();
 #endif
