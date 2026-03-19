@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float m_movementSpeed = 5f;
 
-    private MinigamePopup _popup;
     private UIManager _uiManager;
     private Rigidbody2D _rigidbody;
     private Vector2 _moveInput;
@@ -19,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
     {
         set { _isInMinigameRange = value; }
     }
+
+    #region Unity methods
 
     void Start()
     {
@@ -31,10 +32,20 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody.linearVelocity = _moveInput * m_movementSpeed;
     }
 
+    #endregion
+
     public void Move(InputAction.CallbackContext callbackContext)
     {
         _moveInput = callbackContext.ReadValue<Vector2>();
     }
+
+    //Todo Move player to next entrance and make them move X amount forward
+    public void Entrance(Vector3 newPos)
+    {
+        transform.position = newPos;
+    }
+
+    #region Inputs
 
     public void OpenMinigamePopup()
     {
@@ -68,4 +79,6 @@ public class PlayerMovement : MonoBehaviour
 
         _uiManager.TutorialClick();
     }
+
+    #endregion
 }

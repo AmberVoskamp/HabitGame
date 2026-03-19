@@ -7,10 +7,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private FadeToBlack m_fadeToBlack;
     [SerializeField] private PlayerSpawnpoint m_spawnpoint;
     [SerializeField] private CountDown m_countDown;
     [SerializeField] private UIManager m_uiManager;
+
+    [Space]
+    [SerializeField] private Phase m_firstPhase;
 
     [Space]
     [SerializeField] private Vector2 m_timeLeftAfterSpikes;
@@ -19,7 +23,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        PlayerHealth playerHealth = m_spawnpoint.SpawnPlayer();
+        Phase currentPhase = Instantiate(m_firstPhase);
+
+        PlayerHealth playerHealth = currentPhase.Spawnpoint.SpawnPlayer();
         playerHealth.SetCountDown(m_countDown);
 
         if (ConfigManager.Instance != null)
