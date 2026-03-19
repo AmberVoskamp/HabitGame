@@ -13,15 +13,20 @@ public class CameraFollow : MonoBehaviour
     private float _smoothTime = 0.25f;
     private Vector3 _velocity = Vector3.zero;
 
-    public Transform Target
+    public void SetCameraPosToTarget(Transform newTarget)
     {
-        set { _target = value; }
+        _target = null;
+        Vector3 targetPosition = newTarget.position + m_offset;
+        transform.position = targetPosition;
+
+        _target = newTarget;
     }
 
     private void Update()
     {
         if (_target == null)
         {
+            Debug.Log("camera target not set");
             return;
         }
 

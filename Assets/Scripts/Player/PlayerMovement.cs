@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float m_movementSpeed = 5f;
 
     private MinigamePopup _popup;
+    private UIManager _uiManager;
     private Rigidbody2D _rigidbody;
     private Vector2 _moveInput;
     private bool _isInMinigameRange;
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _uiManager = UIManager.Instance;
     }
 
     void FixedUpdate()
@@ -36,28 +38,34 @@ public class PlayerMovement : MonoBehaviour
 
     public void OpenMinigamePopup()
     {
-        if (_popup == null)
+        if (_uiManager == null)
         {
-            _popup = MinigamePopup.Instance;
-            if (_popup == null)
-            {
-                return;
-            }
+            return;
         }
 
         if (_isInMinigameRange)
         {
-            _popup.ShowPopup(true);
+            _uiManager.ShowMinigame(true);
         }
     }
 
     public void MinigameTap()
     {
-        if (_popup == null)
+        if (_uiManager == null)
         {
             return;
         }
 
-        _popup.Minigame.Tap();
+        _uiManager.MinigameTap();
+    }
+
+    public void TutorialClick()
+    {
+        if (_uiManager == null)
+        {
+            return;
+        }
+
+        _uiManager.TutorialClick();
     }
 }

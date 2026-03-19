@@ -1,1 +1,36 @@
-//Delete
+using UnityEngine;
+
+public class UIManager : MonoBehaviour
+{
+    public static UIManager Instance;
+
+    [SerializeField] private MinigamePopup _minigamePopup;
+    [SerializeField] private Tutorial _tutorial;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    public void ShowMinigame(bool show)
+    {
+        _minigamePopup.ShowPopup(show);
+    }
+
+    public void MinigameTap()
+    {
+        _minigamePopup.Minigame.Tap();
+    }
+
+    public void TutorialClick()
+    {
+        _tutorial.ContinueGame();
+    }
+
+    public void ShowTutorial()
+    {
+        Debug.Log("ShowTutorial");
+        _tutorial.gameObject.SetActive(true);
+        _tutorial.ShowTutorial();
+    }
+}

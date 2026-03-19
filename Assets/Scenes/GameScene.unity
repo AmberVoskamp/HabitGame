@@ -1567,6 +1567,7 @@ MonoBehaviour:
   m_fadeToBlack: {fileID: 579212433}
   m_spawnpoint: {fileID: 1441830449}
   m_countDown: {fileID: 1916513571}
+  m_uiManager: {fileID: 2071993103}
   m_timeLeftAfterSpikes: {x: 0, y: 0}
 --- !u!4 &380437866
 Transform:
@@ -15293,7 +15294,7 @@ MonoBehaviour:
   - Use <sprite=1><sprite=2><sprite=3><sprite=0>\nto move around
   - Watch out for \nthe spikes\n<sprite=4>
   - Press <sprite=5> to open a minigame for a boost
-  m_doTutorial: 0
+  m_doTutorial: 1
 --- !u!222 &1496004727
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20287,6 +20288,7 @@ GameObject:
   - component: {fileID: 2071993101}
   - component: {fileID: 2071993100}
   - component: {fileID: 2071993099}
+  - component: {fileID: 2071993103}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -20380,6 +20382,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2071993103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071993098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1824bc1d5b1a89b4db3f4fd76cfc49a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _minigamePopup: {fileID: 238827020}
+  _tutorial: {fileID: 1496004725}
 --- !u!1 &2097071881
 GameObject:
   m_ObjectHideFlags: 0

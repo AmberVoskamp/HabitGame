@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private FadeToBlack m_fadeToBlack;
     [SerializeField] private PlayerSpawnpoint m_spawnpoint;
     [SerializeField] private CountDown m_countDown;
+    [SerializeField] private UIManager m_uiManager;
 
     [Space]
     [SerializeField] private Vector2 m_timeLeftAfterSpikes;
@@ -27,6 +28,8 @@ public class GameManager : MonoBehaviour
             //Set start data
             _configManager.StartLevelData(playerHealth.Health);
         }
+
+        m_uiManager.ShowTutorial();
     }
 
     public void SpikeSectionDone(float spikeFinishTimeLeft, int maxDificulty)

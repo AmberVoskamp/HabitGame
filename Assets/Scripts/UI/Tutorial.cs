@@ -15,7 +15,7 @@ public class Tutorial : MonoBehaviour
     private int _tutorialIndex = 0;
     private ConfigManager _configManager;
 
-    private void Start()
+    private void Awake()
     {
         gameObject.SetActive(false);
 
@@ -24,11 +24,7 @@ public class Tutorial : MonoBehaviour
         {
             m_doTutorial = !_configManager.config.tutorialFinished;
         }
-        
-        if (m_doTutorial)
-        {
-            ShowTutorial();
-        }
+       
         m_minigamePopup.ShowTutorial(m_doTutorial);
     }
 

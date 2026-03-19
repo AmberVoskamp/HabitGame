@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class MinigamePopup : MonoBehaviour
 {
-    public static MinigamePopup Instance;
-
     [SerializeField] private GameManager m_gameManager;
     [SerializeField] private TMP_Text m_turotial;
     [SerializeField] private Minigame m_minigame;
@@ -22,7 +20,6 @@ public class MinigamePopup : MonoBehaviour
 
     private void Start()
     {
-        Instance = this;
         ShowPopup(false);
     }
 
@@ -38,10 +35,15 @@ public class MinigamePopup : MonoBehaviour
             return;
         }
 
-        m_gameManager.MiniGameData(true, minigameSucces);
+        gameObject.SetActive(show);
+
+        if (!show && !minigameSucces)
+        {
+            return;
+        }
 
         _minigameDone = minigameSucces;
-        gameObject.SetActive(show);
+        m_gameManager.MiniGameData(true, minigameSucces);
         StartMiniGame();
     }
 

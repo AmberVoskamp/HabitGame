@@ -17,7 +17,7 @@ public class PlayerSpawnpoint : MonoBehaviour
 
         if (_cameraFollow != null)
         {
-            _cameraFollow.Target = player.transform;
+            _cameraFollow.SetCameraPosToTarget(player.transform);
         }
 
         return player;

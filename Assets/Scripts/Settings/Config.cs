@@ -54,6 +54,11 @@ public class Config
 
         Debug.Log($"JSON CONFIG \n {jsonText}");
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+        SyncFiles();
+        //PlayerPrefs.Save();
+#endif
+
         return config;
     }
 }

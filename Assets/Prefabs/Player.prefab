@@ -581,9 +581,9 @@ MonoBehaviour:
     m_ActionName: 'UI/Point[/Mouse/position]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Tutorial, Assembly-CSharp
-        m_MethodName: ContinueGame
+      - m_Target: {fileID: 124921279656349536}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: TutorialClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

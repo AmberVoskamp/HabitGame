@@ -41,7 +41,7 @@ public class ConfigManager : MonoBehaviour
             levelTime = levelTime,
             spikeDificulty = config.currentSpikeDificulty,
         };
-
+        Debug.Log(newLevelData.index);
         config.levelsData.Add(newLevelData);
         Config.Save(config);
     }
