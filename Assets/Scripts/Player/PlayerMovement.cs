@@ -42,7 +42,8 @@ public class PlayerMovement : MonoBehaviour
     //Todo Move player to next entrance and make them move X amount forward
     public void Entrance(Vector3 newPos)
     {
-        transform.position = newPos;
+        Debug.Log(newPos);
+        transform.localPosition = newPos;
     }
 
     #region Inputs

@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1670935943469403752}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.036, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -113,7 +113,7 @@ Transform:
   m_GameObject: {fileID: 5381792139446849590}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.16, y: -2.036, z: 0}
+  m_LocalPosition: {x: 0.16, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -217,7 +217,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6039214072681692383}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -244,7 +244,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.084272325, y: -1.9862278}
+  m_Offset: {x: 0.09708366, y: 0.060928375}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -254,7 +254,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.6171355, y: 0.22760439}
+  m_Size: {x: 0.4229682, y: 0.20383638}
   m_EdgeRadius: 0
 --- !u!114 &1130895878275403135
 MonoBehaviour:
@@ -270,7 +270,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_action:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4356889348258554956}
+        m_TargetAssemblyTypeName: SwitchPhase, Assembly-CSharp
+        m_MethodName: GoToNextPhase
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4356889348258554956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,4 +295,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba373ed8c09ba34e8584e0b9be142d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextPhase: {fileID: 0}
+  _nextPhase: {fileID: 0}
+  _moveForwardAmount: 0

@@ -8,7 +8,13 @@ public class SwitchPhase : MonoBehaviour
     [Header("Health Parameters")]
     [SerializeField] private float _moveForwardAmount;
 
+    private Phase m_phase;
     private bool m_isEntering;
+
+    private void Start()
+    {
+        m_phase = GetComponentInParent<Phase>();
+    }
 
     public void GoToNextPhase(PlayerMovement playerMovement)
     {
@@ -21,8 +27,13 @@ public class SwitchPhase : MonoBehaviour
         //Load in next phase
         Phase nextPhase = Instantiate(_nextPhase);
 
+        Debug.Log($" nextPhase.MainEntrance {nextPhase.MainEntrance == null} playerMovement {playerMovement == null}");
         //Send player to the entrance of the next phase
         nextPhase.MainEntrance.PlayerEnter(playerMovement);
+
+        //Turn off current phase (might want to go back so keep it in the scene)
+        m_phase.gameObject.SetActive(false);
+
         Debug.Log("Go to next phase");
     }
 

@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class Doors : MonoBehaviour
 {
-    [SerializeField] private MinigamePopup m_popup;
-    [SerializeField] private Tutorial m_tutorial;
-
     [Header("Doors")]
     [SerializeField] private SpriteRenderer m_leftDoor;
     [SerializeField] private SpriteRenderer m_rightDoor;
@@ -17,21 +14,25 @@ public class Doors : MonoBehaviour
     [SerializeField] private BoxCollider2D m_doorCollider;
 
     private bool _isInRange;
+    private bool _doorOpen;
 
     void OnTriggerEnter2D(Collider2D col)
     {
+        if (_doorOpen)
+        {
+            return;
+        }
+
         if (!_isInRange && col.gameObject.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth))
         {
             _isInRange = true;
-
-            m_tutorial.ShowTutorial();
-
             OpenDoor();
         }
     }
 
     public void OpenDoor()
     {
+        _doorOpen = true;
         m_leftDoor.sprite = m_leftDoorOpen;
         m_rightDoor.sprite = m_rightDoorOpen;
     }
