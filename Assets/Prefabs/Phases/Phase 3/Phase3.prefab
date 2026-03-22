@@ -5407,8 +5407,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2a9481579cf0e4b92500fafe9e82e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerSpawnpoint: {fileID: 0}
+  _phase: 2
+  _playerSpawnpoint: {fileID: 0}
   _mainEntrance: {fileID: 572588307320644342}
+  _boss: {fileID: 8843980241480280217}
 --- !u!1001 &4288827414441739962
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5423,11 +5425,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5178256918009557081, guid: a596922d3fc4fb042b9e9f3868cd05a9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.556
+      value: -0.5641
       objectReference: {fileID: 0}
     - target: {fileID: 5178256918009557081, guid: a596922d3fc4fb042b9e9f3868cd05a9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.814
+      value: 0.7159
       objectReference: {fileID: 0}
     - target: {fileID: 5178256918009557081, guid: a596922d3fc4fb042b9e9f3868cd05a9, type: 3}
       propertyPath: m_LocalPosition.z

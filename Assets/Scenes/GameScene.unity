@@ -435,10 +435,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fadeToBlack: {fileID: 579212433}
-  m_spawnpoint: {fileID: 0}
   m_countDown: {fileID: 1916513571}
   m_uiManager: {fileID: 2071993103}
-  m_firstPhase: {fileID: 665508996373918562, guid: d2c4b93103b696b45922d25f19999b27, type: 3}
+  m_phases: {fileID: 11400000, guid: 074fbb97585d9824aaa1bb9126fdd9e2, type: 2}
   m_timeLeftAfterSpikes: {x: 0, y: 0}
 --- !u!4 &380437866
 Transform:

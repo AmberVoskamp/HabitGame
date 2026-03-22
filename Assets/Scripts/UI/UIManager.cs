@@ -29,7 +29,6 @@ public class UIManager : MonoBehaviour
 
     public void ShowTutorial()
     {
-        Debug.Log("ShowTutorial");
         _tutorial.gameObject.SetActive(true);
         _tutorial.ShowTutorial();
     }

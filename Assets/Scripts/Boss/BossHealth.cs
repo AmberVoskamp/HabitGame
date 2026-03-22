@@ -20,16 +20,22 @@ public class BossHealth : Health
     protected override void Start()
     {
         base.Start();
-        _attack = this.GetComponent<BossAttack>();
         SetHealthSlider();
     }
 
-    //Activated on trigger boss room
     public void StartBossBattle()
     {
         _playerHealth = PlayerHealth.Instance;
+        _attack = this.GetComponent<BossAttack>();
+
         _attack.BossActivate(_playerHealth);
         _playerHealth.ActivateAttack();
+
+        if (m_gameManager == null)
+        {
+            Phase phase = GetComponentInParent<Phase>();
+            m_gameManager = phase.GameManager;
+        }
 
         m_gameManager.EnterBossRoom();
     }
@@ -50,7 +56,7 @@ public class BossHealth : Health
         if (_currentHealth <= 0)
         {
             //Boss dies you win
-            _attack.StopProjectles();
+            _attack?.StopProjectles();
             m_animator.SetTrigger("Dead");
             float animationLenght = m_animator.GetCurrentAnimatorStateInfo(0).length;
             StartCoroutine(HelperWait.ActionAfterWait(animationLenght, EndGame));

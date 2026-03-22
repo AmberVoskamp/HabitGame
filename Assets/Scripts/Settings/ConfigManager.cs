@@ -79,6 +79,12 @@ public class ConfigManager : MonoBehaviour
         Config.Save(config);
     }
 
+    public int CurrentBoss()
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        return config.levelsData[currentIndex].currentBoss;
+    }
+
     private int GetCurrentLevelIndex()
     {
         return config.levelsData.Count - 1;

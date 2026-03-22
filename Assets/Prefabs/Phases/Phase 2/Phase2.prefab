@@ -372,7 +372,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2a9481579cf0e4b92500fafe9e82e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerSpawnpoint: {fileID: 0}
+  _phase: 1
+  _playerSpawnpoint: {fileID: 0}
   _mainEntrance: {fileID: 7662715137426470614}
 --- !u!1 &2621124519137503039
 GameObject:

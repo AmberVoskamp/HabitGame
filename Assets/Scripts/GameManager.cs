@@ -9,21 +9,23 @@ public class GameManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private FadeToBlack m_fadeToBlack;
-    [SerializeField] private PlayerSpawnpoint m_spawnpoint;
     [SerializeField] private CountDown m_countDown;
     [SerializeField] private UIManager m_uiManager;
 
     [Space]
-    [SerializeField] private Phase m_firstPhase;
+    [SerializeField] private PhasesData m_phases;
 
     [Space]
     [SerializeField] private Vector2 m_timeLeftAfterSpikes;
 
     private ConfigManager _configManager;
+    private Phases _currentPhase;
 
     private void Start()
     {
-        Phase currentPhase = Instantiate(m_firstPhase);
+        _currentPhase = Phases.Phase1;
+        Phase currentPhase = Instantiate(GetRandomFirstPhase());
+        currentPhase.GameManager = this;
 
         PlayerHealth playerHealth = currentPhase.Spawnpoint.SpawnPlayer();
         playerHealth.SetCountDown(m_countDown);
@@ -121,5 +123,42 @@ public class GameManager : MonoBehaviour
 
         config = _configManager;
         return true;
+    }
+
+    public Phase NextPhase()
+    {
+        Debug.Log($"NEXT PHASE");
+        if (_currentPhase == Phases.Phase1)
+        {
+            _currentPhase = Phases.Phase2;
+            return m_phases.phasesTwo;
+        }
+        if (_currentPhase == Phases.Phase2)
+        {
+            _currentPhase = Phases.Phase3;
+            int currentBossIndex = 0;
+            if (_configManager != null)
+            {
+                currentBossIndex = _configManager.CurrentBoss();
+            }
+
+            int phaseThreeCount = m_phases.phasesThree.Length;
+            if (currentBossIndex >= phaseThreeCount)
+            {
+                currentBossIndex = phaseThreeCount - 1;
+                Debug.LogWarning($"Boss index is higher than should be possible");
+            }
+
+            return m_phases.phasesThree[currentBossIndex];
+        }
+
+        return null;
+    }
+
+    private Phase GetRandomFirstPhase()
+    {
+        int phaseOneCount = m_phases.phasesOne.Length;
+        int randomPhaseOneIndex = UnityEngine.Random.Range(0, phaseOneCount);
+        return m_phases.phasesOne[randomPhaseOneIndex];
     }
 }

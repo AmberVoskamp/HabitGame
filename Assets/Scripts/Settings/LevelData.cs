@@ -21,6 +21,7 @@ public class LevelData
     #endregion
 
     #region Boss
+    public int currentBoss;
     public bool enteredBossRoom;
     public bool killedTheBoss;
     public float timeLeft;

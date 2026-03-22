@@ -47,6 +47,9 @@ public class SpikesConveyor : MonoBehaviour
             _currentDificulty = ConfigManager.Instance.SpikeDificulty;
         }
 
+        Phase phase = GetComponentInParent<Phase>();
+        m_gameManager = phase.GameManager;
+
         SpawnSpikeRows();
     }
 

@@ -3,8 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(ActionOnTrigger))]
 public class SwitchPhase : MonoBehaviour
 {
-    [SerializeField] private Phase _nextPhase;
-
     [Header("Health Parameters")]
     [SerializeField] private float _moveForwardAmount;
 
@@ -13,7 +11,7 @@ public class SwitchPhase : MonoBehaviour
 
     private void Start()
     {
-        m_phase = GetComponentInParent<Phase>();
+        SetPhase();
     }
 
     public void GoToNextPhase(PlayerMovement playerMovement)
@@ -22,25 +20,46 @@ public class SwitchPhase : MonoBehaviour
         {
             return;
         }
-        //Screen go black (can do later)
+        m_isEntering = true;
+        //TODO Screen go black (can do later)
 
         //Load in next phase
-        Phase nextPhase = Instantiate(_nextPhase);
+        Phase next = m_phase.NextPhase;
+        if (next == null)
+        {
+            return;
+        }
 
-        Debug.Log($" nextPhase.MainEntrance {nextPhase.MainEntrance == null} playerMovement {playerMovement == null}");
+        Phase nextPhase = Instantiate(next);
+        nextPhase.GameManager = m_phase.GameManager;
+
         //Send player to the entrance of the next phase
         nextPhase.MainEntrance.PlayerEnter(playerMovement);
 
         //Turn off current phase (might want to go back so keep it in the scene)
         m_phase.gameObject.SetActive(false);
-
-        Debug.Log("Go to next phase");
     }
 
     public void PlayerEnter(PlayerMovement playerMovement)
     {
+        SetPhase();
+        if (m_phase.BossRoom(out BossHealth boss))
+        {
+            //TODO If it is the boss room activate the attack and boss fight
+            boss.StartBossBattle();
+            PlayerHealth.Instance.ActivateAttack();
+        }
+
         m_isEntering = true;
 
         playerMovement.Entrance(transform.position);
+    }
+
+    private void SetPhase()
+    {
+        if (m_phase == null)
+        {
+            m_phase = GetComponentInParent<Phase>();
+        }
     }
 }
