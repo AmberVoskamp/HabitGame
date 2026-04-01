@@ -40,7 +40,7 @@ public class BossHealth : Health
         m_gameManager.EnterBossRoom();
     }
 
-    public override void TakeDamage(float damage)
+    public override void TakeDamage(float damage, DamageType type)
     {
         if (!CanTakeDamage())
         {
@@ -48,7 +48,7 @@ public class BossHealth : Health
         }
 
         StartCoroutine(Damage());
-        base.TakeDamage(damage);
+        base.TakeDamage(damage, type);
 
         SetHealthSlider();
 

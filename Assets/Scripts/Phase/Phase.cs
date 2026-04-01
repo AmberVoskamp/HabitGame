@@ -7,6 +7,7 @@ public class Phase : MonoBehaviour
     //not all phases will have these
     [SerializeField] private PlayerSpawnpoint _playerSpawnpoint;
     [SerializeField] private SwitchPhase _mainEntrance;
+    [SerializeField] private WalkData _walkData;
     [SerializeField] private BossHealth _boss;
 
     private GameManager m_gameManager;
@@ -32,10 +33,21 @@ public class Phase : MonoBehaviour
         get { return m_gameManager.NextPhase(); }
     }
 
+    private void OnEnable()
+    {
+        _walkData?.Record(true, PlayerHealth.Instance);
+    }
+
     public bool BossRoom(out BossHealth boss)
     {
         boss = _boss;
         return _phase == Phases.Phase3;
+    }
+
+    public void ExitPhase()
+    {
+        m_gameManager.ExitPhase(_phase);
+        _walkData?.Record(false);
     }
 
     private void Reset()

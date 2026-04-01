@@ -26,7 +26,6 @@ public class CameraFollow : MonoBehaviour
     {
         if (_target == null)
         {
-            Debug.Log("camera target not set");
             return;
         }
 

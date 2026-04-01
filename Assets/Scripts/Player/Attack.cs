@@ -27,7 +27,7 @@ public class Attack : MonoBehaviour
         if (_bossInRange && _bossHealth != null)
         {
             //Damage boss
-            _bossHealth.TakeDamage(m_doDamage);
+            _bossHealth.TakeDamage(m_doDamage, DamageType.Player);
         }
     }
 

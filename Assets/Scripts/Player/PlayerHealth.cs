@@ -17,8 +17,6 @@ public class PlayerHealth : Health
     private Camera _mainCamera;
     private bool _isPlaying;
 
-    public float Health { get { return m_health; } }
-
     protected override void Start()
     {
         base.Start();
@@ -31,13 +29,14 @@ public class PlayerHealth : Health
         m_playerAttack.BossRoom();
     }
 
-    public void SetCountDown(CountDown countdown)
+    public void SetData(float time, CountDown countdown)
     {
+        SetHealth(time);
         _countdown = countdown;
         _isPlaying = true;
     }
 
-    public override void TakeDamage(float damage)
+    public override void TakeDamage(float damage, DamageType type)
     {
         if (_isTakingDamage || m_health <= 0)
         {
@@ -48,7 +47,7 @@ public class PlayerHealth : Health
 
         Action action = () =>
         {
-            base.TakeDamage(damage);
+            base.TakeDamage(damage, type);
             //Update current counter
             _countdown.UpdateTimer(_currentHealth);
         };

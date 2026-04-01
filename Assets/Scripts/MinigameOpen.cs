@@ -3,10 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class MinigameOpen : MonoBehaviour
 {
-    [SerializeField] private MinigamePopup m_popup;
-
     private bool _isInRange;
-    private PlayerMovement m_player;
+    private bool _hasEnterd;
 
     void OnTriggerEnter2D(Collider2D col)
     {
@@ -24,6 +22,15 @@ public class MinigameOpen : MonoBehaviour
         {
             _isInRange = isInRange;
             player.IsInMinigameRange = isInRange;
+
+            if (isInRange && !_hasEnterd)
+            {
+                _hasEnterd = true;
+                if (ConfigManager.Instance != null && PlayerHealth.Instance != null)
+                {
+                    ConfigManager.Instance.TimeLeftInRangeOfChest(PlayerHealth.Instance.CurrentHealth);
+                }
+            }
         }
     }
 }

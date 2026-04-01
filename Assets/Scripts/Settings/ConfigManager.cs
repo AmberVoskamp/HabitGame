@@ -1,3 +1,4 @@
+using DTT.Utils.Extensions;
 using UnityEngine;
 
 /// <summary>
@@ -35,15 +36,63 @@ public class ConfigManager : MonoBehaviour
 
     public void StartLevelData(float levelTime)
     {
+        int bossIndex = 0;
+        if (!config.levelsData.IsNullOrEmpty())
+        {
+            LevelData lastLevel = config.levelsData[GetCurrentLevelIndex()];
+            bossIndex = lastLevel.currentBoss;
+            if (lastLevel.killedTheBoss)
+            {
+                bossIndex++;
+            }
+        }
+
         LevelData newLevelData = new LevelData()
         {
             index = config.levelsData.Count,
             levelTime = levelTime,
+            phaseTimes = new System.Collections.Generic.List<PhaseTimeData>(),
             spikeDificulty = config.currentSpikeDificulty,
+            currentBoss = bossIndex
         };
         Debug.Log(newLevelData.index);
         config.levelsData.Add(newLevelData);
         Config.Save(config);
+    }
+
+    public void AddPhaseTime(Phases phase, float timeLeft)
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        float totalLevelTime = config.levelsData[currentIndex].levelTime;
+
+        PhaseTimeData phaseTime = new PhaseTimeData()
+        {
+            phase = phase,
+            exitPhaseTime = totalLevelTime - timeLeft,
+        };
+
+        config.levelsData[currentIndex].phaseTimes.Add(phaseTime);
+    }
+
+    public void Hit(float damage, DamageType type)
+    {
+        int currentIndex = GetCurrentLevelIndex();
+
+        switch (type)
+        {
+            case DamageType.Spike:
+                config.levelsData[currentIndex].spikesDamageTaken += damage;
+                break;
+            case DamageType.Boss:
+                config.levelsData[currentIndex].bossDamageTaken += damage;
+                break;
+            case DamageType.Player:
+                config.levelsData[currentIndex].bossDamageDone += damage;
+                break;
+            case DamageType.Other:
+            default:
+                break;
+        }
     }
 
     public void SpikeLevelData(float endSpikeTime, int newSpikeDificulty)
@@ -55,7 +104,24 @@ public class ConfigManager : MonoBehaviour
         Config.Save(config);
     }
 
-        
+    public void SafeWalkData(WalkData.Data[] walkData)
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        config.levelsData[currentIndex].walkData = walkData;
+    }
+
+    public void TimeLeftInRangeOfChest(float timeLeft)
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        config.levelsData[currentIndex].timeLeftWhenInChestRange = timeLeft;
+    }
+
+    public void TimeLeftDoorOpens(float timeLeft)
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        config.levelsData[currentIndex].timeLeftWhenDoorOpens = timeLeft;
+    }
+
     public void MinigameData(bool hasOpend, bool hasFinished)
     {
         int currentIndex = GetCurrentLevelIndex();
@@ -82,6 +148,11 @@ public class ConfigManager : MonoBehaviour
     public int CurrentBoss()
     {
         int currentIndex = GetCurrentLevelIndex();
+        if (currentIndex < 0)
+        {
+            return 0;
+        }
+        Debug.Log($"CurrentBoss == {currentIndex}");
         return config.levelsData[currentIndex].currentBoss;
     }
 

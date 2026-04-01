@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using static PhasesData;
 
 /// <summary>
 /// GameManager is the script where the level data gets saved
@@ -19,22 +21,28 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector2 m_timeLeftAfterSpikes;
 
     private ConfigManager _configManager;
-    private Phases _currentPhase;
+    private int _currentPhase;
+    private List<PhaseData> _levelPhases;
+    private PlayerHealth _playerHealth;
 
     private void Start()
     {
-        _currentPhase = Phases.Phase1;
-        Phase currentPhase = Instantiate(GetRandomFirstPhase());
-        currentPhase.GameManager = this;
-
-        PlayerHealth playerHealth = currentPhase.Spawnpoint.SpawnPlayer();
-        playerHealth.SetCountDown(m_countDown);
-
         if (ConfigManager.Instance != null)
         {
             _configManager = ConfigManager.Instance;
             //Set start data
-            _configManager.StartLevelData(playerHealth.Health);
+        }
+
+        _levelPhases = GetPhases(out float time);
+        Phase currentPhase = Instantiate(_levelPhases[_currentPhase].phase);
+        currentPhase.GameManager = this;
+
+        _playerHealth = currentPhase.Spawnpoint.SpawnPlayer();
+        _playerHealth.SetData(time, m_countDown);
+        Debug.Log($"Time {time}");
+        if (_configManager != null)
+        {
+            _configManager.StartLevelData(time);
         }
 
         m_uiManager.ShowTutorial();
@@ -125,40 +133,67 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public Phase NextPhase()
+    private List<PhaseData> GetPhases(out float phasesTime)
     {
-        Debug.Log($"NEXT PHASE");
-        if (_currentPhase == Phases.Phase1)
-        {
-            _currentPhase = Phases.Phase2;
-            return m_phases.phasesTwo;
-        }
-        if (_currentPhase == Phases.Phase2)
-        {
-            _currentPhase = Phases.Phase3;
-            int currentBossIndex = 0;
-            if (_configManager != null)
-            {
-                currentBossIndex = _configManager.CurrentBoss();
-            }
+        List<PhaseData> phases = new List<PhaseData>();
 
-            int phaseThreeCount = m_phases.phasesThree.Length;
-            if (currentBossIndex >= phaseThreeCount)
-            {
-                currentBossIndex = phaseThreeCount - 1;
-                Debug.LogWarning($"Boss index is higher than should be possible");
-            }
+        phases.Add(GetRandomFirstPhase());
+        phases.Add(m_phases.phasesTwo);
+        phases.Add(GetBossPhase());
 
-            return m_phases.phasesThree[currentBossIndex];
+        phasesTime = 0f;
+        foreach (PhaseData phase in phases)
+        {
+            phasesTime += phase.phaseTime;
         }
 
-        return null;
+        return phases;
     }
 
-    private Phase GetRandomFirstPhase()
+    public Phase NextPhase()
+    {
+        if (_currentPhase >= _levelPhases.Count)
+        {
+            return null;
+        }
+
+        _currentPhase++;
+        return _levelPhases[_currentPhase].phase;
+    }
+
+    private PhaseData GetRandomFirstPhase()
     {
         int phaseOneCount = m_phases.phasesOne.Length;
         int randomPhaseOneIndex = UnityEngine.Random.Range(0, phaseOneCount);
         return m_phases.phasesOne[randomPhaseOneIndex];
+    }
+
+    private PhaseData GetBossPhase()
+    {
+        int currentBossIndex = 0;
+        if (_configManager != null)
+        {
+            currentBossIndex = _configManager.CurrentBoss();
+        }
+
+        int phaseThreeCount = m_phases.phasesThree.Length;
+        if (currentBossIndex >= phaseThreeCount)
+        {
+            currentBossIndex = phaseThreeCount - 1;
+            Debug.LogWarning($"Boss index is higher than should be possible");
+        }
+
+        return m_phases.phasesThree[currentBossIndex];
+    }
+
+    public void ExitPhase(Phases phases)
+    {
+        if (_configManager == null)
+        {
+            return;
+        }
+
+        float time = _playerHealth.CurrentHealth;
+        _configManager.AddPhaseTime(phases, time);
     }
 }

@@ -27,12 +27,6 @@ public class Config
     public static void Save(Config config)
     {
         string saveFile = SaveFilenName();
-
-      /*  if (!Directory.Exists(saveFile))
-        {
-            Directory.CreateDirectory(saveFile);
-        }
-*/
         string json = JsonUtility.ToJson(config, true);
         File.WriteAllText(saveFile, json);
 

@@ -14,22 +14,32 @@ public class DamageObject : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        HitPlayer(collider);
+        InCollider(collider);
     }
 
     void OnTriggerStay2D(Collider2D collider)
     {
-        HitPlayer(collider);
+        InCollider(collider);
     }
 
-    protected virtual bool HitPlayer(Collider2D collider)
+    private void InCollider(Collider2D collider)
+    {
+        DamageType type = DamageType.Other;
+        if (gameObject.TryGetComponent<Spikes>(out Spikes spike))
+        {
+            type = DamageType.Spike;
+        }
+        HitPlayer(collider, type);
+    }
+
+    protected virtual bool HitPlayer(Collider2D collider, DamageType type)
     {
         if (!collider.gameObject.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth))
         {
             return false;
         }
 
-        playerHealth.TakeDamage(m_damage);
+        playerHealth.TakeDamage(m_damage, type);
         return true;
     }
 

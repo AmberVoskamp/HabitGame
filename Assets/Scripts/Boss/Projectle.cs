@@ -31,9 +31,9 @@ public class Projectle : DamageObject
         StartCoroutine(HelperWait.ActionAfterWait(m_liveTime, DestroyProjectile));
     }
 
-    protected override bool HitPlayer(Collider2D collider)
+    protected override bool HitPlayer(Collider2D collider, DamageType type = DamageType.Other)
     {
-        bool hitPlayer = base.HitPlayer(collider);
+        bool hitPlayer = base.HitPlayer(collider, DamageType.Boss);
 
         if (hitPlayer)
         {

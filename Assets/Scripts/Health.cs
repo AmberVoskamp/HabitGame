@@ -17,19 +17,31 @@ public class Health : MonoBehaviour
     private Color _basicColor;
     protected bool _isTakingDamage;
     protected float _currentHealth;
+    private ConfigManager _configManager;
 
     public float CurrentHealth { get { return _currentHealth; } }
 
     protected virtual void Start()
     {
         _basicColor = m_sprite.color;
-        _currentHealth = m_health;
+        if (_currentHealth == 0)
+        {
+            _currentHealth = m_health;
+        }
+
+        _configManager = ConfigManager.Instance;
     }
 
-    public virtual void TakeDamage(float damage)
+    public void SetHealth(float health)
+    {
+        _currentHealth = health;
+    }
+
+    public virtual void TakeDamage(float damage, DamageType type)
     {
         _currentHealth -= damage;
         _currentHealth = math.clamp(_currentHealth, 0, m_health);
+        _configManager?.Hit(damage, type);
     }
 
     public bool CanTakeDamage()
@@ -45,4 +57,12 @@ public class Health : MonoBehaviour
         m_sprite.color = _basicColor;
         _isTakingDamage = false;
     }
+}
+
+public enum DamageType
+{
+    Spike,
+    Boss,
+    Player,
+    Other
 }

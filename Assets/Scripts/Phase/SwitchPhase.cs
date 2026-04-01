@@ -35,6 +35,7 @@ public class SwitchPhase : MonoBehaviour
 
         //Send player to the entrance of the next phase
         nextPhase.MainEntrance.PlayerEnter(playerMovement);
+        m_phase.ExitPhase();
 
         //Turn off current phase (might want to go back so keep it in the scene)
         m_phase.gameObject.SetActive(false);

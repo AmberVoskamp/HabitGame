@@ -1,6 +1,6 @@
 using UnityEngine;
 
-enum Phases
+public enum Phases
 {
     Phase1, //The spike phase
     Phase2, //The choice phase 

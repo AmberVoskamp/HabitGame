@@ -12,18 +12,25 @@ public class WalkData : MonoBehaviour
     private List<Data> _walkData;
 
     [Serializable]
-    struct Data
+    public struct Data
     {
         public float timeLeft;
         public Vector2 position;
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    public void Record(bool record, PlayerHealth player = null)
     {
-        if (!_recording && col.gameObject.TryGetComponent<PlayerHealth>(out _player))
+        _recording = record;
+
+        if (record)
         {
             _walkData = new List<Data>();
-            _recording = true;
+            _player = player;
+        }
+        else
+        {
+            //Send data to config
+            ConfigManager.Instance?.SafeWalkData(_walkData.ToArray());
         }
     }
 
@@ -53,11 +60,6 @@ public class WalkData : MonoBehaviour
         {
             AddWalkData(newPosition);
         }
-    }
-
-    public void StopRecording()
-    {
-        _recording = false;
     }
 
     private void AddWalkData(Vector2 newPosition)
