@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
+using static SpikesConveyor;
 
 /// <summary>
 /// The spike converyor manages all the spikes
@@ -31,12 +32,13 @@ public class SpikesConveyor : MonoBehaviour
     private Coroutine _spikeCoroutine;
     private bool _isActive = false;
     private int _currentDificulty;
+    private ConveyorSettings _conveyorSettings;
 
     [Serializable]
     public struct ConveyorSettings
     {
-        public float spawnEverySeconds;
-        public float spikeMoveTime;
+        public int openSpace;
+        public int spawnEveryRows;
     }
 
     private void Start()
@@ -46,6 +48,7 @@ public class SpikesConveyor : MonoBehaviour
         {
             _currentDificulty = ConfigManager.Instance.SpikeDificulty;
         }
+        _conveyorSettings = m_dificultySettings[_currentDificulty];
 
         Phase phase = GetComponentInParent<Phase>();
         m_gameManager = phase.GameManager;
@@ -91,7 +94,7 @@ public class SpikesConveyor : MonoBehaviour
         while (index < _spikeRows.Length)
         {
             Spike(index);
-            index += m_spawnEveryRows;
+            index += _conveyorSettings.spawnEveryRows;
         }
     }
 
@@ -103,9 +106,9 @@ public class SpikesConveyor : MonoBehaviour
         }
 
         int2 openSpace = new int2();
-        int maxStartIndex = m_spikesInRow - m_openSpace;
+        int maxStartIndex = m_spikesInRow - _conveyorSettings.openSpace;
         openSpace.x = UnityEngine.Random.Range(0, maxStartIndex);
-        openSpace.y = openSpace.x + m_openSpace;
+        openSpace.y = openSpace.x + _conveyorSettings.openSpace;
 
         StartCoroutine(WaitSpikeNext(openSpace, index));
     }
@@ -117,7 +120,7 @@ public class SpikesConveyor : MonoBehaviour
             yield return new WaitForSeconds(m_spikeMoveNextTime);
             _spikeRows[i].SetSpikeSection(openSpace, m_spikesUpSeconds);
 
-            if (i == m_spawnEveryRows && startRow == 0)
+            if (i == _conveyorSettings.spawnEveryRows && startRow == 0)
             {
                 Spike(0);
             }

@@ -17,7 +17,7 @@ public class Health : MonoBehaviour
     private Color _basicColor;
     protected bool _isTakingDamage;
     protected float _currentHealth;
-    private ConfigManager _configManager;
+    protected ConfigManager _configManager;
 
     public float CurrentHealth { get { return _currentHealth; } }
 
@@ -26,7 +26,7 @@ public class Health : MonoBehaviour
         _basicColor = m_sprite.color;
         if (_currentHealth == 0)
         {
-            _currentHealth = m_health;
+            SetHealth(m_health);
         }
 
         _configManager = ConfigManager.Instance;

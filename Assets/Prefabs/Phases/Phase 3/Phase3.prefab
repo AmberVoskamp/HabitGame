@@ -7724,6 +7724,7 @@ MonoBehaviour:
   _phase: 2
   _playerSpawnpoint: {fileID: 0}
   _mainEntrance: {fileID: 572588307320644342}
+  _walkData: {fileID: 0}
   _boss: {fileID: 8843980241480280217}
 --- !u!1 &8867868537564526782
 GameObject:

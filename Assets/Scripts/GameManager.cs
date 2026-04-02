@@ -24,13 +24,14 @@ public class GameManager : MonoBehaviour
     private int _currentPhase;
     private List<PhaseData> _levelPhases;
     private PlayerHealth _playerHealth;
+    private bool _isLastBoss;
 
     private void Start()
     {
         if (ConfigManager.Instance != null)
         {
             _configManager = ConfigManager.Instance;
-            //Set start data
+            _configManager.StartLevelData();
         }
 
         _levelPhases = GetPhases(out float time);
@@ -39,10 +40,10 @@ public class GameManager : MonoBehaviour
 
         _playerHealth = currentPhase.Spawnpoint.SpawnPlayer();
         _playerHealth.SetData(time, m_countDown);
-        Debug.Log($"Time {time}");
+
         if (_configManager != null)
         {
-            _configManager.StartLevelData(time);
+            _configManager.SetTotalTime(time);
         }
 
         m_uiManager.ShowTutorial();
@@ -95,14 +96,14 @@ public class GameManager : MonoBehaviour
         config.MinigameData(hasOpend, hasFinished);
     }
 
-    public void EnterBossRoom()
+    public void EnterBossRoom(float bossHealth)
     {
         if (ConfigManager.Instance == null)
         {
             return;
         }
 
-        _configManager.BossRoom();
+        _configManager.BossRoom(bossHealth);
     }
 
     public void EndGame(bool killedBoss = false, float timeLeft = 0f)
@@ -114,7 +115,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        config.BossFight(killedBoss, timeLeft);
+        config.BossFightEnd(killedBoss, _isLastBoss, timeLeft);
     }
 
     private bool TrySetConfig(out ConfigManager config)
@@ -177,6 +178,7 @@ public class GameManager : MonoBehaviour
         }
 
         int phaseThreeCount = m_phases.phasesThree.Length;
+        _isLastBoss = currentBossIndex >= phaseThreeCount - 1;
         if (currentBossIndex >= phaseThreeCount)
         {
             currentBossIndex = phaseThreeCount - 1;

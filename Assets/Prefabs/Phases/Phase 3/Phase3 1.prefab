@@ -6990,7 +6990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c780f64d4e82584ab8148d336bdc7df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_health: 15
+  m_health: 150
   m_damageTime: 0.5
   m_sprite: {fileID: 3267258977665055856}
   m_takeDamageColor: {r: 1, g: 0, b: 0, a: 1}
@@ -7724,6 +7724,7 @@ MonoBehaviour:
   _phase: 2
   _playerSpawnpoint: {fileID: 0}
   _mainEntrance: {fileID: 572588307320644342}
+  _walkData: {fileID: 0}
   _boss: {fileID: 8843980241480280217}
 --- !u!1 &8867868537564526782
 GameObject:

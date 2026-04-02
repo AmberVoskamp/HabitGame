@@ -14,7 +14,12 @@ public class Config
     [DllImport("__Internal")]
     private static extern void SyncFiles();
 
+    // Link to the JSLib plugin
+    [DllImport("__Internal")]
+    private static extern void DownloadFile(string filename, string content);
+
     public bool tutorialFinished;
+    public bool finishedAllBosses;
     public int currentSpikeDificulty;
     public List<LevelData> levelsData;
 
@@ -54,5 +59,18 @@ public class Config
 #endif
 
         return config;
+    }
+
+    public static void Download(Config config)
+    {
+        string json = JsonUtility.ToJson(config, true);
+        string filename = "MyGameSave.json";
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+            DownloadFile(filename, json);
+#else
+        // Fallback for Editor: Just print to console or save to Desktop
+        Debug.Log("Download triggered. Content: " + json);
+#endif
     }
 }

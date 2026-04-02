@@ -1,4 +1,5 @@
 using DTT.Utils.Extensions;
+using Unity.Mathematics;
 using UnityEngine;
 
 /// <summary>
@@ -34,9 +35,10 @@ public class ConfigManager : MonoBehaviour
         Config.Save(config);
     }
 
-    public void StartLevelData(float levelTime)
+    public void StartLevelData()
     {
         int bossIndex = 0;
+        float bossHealth = 0;
         if (!config.levelsData.IsNullOrEmpty())
         {
             LevelData lastLevel = config.levelsData[GetCurrentLevelIndex()];
@@ -45,19 +47,26 @@ public class ConfigManager : MonoBehaviour
             {
                 bossIndex++;
             }
+            bossHealth = lastLevel.bossHealthLeft;
         }
 
         LevelData newLevelData = new LevelData()
         {
             index = config.levelsData.Count,
-            levelTime = levelTime,
             phaseTimes = new System.Collections.Generic.List<PhaseTimeData>(),
             spikeDificulty = config.currentSpikeDificulty,
-            currentBoss = bossIndex
+            currentBoss = bossIndex,
+            bossHealthLeft = bossHealth,
         };
-        Debug.Log(newLevelData.index);
+
         config.levelsData.Add(newLevelData);
         Config.Save(config);
+    }
+
+    public void SetTotalTime(float levelTime)
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        config.levelsData[currentIndex].levelTime = levelTime;
     }
 
     public void AddPhaseTime(Phases phase, float timeLeft)
@@ -130,18 +139,27 @@ public class ConfigManager : MonoBehaviour
         Config.Save(config);
     }
 
-    public void BossRoom()
+    public void BossRoom(float bossHealth)
     {
         int currentIndex = GetCurrentLevelIndex();
         config.levelsData[currentIndex].enteredBossRoom = true;
+        if (config.levelsData[currentIndex].bossHealthLeft == 0)
+        {
+            config.levelsData[currentIndex].bossHealthLeft = bossHealth;
+        }
         Config.Save(config);
     }
 
-    public void BossFight(bool killedBoss, float timeLeft)
+    public void BossFightEnd(bool killedBoss, bool isLastBoss, float timeLeft)
     {
         int currentIndex = GetCurrentLevelIndex();
+        config.finishedAllBosses = killedBoss && isLastBoss;
         config.levelsData[currentIndex].killedTheBoss = killedBoss;
         config.levelsData[currentIndex].timeLeft = timeLeft;
+
+        LevelData levelData = config.levelsData[currentIndex];
+        float bossHealthLeft = levelData.bossHealthLeft - levelData.bossDamageDone;
+        config.levelsData[currentIndex].bossHealthLeft = math.max(0, bossHealthLeft);
         Config.Save(config);
     }
 
@@ -152,8 +170,19 @@ public class ConfigManager : MonoBehaviour
         {
             return 0;
         }
-        Debug.Log($"CurrentBoss == {currentIndex}");
+
         return config.levelsData[currentIndex].currentBoss;
+    }
+
+    public float GetBossHealth()
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        if (currentIndex < 0)
+        {
+            return 0;
+        }
+        LevelData levelData = config.levelsData[currentIndex];
+        return levelData.bossHealthLeft;
     }
 
     private int GetCurrentLevelIndex()

@@ -5467,16 +5467,16 @@ MonoBehaviour:
   m_spikeMoveNextTime: 1
   m_spikesUpSeconds: 1.1
   m_dificultySettings:
-  - spawnEverySeconds: 6
-    spikeMoveTime: 10
-  - spawnEverySeconds: 6
-    spikeMoveTime: 10
-  - spawnEverySeconds: 6
-    spikeMoveTime: 10
-  - spawnEverySeconds: 6
-    spikeMoveTime: 10
-  - spawnEverySeconds: 6
-    spikeMoveTime: 10
+  - openSpace: 5
+    spawnEveryRows: 5
+  - openSpace: 5
+    spawnEveryRows: 4
+  - openSpace: 4
+    spawnEveryRows: 5
+  - openSpace: 4
+    spawnEveryRows: 4
+  - openSpace: 3
+    spawnEveryRows: 4
 --- !u!61 &5080026289106702287
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20815,6 +20815,7 @@ MonoBehaviour:
   _phase: 0
   _playerSpawnpoint: {fileID: 3620350309748003205}
   _mainEntrance: {fileID: 0}
+  _walkData: {fileID: 0}
   _boss: {fileID: 0}
 --- !u!1 &9134581259150073416
 GameObject:

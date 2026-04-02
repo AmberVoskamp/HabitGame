@@ -47,7 +47,6 @@ public class SwitchPhase : MonoBehaviour
         if (m_phase.BossRoom(out BossHealth boss))
         {
             //TODO If it is the boss room activate the attack and boss fight
-            boss.StartBossBattle();
             PlayerHealth.Instance.ActivateAttack();
         }
 

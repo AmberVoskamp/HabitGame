@@ -32,7 +32,8 @@ public class LevelData
     public bool enteredBossRoom;
     public bool killedTheBoss;
     public float bossDamageTaken;
-    public float bossDamageDone; 
+    public float bossDamageDone;
+    public float bossHealthLeft;
     public float timeLeft;
     #endregion
 }

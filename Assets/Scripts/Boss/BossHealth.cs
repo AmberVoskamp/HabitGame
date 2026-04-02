@@ -20,11 +20,10 @@ public class BossHealth : Health
     protected override void Start()
     {
         base.Start();
-        SetHealthSlider();
-    }
 
-    public void StartBossBattle()
-    {
+        SetBossHealth();
+        SetHealthSlider();
+
         _playerHealth = PlayerHealth.Instance;
         _attack = this.GetComponent<BossAttack>();
 
@@ -37,7 +36,23 @@ public class BossHealth : Health
             m_gameManager = phase.GameManager;
         }
 
-        m_gameManager.EnterBossRoom();
+        m_gameManager.EnterBossRoom(CurrentHealth);
+    }
+
+    public void SetBossHealth()
+    {
+        if (_configManager == null)
+        {
+            return;
+        }
+
+        float bossHealth = _configManager.GetBossHealth();
+        if (bossHealth == 0)
+        {
+            SetHealth(m_health);
+            return;
+        }
+        SetHealth(bossHealth);
     }
 
     public override void TakeDamage(float damage, DamageType type)
