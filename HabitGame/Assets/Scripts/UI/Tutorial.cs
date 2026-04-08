@@ -16,8 +16,6 @@ public class Tutorial : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.SetActive(false);
-
         _configManager = ConfigManager.Instance;
         if (_configManager != null)
         {
@@ -25,6 +23,9 @@ public class Tutorial : MonoBehaviour
         }
        
         m_minigamePopup.ShowTutorial(m_doTutorial);
+        gameObject.SetActive(false);
+        this.gameObject.SetActive(false);
+        Debug.Log("Tutorial");
     }
 
     public void ShowTutorial(string tutorialText)
@@ -33,9 +34,7 @@ public class Tutorial : MonoBehaviour
         {
             return;
         }
-
         m_text.text = tutorialText;
-      //  _tutorialFinished ;
         gameObject.SetActive(true);
         Time.timeScale = 0;
     }

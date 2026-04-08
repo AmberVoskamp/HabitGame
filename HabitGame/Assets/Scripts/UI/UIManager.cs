@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        _tutorial.gameObject.SetActive(false);
     }
 
     public void ShowMinigame(bool show)

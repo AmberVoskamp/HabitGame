@@ -6907,7 +6907,8 @@ GameObject:
   - component: {fileID: 4634904098870538213}
   - component: {fileID: 8320168538653863699}
   - component: {fileID: 8843980241480280217}
-  - component: {fileID: 6653498767999624654}
+  - component: {fileID: 7101650202552588261}
+  - component: {fileID: 422694644600758092}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -6997,7 +6998,7 @@ MonoBehaviour:
   m_gameManager: {fileID: 0}
   m_animator: {fileID: 1525639577747561301}
   m_healthSlider: {fileID: 285862731213791094}
---- !u!114 &6653498767999624654
+--- !u!114 &7101650202552588261
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7006,11 +7007,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 4865495436707522848}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac6bf397124272b4b84e85a3285f7705, type: 3}
+  m_Script: {fileID: 11500000, guid: 90b098fd80c63f942b9583651bd724e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_timeBetweenAttacks: 4
   m_projectlePrefab: {fileID: 8977429872122014254, guid: f28366762e55a1c4cb1c62a4d1d7ee97, type: 3}
+  m_projectlePrefab: {fileID: 8977429872122014254, guid: f28366762e55a1c4cb1c62a4d1d7ee97, type: 3}
+--- !u!114 &422694644600758092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4865495436707522848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322e5446e6294454faffcca269ccb5e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_attackPaternHealth:
+  - health: 5
+    attackPatern:
+    - attack: {fileID: 7101650202552588261}
+      timeBeforeNextAttack: 4
 --- !u!1 &5393840961154467394
 GameObject:
   m_ObjectHideFlags: 0

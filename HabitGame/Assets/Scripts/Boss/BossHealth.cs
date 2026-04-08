@@ -15,7 +15,7 @@ public class BossHealth : Health
     [SerializeField] private Slider m_healthSlider;
 
     private PlayerHealth _playerHealth;
-    private BossAttack _attack;
+    private BossAttackController _attack;
 
     protected override void Start()
     {
@@ -25,9 +25,9 @@ public class BossHealth : Health
         SetHealthSlider();
 
         _playerHealth = PlayerHealth.Instance;
-        _attack = this.GetComponent<BossAttack>();
+        _attack = this.GetComponent<BossAttackController>();
 
-        _attack.BossActivate(_playerHealth);
+        _attack.BossActivate(_playerHealth, this);
         _playerHealth.ActivateAttack();
 
         if (m_gameManager == null)
@@ -71,7 +71,7 @@ public class BossHealth : Health
         if (_currentHealth <= 0)
         {
             //Boss dies you win
-            _attack?.StopProjectles();
+            _attack?.StopAttacks();
             m_animator.SetTrigger("Dead");
             float animationLenght = m_animator.GetCurrentAnimatorStateInfo(0).length;
             StartCoroutine(HelperWait.ActionAfterWait(animationLenght, EndGame));
