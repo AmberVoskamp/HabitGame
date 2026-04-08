@@ -7,24 +7,30 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private Vector3 m_offset = new Vector3(0f, -10f, -10f);
-    
+
     private Transform _target;
+    private bool _enabled = false;
 
     private float _smoothTime = 0.25f;
     private Vector3 _velocity = Vector3.zero;
 
     public void SetCameraPosToTarget(Transform newTarget)
     {
-        _target = null;
-        Vector3 targetPosition = newTarget.position + m_offset;
-        transform.position = targetPosition;
-
         _target = newTarget;
+        PosToTarget();
+    }
+
+    public void PosToTarget()
+    {
+        _enabled = false;
+        Vector3 targetPosition = _target.position + m_offset;
+        transform.position = targetPosition;
+        _enabled = true;
     }
 
     private void Update()
     {
-        if (_target == null)
+        if (!_enabled)
         {
             return;
         }

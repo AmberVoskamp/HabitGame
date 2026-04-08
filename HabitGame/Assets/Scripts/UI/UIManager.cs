@@ -27,9 +27,9 @@ public class UIManager : MonoBehaviour
         _tutorial.ContinueGame();
     }
 
-    public void ShowTutorial()
+    public void ShowTutorial(string tutorialText)
     {
         _tutorial.gameObject.SetActive(true);
-        _tutorial.ShowTutorial();
+        _tutorial.ShowTutorial(tutorialText);
     }
 }

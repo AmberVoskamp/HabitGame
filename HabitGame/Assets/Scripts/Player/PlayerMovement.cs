@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Vector2 _moveInput;
     private bool _isInMinigameRange;
+    private CameraFollow _cameraFollow;
 
     public bool IsInMinigameRange
     {
@@ -20,9 +21,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     #region Unity methods
-
     void Start()
     {
+        _cameraFollow = Camera.main.gameObject.GetComponent<CameraFollow>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _uiManager = UIManager.Instance;
     }
@@ -42,8 +43,9 @@ public class PlayerMovement : MonoBehaviour
     //Todo Move player to next entrance and make them move X amount forward
     public void Entrance(Vector3 newPos)
     {
-        Debug.Log(newPos);
+        //Set camera 
         transform.localPosition = newPos;
+        _cameraFollow.PosToTarget();
     }
 
     #region Inputs

@@ -9,10 +9,9 @@ public class Tutorial : MonoBehaviour
 {
     [SerializeField] private MinigamePopup m_minigamePopup;
     [SerializeField] private TMP_Text m_text;
-    [SerializeField] private string[] m_tutorialText;
     [SerializeField] private bool m_doTutorial;
 
-    private int _tutorialIndex = 0;
+    private bool _tutorialFinished;
     private ConfigManager _configManager;
 
     private void Awake()
@@ -28,15 +27,15 @@ public class Tutorial : MonoBehaviour
         m_minigamePopup.ShowTutorial(m_doTutorial);
     }
 
-    public void ShowTutorial()
+    public void ShowTutorial(string tutorialText)
     {
-        if (!m_doTutorial || _tutorialIndex >= m_tutorialText.Length)
+        if (!m_doTutorial)
         {
             return;
         }
 
-        m_text.text = m_tutorialText[_tutorialIndex];
-        _tutorialIndex++;
+        m_text.text = tutorialText;
+      //  _tutorialFinished ;
         gameObject.SetActive(true);
         Time.timeScale = 0;
     }
@@ -46,10 +45,5 @@ public class Tutorial : MonoBehaviour
     {
         gameObject.SetActive(false);
         Time.timeScale = 1;
-
-        if (_configManager != null && _tutorialIndex >= m_tutorialText.Length)
-        {
-            _configManager.TutorialDone();
-        }
     }
 }

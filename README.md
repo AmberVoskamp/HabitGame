@@ -12,7 +12,7 @@ This repository is organized into three main components:
 
 ## 🎮 Getting Started (Developers)
 **Prerequisites**
-- **Unity Version:** 2022.3 LTS (or your specific version)
+- **Unity Version:** 6000.0.60f1
 - **Modules:** WebGL Build Support
 
 **Setup**

@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     [Space]
     [SerializeField] private Vector2 m_timeLeftAfterSpikes;
 
+    [Header("Tutorial Text")]
+    [SerializeField] private string m_walkTutorialText;
+
     private ConfigManager _configManager;
     private int _currentPhase;
     private List<PhaseData> _levelPhases;
@@ -46,7 +49,12 @@ public class GameManager : MonoBehaviour
             _configManager.SetTotalTime(time);
         }
 
-        m_uiManager.ShowTutorial();
+        ShowTutorial(m_walkTutorialText);
+    }
+
+    public void ShowTutorial(string text)
+    {
+        m_uiManager.ShowTutorial(text);
     }
 
     public void SpikeSectionDone(float spikeFinishTimeLeft, int maxDificulty)

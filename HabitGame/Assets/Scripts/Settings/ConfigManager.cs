@@ -46,6 +46,10 @@ public class ConfigManager : MonoBehaviour
             if (lastLevel.killedTheBoss)
             {
                 bossIndex++;
+                if (!config.tutorialFinished)
+                {
+                    TutorialDone(true);
+                }
             }
             bossHealth = lastLevel.bossHealthLeft;
         }

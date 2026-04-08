@@ -50,6 +50,11 @@ public class Phase : MonoBehaviour
         _walkData?.Record(false);
     }
 
+    public void ShowTutorial(string tutorialText)
+    {
+        m_gameManager.ShowTutorial(tutorialText);
+    }
+
     private void Reset()
     {
         _playerSpawnpoint = transform.GetComponentInChildren<PlayerSpawnpoint>(true);
