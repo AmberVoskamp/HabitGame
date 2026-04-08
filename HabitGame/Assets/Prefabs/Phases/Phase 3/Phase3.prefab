@@ -7010,8 +7010,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b098fd80c63f942b9583651bd724e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_timeBetweenAttacks: 4
-  m_projectlePrefab: {fileID: 8977429872122014254, guid: f28366762e55a1c4cb1c62a4d1d7ee97, type: 3}
   m_projectlePrefab: {fileID: 8977429872122014254, guid: f28366762e55a1c4cb1c62a4d1d7ee97, type: 3}
 --- !u!114 &422694644600758092
 MonoBehaviour:
@@ -7025,6 +7023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322e5446e6294454faffcca269ccb5e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_waitForStart: 0
   m_attackPaternHealth:
   - health: 5
     attackPatern:

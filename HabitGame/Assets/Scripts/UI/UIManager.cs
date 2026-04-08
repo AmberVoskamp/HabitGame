@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowTutorial(string tutorialText)
     {
-        _tutorial.gameObject.SetActive(true);
+       // _tutorial.gameObject.SetActive(true);
         _tutorial.ShowTutorial(tutorialText);
     }
 }

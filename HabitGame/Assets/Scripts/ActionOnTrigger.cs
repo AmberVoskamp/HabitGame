@@ -17,7 +17,6 @@ public class ActionOnTrigger : MonoBehaviour
     {
         if (col.gameObject.TryGetComponent<PlayerMovement>(out PlayerMovement player))
         {
-            Debug.Log("Trigger");
             m_action.Invoke(player);
         }
     }

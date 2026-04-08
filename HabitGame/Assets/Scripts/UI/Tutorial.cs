@@ -11,7 +11,7 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private TMP_Text m_text;
     [SerializeField] private bool m_doTutorial;
 
-    private bool _tutorialFinished;
+    private bool _tutorialShowing = false;
     private ConfigManager _configManager;
 
     private void Awake()
@@ -21,11 +21,13 @@ public class Tutorial : MonoBehaviour
         {
             m_doTutorial = !_configManager.config.tutorialFinished;
         }
-       
+
         m_minigamePopup.ShowTutorial(m_doTutorial);
-        gameObject.SetActive(false);
-        this.gameObject.SetActive(false);
-        Debug.Log("Tutorial");
+        if (!_tutorialShowing)
+        {
+            Debug.Log("Tutorial set active false");
+            gameObject.SetActive(false);
+        }
     }
 
     public void ShowTutorial(string tutorialText)
@@ -34,7 +36,10 @@ public class Tutorial : MonoBehaviour
         {
             return;
         }
+
+        _tutorialShowing = true;
         m_text.text = tutorialText;
+        Debug.Log("Tutorial ShowTutorial set active true");
         gameObject.SetActive(true);
         Time.timeScale = 0;
     }
@@ -44,5 +49,6 @@ public class Tutorial : MonoBehaviour
     {
         gameObject.SetActive(false);
         Time.timeScale = 1;
+        _tutorialShowing = false;
     }
 }
