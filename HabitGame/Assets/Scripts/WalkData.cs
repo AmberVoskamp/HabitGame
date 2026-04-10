@@ -51,7 +51,6 @@ public class WalkData : MonoBehaviour
         if (_walkData.Count == 0)
         {
             m_offset = newPosition;
-            Debug.LogError($"First walking data {Vector2.zero}");
             AddWalkData(Vector2.zero);
             return;
         }
