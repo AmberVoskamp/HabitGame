@@ -10,6 +10,7 @@ public class WalkData : MonoBehaviour
     private PlayerHealth _player;
     private bool _recording;
     private List<Data> _walkData;
+    private Vector2 m_offset;
 
     [Serializable]
     public struct Data
@@ -43,13 +44,15 @@ public class WalkData : MonoBehaviour
 
         Vector2 newPosition = new Vector2()
         {
-            x = _player.transform.position.x,
-            y = _player.transform.position.y
+            x = _player.transform.position.x - m_offset.x,
+            y = _player.transform.position.y - m_offset.y
         };
 
         if (_walkData.Count == 0)
         {
-            AddWalkData(newPosition);
+            m_offset = newPosition;
+            Debug.LogError($"First walking data {Vector2.zero}");
+            AddWalkData(Vector2.zero);
             return;
         }
 
@@ -66,11 +69,7 @@ public class WalkData : MonoBehaviour
     {
         Data data = new Data();
         data.timeLeft = _player.CurrentHealth;
-        data.position = new Vector2()
-        {
-            x = _player.transform.position.x,
-            y = _player.transform.position.y
-        };
+        data.position = newPosition;
 
         _walkData.Add(data);
     }
