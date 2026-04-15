@@ -27,9 +27,7 @@ This repository is organized into three main components:
 ## 📊 Research & Data Analysis
 The game exports behavioral metrics in JSON format. To analyze these files, use the script provided in the /Json-Explorer directory.
 
-**How to use the Python Script:**
-
-//To be continued...
+https://habit-game-json-explorer.streamlit.app/
 
 ## 🌐 Playing the WebGL Build
 The latest stable version is located in the /WebGame folder and can be played here: https://ambervoskamp.github.io/HabitGame/WebBuild/
