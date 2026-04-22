@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _moveInput;
     private bool _isInMinigameRange;
     private CameraFollow _cameraFollow;
+    private Animator _animator;
 
     public bool IsInMinigameRange
     {
@@ -24,8 +25,10 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         _cameraFollow = Camera.main.gameObject.GetComponent<CameraFollow>();
-        _rigidbody = GetComponent<Rigidbody2D>();
         _uiManager = UIManager.Instance;
+
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void FixedUpdate()
@@ -37,7 +40,25 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext callbackContext)
     {
+        _animator.SetBool("isWalking", true);
+
+        if (callbackContext.canceled)
+        {
+            _animator.SetBool("isWalking", false);
+            _animator.SetFloat("LastInputX", _moveInput.x);
+            _animator.SetFloat("LastInputY", _moveInput.y);
+        }
+
         _moveInput = callbackContext.ReadValue<Vector2>();
+        _animator.SetFloat("InputX", _moveInput.x);
+        _animator.SetFloat("InputY", _moveInput.y);
+
+        Vector3 newRotation = Vector3.zero;
+        if (_moveInput.x < 0)
+        {
+            newRotation.y = 180;
+        }
+        _animator.transform.rotation = Quaternion.Euler(newRotation);
     }
 
     //Todo Move player to next entrance and make them move X amount forward
