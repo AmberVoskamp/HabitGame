@@ -6657,7 +6657,7 @@ MonoBehaviour:
       TimeBeforeNextAttack: 3
   - Health: 145
     AttackPatern:
-    - Attack: {fileID: 0}
+    - Attack: {fileID: 6813238124432941023}
       TimeBeforeNextAttack: 3
 --- !u!114 &2426119919301430216
 MonoBehaviour:

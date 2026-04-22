@@ -61,10 +61,11 @@ public class Config
 
     public static void Download(Config config)
     {
+        string saveFile = SaveFilenName();
         string json = JsonUtility.ToJson(config, true);
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-            DownloadFile(filename, json);
+            DownloadFile(saveFile, json);
 #else
         // Fallback for Editor: Just print to console or save to Desktop
         Debug.Log("Download triggered. Content: " + json);

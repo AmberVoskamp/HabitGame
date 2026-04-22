@@ -56,6 +56,13 @@ public class BossAttackController : MonoBehaviour
     private void Attack()
     {
         _attackCoroutine = null;
+
+        if (_attackPaternHealth == null || _attackPaternHealth.Length <= _attackPaternHealthIndex)
+        {
+            Debug.LogError("Boss Attack Index out of range!");
+            return;
+        }
+
         BossAttackPatern[] currentAttackPatern = _attackPaternHealth[_attackPaternHealthIndex].AttackPatern;
         if (_attackIndex >= currentAttackPatern.Length)
         {
@@ -78,6 +85,10 @@ public class BossAttackController : MonoBehaviour
 
     public void StopAttacks()
     {
+        if (_attackCoroutine == null)
+        {
+            return;
+        }
         StopCoroutine(_attackCoroutine);
     }
 }
