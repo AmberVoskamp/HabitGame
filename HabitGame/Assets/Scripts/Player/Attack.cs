@@ -7,12 +7,24 @@ using UnityEngine;
 public class Attack : MonoBehaviour
 {
     [SerializeField] private Animator _attackAnimator;
-    [SerializeField] private float _doDamage;
+    [SerializeField] private float _normalDamage;
+    [SerializeField] private float _upgradeDamage;
     [SerializeField] private float _timeBetweenAttack;
 
     private bool _isInBossRoom;
     private bool _bossInRange;
     private BossHealth _bossHealth;
+    private float _doDamage;
+
+    private void Start()
+    {
+        _doDamage = _normalDamage;
+    }
+
+    public void UpgradeAttack()
+    {
+        _doDamage = _upgradeDamage;
+    }
 
     //Gets triggerd on input
     public void DoAttack()

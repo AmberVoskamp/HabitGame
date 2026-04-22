@@ -102,6 +102,11 @@ public class GameManager : MonoBehaviour
         }
 
         config.MinigameData(hasOpend, hasFinished);
+
+        if (hasFinished)
+        {
+            _playerHealth.UpgradeAttack();
+        }
     }
 
     public void EnterBossRoom(float bossHealth)

@@ -103,7 +103,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackAnimator: {fileID: 8183326891232544012}
-  _doDamage: 1
+  _normalDamage: 5
+  _upgradeDamage: 10
   _timeBetweenAttack: 0.5
 --- !u!95 &8183326891232544012
 Animator:

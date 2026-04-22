@@ -28,6 +28,11 @@ public class PlayerHealth : Health
         _playerAttack.BossRoom();
     }
 
+    public void UpgradeAttack()
+    {
+        _playerAttack.UpgradeAttack();
+    }
+
     public void SetData(float time, CountDown countdown)
     {
         SetHealth(time);

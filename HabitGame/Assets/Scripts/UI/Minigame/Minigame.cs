@@ -99,11 +99,11 @@ public class Minigame : MonoBehaviour
         {
             _points[_currentPoints].SetFill(true);
         }
-        else //completed end minigame
+        else 
         {
             //Todo: Show they succeeded somehow then close popup
             //Todo: give player the reward
-            _minigamePopup.ShowPopup(false);
+            _minigamePopup.ShowPopup(false, true);
         }
     }
 

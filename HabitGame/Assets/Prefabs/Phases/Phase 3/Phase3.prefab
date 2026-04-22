@@ -6627,7 +6627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c780f64d4e82584ab8148d336bdc7df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthAmount: 5
+  HealthAmount: 15
   DamageTime: 0.5
   _sprite: {fileID: 3267258977665055856}
   _takeDamageColor: {r: 1, g: 0, b: 0, a: 1}
