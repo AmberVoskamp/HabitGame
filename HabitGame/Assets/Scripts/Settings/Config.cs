@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 /// <summary>
 /// This is the script where all the players data is stored, saved and read
@@ -18,10 +18,10 @@ public class Config
     [DllImport("__Internal")]
     private static extern void DownloadFile(string filename, string content);
 
-    public bool tutorialFinished;
-    public bool finishedAllBosses;
-    public int currentSpikeDificulty;
-    public List<LevelData> levelsData;
+    public bool TutorialFinished;
+    public bool FinishedAllBosses;
+    public int CurrentSpikeDificulty;
+    public List<LevelData> LevelsData;
 
     private static string SaveFilenName()
     {
@@ -37,7 +37,6 @@ public class Config
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         SyncFiles();
-        //PlayerPrefs.Save();
 #endif
     }
 
@@ -55,7 +54,6 @@ public class Config
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         SyncFiles();
-        //PlayerPrefs.Save();
 #endif
 
         return config;
@@ -64,7 +62,6 @@ public class Config
     public static void Download(Config config)
     {
         string json = JsonUtility.ToJson(config, true);
-        string filename = "MyGameSave.json";
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             DownloadFile(filename, json);

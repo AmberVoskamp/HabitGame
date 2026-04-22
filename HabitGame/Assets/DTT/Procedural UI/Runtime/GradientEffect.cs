@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Sprites;
 using UnityEngine.UI;
 
@@ -40,7 +38,7 @@ namespace DTT.UI.ProceduralUI
             /// </summary>
             DIAMOND = 4
         }
-        
+
         /// <summary>
         /// The type of the gradient.
         /// </summary>
@@ -94,15 +92,20 @@ namespace DTT.UI.ProceduralUI
         /// only used when batching is dissabled
         /// </summary>
         private Material _gradientMaterial;
-        
+
         /// <summary>
         /// The type of the gradient.
         /// </summary>
-        public GradientType Type {
+        public GradientType Type
+        {
             get => _type;
             set
             {
-                if (_batching) return;
+                if (_batching)
+                {
+                    return;
+                }
+
                 _type = value;
                 UpdateGradient();
             }
@@ -116,7 +119,11 @@ namespace DTT.UI.ProceduralUI
             get => _gradient;
             set
             {
-                if (_batching) return;
+                if (_batching)
+                {
+                    return;
+                }
+
                 _gradient = value;
                 UpdateGradient();
             }
@@ -130,7 +137,11 @@ namespace DTT.UI.ProceduralUI
             get => _offset;
             set
             {
-                if (_batching) return;
+                if (_batching)
+                {
+                    return;
+                }
+
                 _offset = value;
                 UpdateGradient();
             }
@@ -144,7 +155,11 @@ namespace DTT.UI.ProceduralUI
             get => _rotation;
             set
             {
-                if (_batching) return;
+                if (_batching)
+                {
+                    return;
+                }
+
                 _rotation = value;
                 UpdateGradient();
             }
@@ -153,11 +168,16 @@ namespace DTT.UI.ProceduralUI
         /// <summary>
         /// The scale of the gradient, local to the gradient.
         /// </summary>
-        public float Scale {
+        public float Scale
+        {
             get => _scale;
             set
             {
-                if (_batching) return;
+                if (_batching)
+                {
+                    return;
+                }
+
                 _scale = value;
                 UpdateGradient();
             }
@@ -175,7 +195,7 @@ namespace DTT.UI.ProceduralUI
                 UpdateGradient();
             }
         }
-        
+
         /// <summary>
         /// Initializes the gradient.
         /// </summary>
@@ -183,8 +203,7 @@ namespace DTT.UI.ProceduralUI
         {
             _image = GetComponent<Image>();
 
-            if (Gradient == null)
-                Gradient = new Gradient();
+            Gradient ??= new Gradient();
 
             UpdateGradient();
         }
@@ -192,8 +211,11 @@ namespace DTT.UI.ProceduralUI
         /// <summary>
         /// Resets the Component to defaults
         /// </summary>
-        public void Reset() => UpdateGradient();
-        
+        public void Reset()
+        {
+            UpdateGradient();
+        }
+
         /// <summary>
         /// Updates the gradient.
         /// </summary>
@@ -201,8 +223,10 @@ namespace DTT.UI.ProceduralUI
         {
             // Required for when inspecting prefabs. Awake isn't called.
             if (_image == null)
+            {
                 _image = GetComponent<Image>();
-        
+            }
+
             if (_batching)
             {
                 Material material = GradientImageMaterialManager.GetMaterialFromCache(new GradientImageMaterialManager.MaterialData()
@@ -242,10 +266,12 @@ namespace DTT.UI.ProceduralUI
         {
             // If we have RoundedImage attached, we don't have to change vertex data.
             if (_image.GetType() == typeof(RoundedImage))
+            {
                 return;
-            
-            UIVertex vertex = new UIVertex();
-            
+            }
+
+            UIVertex vertex = new();
+
             // Request the UV's from the sprite currently set.
             Vector4 spriteOuterUV = _image.sprite == null ? new Vector4(0, 0, 1, 1) : DataUtility.GetOuterUV(_image.sprite);
 
@@ -254,14 +280,14 @@ namespace DTT.UI.ProceduralUI
             {
                 // Get vertex.
                 vertexHelper.PopulateUIVertex(ref vertex, i);
-                
+
                 // Convert from spritesheet space, to normalized space.
                 float x = (vertex.uv0.x - spriteOuterUV.x) / (spriteOuterUV.z - spriteOuterUV.x);
                 float y = (vertex.uv0.y - spriteOuterUV.y) / (spriteOuterUV.w - spriteOuterUV.y);
-                
+
                 // Apply data to UV1 channel.
                 vertex.uv1 = new Vector4(0, 0, x, y);
-                
+
                 // Save vertex.
                 vertexHelper.SetUIVertex(vertex, i);
             }

@@ -10,18 +10,18 @@ using static PhasesData;
 public class GameManager : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private FadeToBlack m_fadeToBlack;
-    [SerializeField] private CountDown m_countDown;
-    [SerializeField] private UIManager m_uiManager;
+    [SerializeField] private FadeToBlack _fadeToBlack;
+    [SerializeField] private CountDown _countDown;
+    [SerializeField] private UIManager _uiManager;
 
     [Space]
-    [SerializeField] private PhasesData m_phases;
+    [SerializeField] private PhasesData _phases;
 
     [Space]
-    [SerializeField] private Vector2 m_timeLeftAfterSpikes;
+    [SerializeField] private Vector2 _timeLeftAfterSpikes;
 
     [Header("Tutorial Text")]
-    [SerializeField] private string m_walkTutorialText;
+    [SerializeField] private string _walkTutorialText;
 
     private ConfigManager _configManager;
     private int _currentPhase;
@@ -38,23 +38,23 @@ public class GameManager : MonoBehaviour
         }
 
         _levelPhases = GetPhases(out float time);
-        Phase currentPhase = Instantiate(_levelPhases[_currentPhase].phase);
+        Phase currentPhase = Instantiate(_levelPhases[_currentPhase].Phase);
         currentPhase.GameManager = this;
 
         _playerHealth = currentPhase.Spawnpoint.SpawnPlayer();
-        _playerHealth.SetData(time, m_countDown);
+        _playerHealth.SetData(time, _countDown);
 
         if (_configManager != null)
         {
             _configManager.SetTotalTime(time);
         }
 
-        ShowTutorial(m_walkTutorialText);
+        ShowTutorial(_walkTutorialText);
     }
 
     public void ShowTutorial(string text)
     {
-        m_uiManager.ShowTutorial(text);
+        _uiManager.ShowTutorial(text);
     }
 
     public void SpikeSectionDone(float spikeFinishTimeLeft, int maxDificulty)
@@ -69,13 +69,13 @@ public class GameManager : MonoBehaviour
         //If we have to much time we can up the dificulty
         //If we have to litle time we should make it easier 
         bool updateDificulty = false;
-        int currentDificulty = _configManager.config.currentSpikeDificulty;
-        if (spikeFinishTimeLeft < m_timeLeftAfterSpikes.x) //To little time left
+        int currentDificulty = _configManager.Config.CurrentSpikeDificulty;
+        if (spikeFinishTimeLeft < _timeLeftAfterSpikes.x) //To little time left
         {
             updateDificulty = true;
             currentDificulty--;
         }
-        else if (spikeFinishTimeLeft > m_timeLeftAfterSpikes.y) //To much time left
+        else if (spikeFinishTimeLeft > _timeLeftAfterSpikes.y) //To much time left
         {
             updateDificulty = true;
             currentDificulty++;
@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
 
     public void EndGame(bool killedBoss = false, float timeLeft = 0f)
     {
-        m_fadeToBlack.Fade();
+        _fadeToBlack.Fade();
 
         if (!TrySetConfig(out ConfigManager config))
         {
@@ -144,16 +144,17 @@ public class GameManager : MonoBehaviour
 
     private List<PhaseData> GetPhases(out float phasesTime)
     {
-        List<PhaseData> phases = new List<PhaseData>();
-
-        phases.Add(GetRandomFirstPhase());
-        phases.Add(m_phases.phasesTwo);
-        phases.Add(GetBossPhase());
+        List<PhaseData> phases = new()
+        {
+            GetRandomFirstPhase(),
+            _phases.PhasesTwo,
+            GetBossPhase()
+        };
 
         phasesTime = 0f;
         foreach (PhaseData phase in phases)
         {
-            phasesTime += phase.phaseTime;
+            phasesTime += phase.PhaseTime;
         }
 
         return phases;
@@ -167,14 +168,14 @@ public class GameManager : MonoBehaviour
         }
 
         _currentPhase++;
-        return _levelPhases[_currentPhase].phase;
+        return _levelPhases[_currentPhase].Phase;
     }
 
     private PhaseData GetRandomFirstPhase()
     {
-        int phaseOneCount = m_phases.phasesOne.Length;
+        int phaseOneCount = _phases.PhasesOne.Length;
         int randomPhaseOneIndex = UnityEngine.Random.Range(0, phaseOneCount);
-        return m_phases.phasesOne[randomPhaseOneIndex];
+        return _phases.PhasesOne[randomPhaseOneIndex];
     }
 
     private PhaseData GetBossPhase()
@@ -185,7 +186,7 @@ public class GameManager : MonoBehaviour
             currentBossIndex = _configManager.CurrentBoss();
         }
 
-        int phaseThreeCount = m_phases.phasesThree.Length;
+        int phaseThreeCount = _phases.PhasesThree.Length;
         _isLastBoss = currentBossIndex >= phaseThreeCount - 1;
         if (currentBossIndex >= phaseThreeCount)
         {
@@ -193,7 +194,7 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning($"Boss index is higher than should be possible");
         }
 
-        return m_phases.phasesThree[currentBossIndex];
+        return _phases.PhasesThree[currentBossIndex];
     }
 
     public void ExitPhase(Phases phases)
@@ -203,7 +204,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        float time = _playerHealth.CurrentHealth;
+        float time = _playerHealth.GetCurrentHealth;
         _configManager.AddPhaseTime(phases, time);
     }
 }

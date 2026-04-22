@@ -20,7 +20,9 @@ namespace DTT.PublishingTools
             get
             {
                 if (_skin == null)
+                {
                     _skin = AssetDatabase.LoadAssetAtPath<GUISkin>(DTTEditorConfig.SkinPath);
+                }
 
                 return _skin;
             }
@@ -35,7 +37,9 @@ namespace DTT.PublishingTools
             get
             {
                 if (_titleFont == null)
+                {
                     _titleFont = AssetDatabase.LoadAssetAtPath<Font>(Path.Combine(DTTEditorConfig.FontFolder, "Montserrat", "Montserrat-ExtraBold.ttf"));
+                }
 
                 return _titleFont;
             }
@@ -60,7 +64,10 @@ namespace DTT.PublishingTools
         /// <summary>
         /// Creates the static instance, initializing the static state.
         /// </summary>
-        static DTTGUI() => styles = new DTTGUIStyles();
+        static DTTGUI()
+        {
+            styles = new DTTGUIStyles();
+        }
     }
 }
 

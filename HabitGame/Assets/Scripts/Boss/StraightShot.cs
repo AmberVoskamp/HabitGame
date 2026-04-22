@@ -1,5 +1,3 @@
-using UnityEngine;
-
 /// <summary>
 /// This boss attack shoots a projectle at the players location
 /// </summary>

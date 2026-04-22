@@ -14,7 +14,7 @@ namespace DTT.Utils.Extensions
         /// <summary>
         /// The regex used for stripping html tags from strings.
         /// </summary>
-        public static readonly Regex htmlRegex = new Regex(@"<.*?>", RegexOptions.Compiled);
+        public static readonly Regex htmlRegex = new(@"<.*?>", RegexOptions.Compiled);
 
         /// <summary>
         /// Prefixes used for private members.
@@ -32,12 +32,12 @@ namespace DTT.Utils.Extensions
         /// <returns>The display name.</returns>
         public static string ToDisplayName(this string fieldName)
         {
-            StringBuilder stringBuilder = new StringBuilder(fieldName);
+            StringBuilder stringBuilder = new(fieldName);
             for (int i = 0; i < privateMemberPrefixes.Length; i++)
             {
                 if (fieldName.StartsWith(privateMemberPrefixes[i]))
                 {
-                    stringBuilder.Remove(0, privateMemberPrefixes[i].Length);
+                    _ = stringBuilder.Remove(0, privateMemberPrefixes[i].Length);
                     break;
                 }
             }
@@ -54,13 +54,19 @@ namespace DTT.Utils.Extensions
         public static string AddSpacesBeforeCapitals(this string content)
         {
             if (content == null)
+            {
                 return null;
+            }
 
-            StringBuilder sb = new StringBuilder(content);
+            StringBuilder sb = new(content);
 
             for (int i = sb.Length - 2; i >= 1; i--)
+            {
                 if (char.IsUpper(sb[i]) && char.IsLower(sb[i + 1]) && sb[i - 1] != ' ')
-                    sb.Insert(i, " ");
+                {
+                    _ = sb.Insert(i, " ");
+                }
+            }
 
             return sb.ToString();
         }
@@ -74,17 +80,21 @@ namespace DTT.Utils.Extensions
         public static string FromAllCapsToReadableFormat(this string content)
         {
             if (string.IsNullOrEmpty(content))
+            {
                 return content;
+            }
 
             content = content.ToLower();
             string[] separate = content.Split('_');
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             for (int i = 0; i < separate.Length; i++)
             {
-                separate[i] = separate[i][0].ToString().ToUpper() + separate[i].Substring(1);
-                sb.Append(separate[i]);
+                separate[i] = separate[i][0].ToString().ToUpper() + separate[i][1..];
+                _ = sb.Append(separate[i]);
                 if (i != separate.Length - 1)
-                    sb.Append(' ');
+                {
+                    _ = sb.Append(' ');
+                }
             }
             return sb.ToString();
         }
@@ -97,10 +107,8 @@ namespace DTT.Utils.Extensions
         /// <returns>The converted string.</returns>
         public static string FromReadableFormatToAllCaps(this string content)
         {
-            if (string.IsNullOrEmpty(content))
-                return content;
-
-            return content.ToUpper().Replace(' ', '_'); ;
+            return string.IsNullOrEmpty(content) ? content : content.ToUpper().Replace(' ', '_');
+            ;
         }
 
         /// <summary>
@@ -113,19 +121,27 @@ namespace DTT.Utils.Extensions
         public static int IndexOfNth(this string @string, string value, int nth)
         {
             if (nth < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(nth));
+            }
 
             if (@string == null)
+            {
                 throw new ArgumentNullException(nameof(@string));
+            }
 
             if (value == null)
+            {
                 throw new ArgumentNullException(nameof(value));
+            }
 
             int offset = @string.IndexOf(value, StringComparison.Ordinal);
             for (int i = 0; i < nth - 1; i++)
             {
                 if (offset == -1)
+                {
                     return -1;
+                }
 
                 offset = @string.IndexOf(value, offset + 1, StringComparison.Ordinal);
             }
@@ -140,7 +156,10 @@ namespace DTT.Utils.Extensions
         /// <param name="value">The character.</param>
         /// <param name="nth">The number of finds after which to stop.</param>
         /// <returns>The index of the 'nth' appearance.</returns>
-        public static int IndexOfNth(this string @string, char value, int nth) => IndexOfNth(@string, char.ToString(value), nth);
+        public static int IndexOfNth(this string @string, char value, int nth)
+        {
+            return IndexOfNth(@string, char.ToString(value), nth);
+        }
 
         /// <summary>
         /// Returns whether the string corresponds with a valid guid.
@@ -149,10 +168,7 @@ namespace DTT.Utils.Extensions
         /// <returns>Whether the string corresponds with a valid guid.</returns>
         public static bool IsValidGuid(this string @string)
         {
-            if (@string == null)
-                throw new ArgumentNullException(nameof(@string));
-
-            return Guid.TryParse(@string, out _);
+            return @string == null ? throw new ArgumentNullException(nameof(@string)) : Guid.TryParse(@string, out _);
         }
 
         /// <summary>
@@ -163,13 +179,9 @@ namespace DTT.Utils.Extensions
         /// <returns>Whether the string corresponds with a valid guid.</returns>
         public static bool IsValidGuid(this string @string, string format)
         {
-            if (@string == null)
-                throw new ArgumentNullException(nameof(@string));
-
-            if (format == null)
-                throw new ArgumentNullException(nameof(format));
-
-            return Guid.TryParseExact(@string, format, out _);
+            return @string == null
+                ? throw new ArgumentNullException(nameof(@string))
+                : format == null ? throw new ArgumentNullException(nameof(format)) : Guid.TryParseExact(@string, format, out _);
         }
 
         /// <summary>
@@ -179,10 +191,7 @@ namespace DTT.Utils.Extensions
         /// <returns>The text stripped from tags.</returns>
         public static string StripHtmlTags(this string text)
         {
-            if (text == null)
-                throw new ArgumentNullException(nameof(text));
-            
-            return htmlRegex.Replace(text, string.Empty);
+            return text == null ? throw new ArgumentNullException(nameof(text)) : htmlRegex.Replace(text, string.Empty);
         }
 
         /// <summary>
@@ -192,7 +201,10 @@ namespace DTT.Utils.Extensions
         /// <param name="input">The input string.</param>
         /// <param name="maxWidth">The maximum width of the string.</param>
         /// <param name="font">The font that is used.</param>
-        public static string Ellipsis(this string input, int maxWidth, Font font) => Ellipsis(input, maxWidth, '.', font);
+        public static string Ellipsis(this string input, int maxWidth, Font font)
+        {
+            return Ellipsis(input, maxWidth, '.', font);
+        }
 
         /// <summary>
         /// Returns string with ellipsis characters at the end if the input string 
@@ -205,22 +217,25 @@ namespace DTT.Utils.Extensions
         public static string Ellipsis(this string input, int maxWidth, char ellipsisChar, Font font, int characterCount = 3)
         {
             if (input == null)
+            {
                 throw new ArgumentNullException(nameof(input));
+            }
 
             if (font == null)
+            {
                 throw new ArgumentNullException(nameof(font));
+            }
 
             char[] chars = input.ToCharArray();
             int totalLength = 0;
-            CharacterInfo info;
             string text = input;
             for (int j = 0; j < chars.Length; j++)
             {
-                font.GetCharacterInfo(chars[j], out info);
+                _ = font.GetCharacterInfo(chars[j], out CharacterInfo info);
                 totalLength += info.advance;
                 if (totalLength > maxWidth)
                 {
-                    text = text.Substring(0, Mathf.Max(j - characterCount, 0));
+                    text = text[..Mathf.Max(j - characterCount, 0)];
                     text += new string(Enumerable.Repeat(ellipsisChar, characterCount).ToArray());
                     break;
                 }

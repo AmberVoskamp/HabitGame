@@ -7,10 +7,10 @@ using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
 {
-    [SerializeField] private Toggle m_tutorialToggle;
-    [SerializeField] private Button m_closeGame;
+    [SerializeField] private Toggle _tutorialToggle;
+    [SerializeField] private Button _closeGame;
 
-    private ConfigManager m_configManager;
+    private ConfigManager _configManager;
 
     private void Start()
     {
@@ -20,19 +20,19 @@ public class Settings : MonoBehaviour
             return;
         }
 
-        m_configManager = ConfigManager.Instance;
+        _configManager = ConfigManager.Instance;
 
-        m_tutorialToggle.isOn = m_configManager.config.tutorialFinished;
-        m_tutorialToggle.onValueChanged.AddListener(UpdateTutorialCheck);
+        _tutorialToggle.isOn = _configManager.Config.TutorialFinished;
+        _tutorialToggle.onValueChanged.AddListener(UpdateTutorialCheck);
 
-        m_closeGame.onClick.AddListener(CloseGame);
+        _closeGame.onClick.AddListener(CloseGame);
 
         gameObject.SetActive(false);
     }
 
     public void ShowSettings(bool show)
     {
-        if (m_configManager == null)
+        if (_configManager == null)
         {
             return;
         }
@@ -42,7 +42,7 @@ public class Settings : MonoBehaviour
 
     private void UpdateTutorialCheck(bool toggle)
     {
-        m_configManager.TutorialDone(toggle);
+        _configManager.TutorialDone(toggle);
     }
 
     private void CloseGame()

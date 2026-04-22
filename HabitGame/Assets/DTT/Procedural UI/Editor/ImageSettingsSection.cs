@@ -148,17 +148,17 @@ namespace DTT.UI.ProceduralUI.Editor
                 Add(nameof(PreserveAspectToggle), () => EditorGUIUtility.TrTextContent("Preserve Aspect"));
             }
         }
-        
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public override string HeaderName => "Image Settings";
-        
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         protected override bool OpenFoldoutOnEnter => true;
-        
+
         /// <summary>
         /// Contains all the properties relevant to draw <see cref="ImageSettingsSection"/>
         /// </summary>
@@ -177,8 +177,8 @@ namespace DTT.UI.ProceduralUI.Editor
         /// <summary>
         /// The GUIContent for <see cref="ImageSettingsSection"/>.
         /// </summary>
-        private ImageSettingsContent _content;
-        
+        private readonly ImageSettingsContent _content;
+
         /// <summary>
         /// Creates a new section for the image settings.
         /// </summary>
@@ -198,14 +198,16 @@ namespace DTT.UI.ProceduralUI.Editor
             ImageSerializedProperties serializedProperties
         ) : base(roundedImage, repaint)
         {
-            this._serializedProperties = serializedProperties;
+            _serializedProperties = serializedProperties;
 
             _content = new ImageSettingsContent();
 
             if (_roundedImage.sprite != null)
+            {
                 _isAtlasPacked = SpriteUtility.IsAtlasPacked(_roundedImage.sprite);
+            }
         }
-        
+
         /// <summary>
         /// Draws the section for the image settings; 
         /// sprite field, colour field, image type and relevant settings, 
@@ -234,16 +236,22 @@ namespace DTT.UI.ProceduralUI.Editor
             DrawMaskableField();
             DrawFalloffField();
         }
-        
+
         /// <summary>
         /// Draws the colour property field.
         /// </summary>
-        private void DrawColorField() => EditorGUILayout.PropertyField(_serializedProperties.color);
+        private void DrawColorField()
+        {
+            _ = EditorGUILayout.PropertyField(_serializedProperties.color);
+        }
 
         /// <summary>
         /// Draws the field for the material.
         /// </summary>
-        private void DrawMaterialField() => EditorGUILayout.PropertyField(_serializedProperties.material);
+        private void DrawMaterialField()
+        {
+            _ = EditorGUILayout.PropertyField(_serializedProperties.material);
+        }
 
         /// <summary>
         /// Draws the fall off field slider.
@@ -259,16 +267,21 @@ namespace DTT.UI.ProceduralUI.Editor
         {
             bool condition = _serializedProperties.sprite.objectReferenceValue == null;
             EditorGUI.BeginDisabledGroup(condition);
-            EditorGUILayout.PropertyField(_serializedProperties.preserveAspect, _content.PreserveAspectToggle);
+            _ = EditorGUILayout.PropertyField(_serializedProperties.preserveAspect, _content.PreserveAspectToggle);
             EditorGUI.EndDisabledGroup();
             if (condition)
+            {
                 EditorGUILayout.HelpBox(_content.CantUsePreserveAspect);
+            }
         }
 
         /// <summary>
         /// Draws the maskable toggle.
         /// </summary>
-        private void DrawMaskableField() => EditorGUILayout.PropertyField(_serializedProperties.maskable);
+        private void DrawMaskableField()
+        {
+            _ = EditorGUILayout.PropertyField(_serializedProperties.maskable);
+        }
 
         /// <summary>
         /// Draws the image selection field.
@@ -277,14 +290,11 @@ namespace DTT.UI.ProceduralUI.Editor
         private void DrawSpriteField()
         {
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(_serializedProperties.sprite, _content.SpriteField);
+            _ = EditorGUILayout.PropertyField(_serializedProperties.sprite, _content.SpriteField);
             if (EditorGUI.EndChangeCheck())
             {
                 _roundedImage.DisableSpriteOptimizations();
-                if (_serializedProperties.sprite.objectReferenceValue != null)
-                    _isAtlasPacked = SpriteUtility.IsAtlasPacked((Sprite)_serializedProperties.sprite.objectReferenceValue);
-                else
-                    _isAtlasPacked = false;
+                _isAtlasPacked = _serializedProperties.sprite.objectReferenceValue != null && SpriteUtility.IsAtlasPacked((Sprite)_serializedProperties.sprite.objectReferenceValue);
             }
         }
 
@@ -297,8 +307,8 @@ namespace DTT.UI.ProceduralUI.Editor
         /// </summary>
         private void DrawTypeField()
         {
-            var truncatedImageType = (TruncatedImageType)_serializedProperties.type.enumValueIndex;
-            var type = EditorGUILayout.EnumPopup(_content.ImageType, truncatedImageType);
+            TruncatedImageType truncatedImageType = (TruncatedImageType)_serializedProperties.type.enumValueIndex;
+            Enum type = EditorGUILayout.EnumPopup(_content.ImageType, truncatedImageType);
             _serializedProperties.type.enumValueIndex = (int)(TruncatedImageType)type;
 
             ++EditorGUI.indentLevel;
@@ -310,19 +320,25 @@ namespace DTT.UI.ProceduralUI.Editor
                 if (_showFilled)
                 {
                     if (_serializedProperties.sprite.objectReferenceValue == null)
+                    {
                         EditorGUILayout.HelpBox(_content.NoSpriteWarning);
+                    }
 
                     EditorGUI.BeginChangeCheck();
-                    EditorGUILayout.PropertyField(_serializedProperties.fillMethod);
+                    _ = EditorGUILayout.PropertyField(_serializedProperties.fillMethod);
                     if (EditorGUI.EndChangeCheck())
+                    {
                         _serializedProperties.fillOrigin.intValue = 0;
+                    }
 
                     Image.FillMethod fillMethodType = (Image.FillMethod)_serializedProperties.fillMethod.enumValueIndex;
                     DrawFillType(fillMethodType);
 
-                    EditorGUILayout.PropertyField(_serializedProperties.fillAmount);
+                    _ = EditorGUILayout.PropertyField(_serializedProperties.fillAmount);
                     if (fillMethodType > Image.FillMethod.Vertical)
-                        EditorGUILayout.PropertyField(_serializedProperties.fillClockwise, _content.Clockwise);
+                    {
+                        _ = EditorGUILayout.PropertyField(_serializedProperties.fillClockwise, _content.Clockwise);
+                    }
                 }
             }
             --EditorGUI.indentLevel;
@@ -334,23 +350,23 @@ namespace DTT.UI.ProceduralUI.Editor
             switch (fillMethodType)
             {
                 case Image.FillMethod.Horizontal:
-                    var originHorizontal = (Image.OriginHorizontal)_serializedProperties.fillOrigin.intValue;
+                    Image.OriginHorizontal originHorizontal = (Image.OriginHorizontal)_serializedProperties.fillOrigin.intValue;
                     index = Convert.ToInt32(EditorGUILayout.EnumPopup("Fill Origin", originHorizontal));
                     break;
                 case Image.FillMethod.Vertical:
-                    var originVertical = (Image.OriginVertical)_serializedProperties.fillOrigin.intValue;
+                    Image.OriginVertical originVertical = (Image.OriginVertical)_serializedProperties.fillOrigin.intValue;
                     index = Convert.ToInt32(EditorGUILayout.EnumPopup("Fill Origin", originVertical));
                     break;
                 case Image.FillMethod.Radial90:
-                    var origin90 = (Image.Origin90)_serializedProperties.fillOrigin.intValue;
+                    Image.Origin90 origin90 = (Image.Origin90)_serializedProperties.fillOrigin.intValue;
                     index = Convert.ToInt32(EditorGUILayout.EnumPopup("Fill Origin", origin90));
                     break;
                 case Image.FillMethod.Radial180:
-                    var origin180 = (Image.Origin180)_serializedProperties.fillOrigin.intValue;
+                    Image.Origin180 origin180 = (Image.Origin180)_serializedProperties.fillOrigin.intValue;
                     index = Convert.ToInt32(EditorGUILayout.EnumPopup("Fill Origin", origin180));
                     break;
                 case Image.FillMethod.Radial360:
-                    var origin360 = (Image.Origin360)_serializedProperties.fillOrigin.intValue;
+                    Image.Origin360 origin360 = (Image.Origin360)_serializedProperties.fillOrigin.intValue;
                     index = Convert.ToInt32(EditorGUILayout.EnumPopup("Fill Origin", origin360));
                     break;
                 default:
@@ -367,7 +383,9 @@ namespace DTT.UI.ProceduralUI.Editor
         {
             Sprite sprite = _roundedImage.sprite;
             if (sprite == null || SpriteUtility.IsSpriteFromUnity(sprite))
+            {
                 return false;
+            }
 
             string message;
             if (SpriteUtility.IsImportedWithMultipleSpriteMode(sprite))

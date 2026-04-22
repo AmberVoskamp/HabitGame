@@ -32,12 +32,12 @@ namespace DTT.Utils.EditorUtilities
             /// <summary>
             /// Holds the added extended dropdown items.
             /// </summary>
-            private readonly Dictionary<int, ExtendedDropdownItem> _dropdownItems = new Dictionary<int, ExtendedDropdownItem>();
+            private readonly Dictionary<int, ExtendedDropdownItem> _dropdownItems = new();
 
             /// <summary>
             /// Holds the advanced dropdown items that have been added.
             /// </summary>
-            private readonly Dictionary<string, AdvancedDropdownItem> _items = new Dictionary<string, AdvancedDropdownItem>();
+            private readonly Dictionary<string, AdvancedDropdownItem> _items = new();
 
             /// <summary>
             /// The root of the advanced dropdown. 
@@ -60,7 +60,9 @@ namespace DTT.Utils.EditorUtilities
             /// <param name="name">The name of the root item.</param>
             /// <param name="state">The state of the dropdown (This can be serialized).</param>
             public Dropdown(string name, AdvancedDropdownState state) : base(state)
-                => _root = new AdvancedDropdownItem(name) { id = 0 };
+            {
+                _root = new AdvancedDropdownItem(name) { id = 0 };
+            }
 
             /// <summary>
             /// Adds given item to the dropdown.
@@ -88,7 +90,7 @@ namespace DTT.Utils.EditorUtilities
                         parent = childItem;
                     }
 
-                    itemName = names[names.Length - 1];
+                    itemName = names[^1];
                 }
 
                 // To avoid overlap between current id and dropdown item id
@@ -96,7 +98,7 @@ namespace DTT.Utils.EditorUtilities
                 _currentId++;
                 _dropdownItemId--;
 
-                AdvancedDropdownItem item = new AdvancedDropdownItem(itemName)
+                AdvancedDropdownItem item = new(itemName)
                 {
                     id = _dropdownItemId,
                     enabled = !dropdownItem.disabled,
@@ -111,13 +113,19 @@ namespace DTT.Utils.EditorUtilities
             /// Adds a minimum size constrained to the dropdown.
             /// </summary>
             /// <param name="minSize"></param>
-            public void AddMinimumSize(Vector2 minSize) => minimumSize = minSize;
+            public void AddMinimumSize(Vector2 minSize)
+            {
+                minimumSize = minSize;
+            }
 
             /// <summary>
             /// Builds the dropdown from the root.
             /// </summary>
             /// <returns>The root item.</returns>
-            protected override AdvancedDropdownItem BuildRoot() => _root;
+            protected override AdvancedDropdownItem BuildRoot()
+            {
+                return _root;
+            }
 
             /// <summary>
             /// Called when an item has been selected to invoke events.
@@ -158,14 +166,14 @@ namespace DTT.Utils.EditorUtilities
                 }
             }
         }
-        
+
         /// <summary>
         /// Called when an item has been clicked, returning the number of the item
         /// in the list of extended dropdown items.
         /// </summary>
         public event Action<int> OnClick;
-        
-        
+
+
         /// <summary>
         /// The amount of items added to the dropdown.
         /// </summary>
@@ -174,13 +182,13 @@ namespace DTT.Utils.EditorUtilities
         /// <summary>
         /// The wrapped advanced dropdown class providing the actuall dropdown functionalities.
         /// </summary>
-        private Dropdown _dropdown;
+        private readonly Dropdown _dropdown;
 
         /// <summary>
         /// The position at which to display the dropdown.
         /// </summary>
         private Rect _position;
-        
+
         /// <summary>
         /// Creates the dropdown instance with given name, storing the position
         /// and state for usage.
@@ -200,24 +208,36 @@ namespace DTT.Utils.EditorUtilities
         /// Adds a minimum size constrained to the dropdown.
         /// </summary>
         /// <param name="minSize"></param>
-        public void AddMinimumSize(Vector2 minSize) => _dropdown.AddMinimumSize(minSize);
+        public void AddMinimumSize(Vector2 minSize)
+        {
+            _dropdown.AddMinimumSize(minSize);
+        }
 
         /// <summary>
         /// Adds a new item to the dropdown.
         /// </summary>
         /// <param name="item">The item to add.</param>
-        public void AddItem(ExtendedDropdownItem item) => _dropdown.AddItem(item);
+        public void AddItem(ExtendedDropdownItem item)
+        {
+            _dropdown.AddItem(item);
+        }
 
         /// <summary>
         /// Called when an item in the dropdown has been clicked to invoke the OnClick event.
         /// </summary>
         /// <param name="numberOfItem"></param>
-        private void OnItemClicked(int numberOfItem) => OnClick?.Invoke(numberOfItem);
+        private void OnItemClicked(int numberOfItem)
+        {
+            OnClick?.Invoke(numberOfItem);
+        }
 
         /// <summary>
         /// Shows the dropdown at stored position.
         /// </summary>
-        public void Show() => _dropdown.Show(_position);
+        public void Show()
+        {
+            _dropdown.Show(_position);
+        }
     }
 }
 

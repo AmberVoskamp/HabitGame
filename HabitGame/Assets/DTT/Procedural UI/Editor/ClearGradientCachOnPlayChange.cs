@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace DTT.UI.ProceduralUI.Editor
@@ -18,19 +15,25 @@ namespace DTT.UI.ProceduralUI.Editor
         /// </summary>
         static ClearGradientCachOnPlayChange()
         {
-            EditorApplication.playModeStateChanged += ClearCachePlayModeState; 
+            EditorApplication.playModeStateChanged += ClearCachePlayModeState;
             EditorSceneManager.sceneOpened += SceneLoaded;
         }
-        
+
         /// <summary>
         /// Clears the cache when switching play modes.
         /// </summary>
         /// <param name="state"> The state it changes to.</param>
-        private static void ClearCachePlayModeState(PlayModeStateChange state) => GradientImageMaterialManager.Clear();
+        private static void ClearCachePlayModeState(PlayModeStateChange state)
+        {
+            GradientImageMaterialManager.Clear();
+        }
 
         /// <summary>
         /// Clears the cache if the scene changed.
         /// </summary>
-        private static void SceneLoaded(Scene scene, OpenSceneMode mode) => GradientImageMaterialManager.Clear();
+        private static void SceneLoaded(Scene scene, OpenSceneMode mode)
+        {
+            GradientImageMaterialManager.Clear();
+        }
     }
 }

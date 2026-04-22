@@ -7,16 +7,12 @@ using UnityEngine;
 
 public class MinigamePopup : MonoBehaviour
 {
-    [SerializeField] private GameManager m_gameManager;
-    [SerializeField] private TMP_Text m_turotial;
-    [SerializeField] private Minigame m_minigame;
-
+    [SerializeField] private GameManager _gameManager;
+    [SerializeField] private TMP_Text _turotial;
     private bool _minigameDone;
 
-    public Minigame Minigame
-    {
-        get { return m_minigame; } 
-    }
+    [field: SerializeField]
+    public Minigame Minigame;
 
     private void Start()
     {
@@ -25,7 +21,7 @@ public class MinigamePopup : MonoBehaviour
 
     public void ShowTutorial(bool show)
     {
-        m_turotial.gameObject.SetActive(show);
+        _turotial.gameObject.SetActive(show);
     }
 
     public void ShowPopup(bool show, bool minigameSucces = false)
@@ -43,12 +39,12 @@ public class MinigamePopup : MonoBehaviour
         }
 
         _minigameDone = minigameSucces;
-        m_gameManager.MiniGameData(true, minigameSucces);
+        _gameManager.MiniGameData(true, minigameSucces);
         StartMiniGame();
     }
 
     private void StartMiniGame()
     {
-        m_minigame.StartGame();
+        Minigame.StartGame();
     }
 }

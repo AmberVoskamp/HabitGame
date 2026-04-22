@@ -5,33 +5,18 @@ public class Phase : MonoBehaviour
     [SerializeField] private Phases _phase;
 
     //not all phases will have these
-    [SerializeField] private PlayerSpawnpoint _playerSpawnpoint;
-    [SerializeField] private SwitchPhase _mainEntrance;
     [SerializeField] private WalkData _walkData;
     [SerializeField] private BossHealth _boss;
 
-    private GameManager m_gameManager;
+    public GameManager GameManager;
 
-    public GameManager GameManager
-    {
-        get { return m_gameManager; } 
-        set { m_gameManager = value; }
-    }
+    [SerializeField]
+    public SwitchPhase MainEntrance;
 
-    public SwitchPhase MainEntrance
-    {
-        get { return _mainEntrance; }
-    }
+    [SerializeField]
+    public PlayerSpawnpoint Spawnpoint;
 
-    public PlayerSpawnpoint Spawnpoint
-    {
-        get { return _playerSpawnpoint; }
-    }
-
-    public Phase NextPhase
-    {
-        get { return m_gameManager.NextPhase(); }
-    }
+    public Phase NextPhase => GameManager.NextPhase();
 
     private void OnEnable()
     {
@@ -46,17 +31,17 @@ public class Phase : MonoBehaviour
 
     public void ExitPhase()
     {
-        m_gameManager.ExitPhase(_phase);
+        GameManager.ExitPhase(_phase);
         _walkData?.Record(false);
     }
 
     public void ShowTutorial(string tutorialText)
     {
-        m_gameManager.ShowTutorial(tutorialText);
+        GameManager.ShowTutorial(tutorialText);
     }
 
     private void Reset()
     {
-        _playerSpawnpoint = transform.GetComponentInChildren<PlayerSpawnpoint>(true);
+        Spawnpoint = transform.GetComponentInChildren<PlayerSpawnpoint>(true);
     }
 }

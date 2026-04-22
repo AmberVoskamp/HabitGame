@@ -19,7 +19,7 @@ namespace DTT.PublishingTools
         /// <summary>
         /// The loaded sections since the last <see cref="ReloadSections"/> call.
         /// </summary>
-        public readonly List<ReadMeSection> loadedSections = new List<ReadMeSection>();
+        public readonly List<ReadMeSection> loadedSections = new();
 
         /// <summary>
         /// The folder in which the sections to be loaded reside.
@@ -58,7 +58,9 @@ namespace DTT.PublishingTools
 
             IEnumerable<string> files = Directory.EnumerateFiles(SectionsFolder, "*.json");
             foreach (string file in files)
+            {
                 loadedSections.Add(new ReadMeSection(File.ReadAllText(file)));
+            }
         }
 
         /// <summary>

@@ -1,8 +1,7 @@
 ﻿#if UNITY_EDITOR
 
-using DTT.Utils.Workflow;
-using System.IO;
 using DTT.PublishingTools.Utils;
+using System.IO;
 using UnityEditor;
 
 namespace DTT.PublishingTools
@@ -35,7 +34,9 @@ namespace DTT.PublishingTools
             {
                 string assetPath = importedAssets[i];
                 if (DTTPathUtility.IsAssetJson(assetPath))
+                {
                     TryFocusReadMe(assetPath);
+                }
             }
         }
 
@@ -47,12 +48,14 @@ namespace DTT.PublishingTools
             AssetJson assetJson = GetAssetJson(assetJsonPath);
             string displayName = assetJson.displayName;
             if (displayName == null || !DTTEditorConfig.HasReadMeSections(assetJson))
+            {
                 return;
+            }
 
             string focusKey = DTTEditorConfig.GetReadMeFocusKey(assetJson.displayName);
             if (!EditorPrefs.GetBool(focusKey))
             {
-                DTTReadMeEditorWindow.Open(assetJson);
+                _ = DTTReadMeEditorWindow.Open(assetJson);
 
                 EditorPrefs.SetBool(focusKey, true);
             }
@@ -66,7 +69,7 @@ namespace DTT.PublishingTools
         private static AssetJson GetAssetJson(string assetJsonPath)
         {
             string json = File.ReadAllText(assetJsonPath);
-            AssetJson assetJson = new AssetJson();
+            AssetJson assetJson = new();
             EditorJsonUtility.FromJsonOverwrite(json, assetJson);
 
             return assetJson;

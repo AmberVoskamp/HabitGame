@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace DTT.UI.ProceduralUI
@@ -53,15 +51,15 @@ namespace DTT.UI.ProceduralUI
                 };
             }
         }
-        
+
         /// <summary>
         /// The Gradient sprites.
         /// </summary>
-        private static readonly Dictionary<Gradient, Texture2D> _sprites = new Dictionary<Gradient, Texture2D>();
+        private static readonly Dictionary<Gradient, Texture2D> _sprites = new();
         /// <summary>
         /// The Gradient materials.
         /// </summary>
-        private static readonly Dictionary<MaterialData, Material> _materials = new Dictionary<MaterialData, Material>();
+        private static readonly Dictionary<MaterialData, Material> _materials = new();
 
         /// <summary>
         /// Gets the sprite of the gradient.
@@ -71,46 +69,70 @@ namespace DTT.UI.ProceduralUI
         public static Texture2D GetTextureForCache(Gradient gradient)
         {
             if (gradient == null)
+            {
                 return null;
+            }
 
             Gradient selectedGradient = _sprites.GetComparableKey(gradient, (Gradient a, Gradient b) =>
             {
-                if (a.mode != b.mode) 
+                if (a.mode != b.mode)
+                {
                     return false;
-                if (a.colorKeys.Length != b.colorKeys.Length) 
+                }
+
+                if (a.colorKeys.Length != b.colorKeys.Length)
+                {
                     return false;
-                if (a.alphaKeys.Length != b.alphaKeys.Length) 
+                }
+
+                if (a.alphaKeys.Length != b.alphaKeys.Length)
+                {
                     return false;
+                }
 
                 for (int i = 0; i < a.colorKeys.Length; i++)
                 {
-                    if (a.colorKeys[i].color != b.colorKeys[i].color) 
+                    if (a.colorKeys[i].color != b.colorKeys[i].color)
+                    {
                         return false;
-                    if (a.colorKeys[i].time != b.colorKeys[i].time) 
+                    }
+
+                    if (a.colorKeys[i].time != b.colorKeys[i].time)
+                    {
                         return false;
+                    }
                 }
 
                 for (int i = 0; i < a.alphaKeys.Length; i++)
                 {
-                    if (a.alphaKeys[i].alpha != b.alphaKeys[i].alpha) 
+                    if (a.alphaKeys[i].alpha != b.alphaKeys[i].alpha)
+                    {
                         return false;
-                    if (a.alphaKeys[i].time != b.alphaKeys[i].time) 
+                    }
+
+                    if (a.alphaKeys[i].time != b.alphaKeys[i].time)
+                    {
                         return false;
+                    }
                 }
 
                 return true;
             });
 
             if (selectedGradient != null)
+            {
                 return _sprites[selectedGradient];
+            }
 
             Texture2D texture = GetTextureFromParameters(gradient);
-                
+
             //create new gradient so that the instance is different
-            Gradient gradientCopy = new Gradient();
-            gradientCopy.alphaKeys = gradient.alphaKeys;
-            gradientCopy.colorKeys = gradient.colorKeys;
-            gradientCopy.mode = gradient.mode;
+            Gradient gradientCopy = new()
+            {
+                alphaKeys = gradient.alphaKeys,
+                colorKeys = gradient.colorKeys,
+                mode = gradient.mode
+            };
 
             //add it to the cach
             _sprites.Add(gradientCopy, texture);
@@ -125,27 +147,19 @@ namespace DTT.UI.ProceduralUI
         public static Material GetMaterialFromCache(MaterialData materialData)
         {
             if (materialData == null)
+            {
                 return null;
+            }
 
             MaterialData selectedMaterialData = _materials.GetComparableKey(materialData, (MaterialData a, MaterialData b) =>
             {
-                if (a == null || b == null) 
-                    return false;
-                if (a.isForUnityImage != b.isForUnityImage) 
-                    return false;
-                if (a.offset != b.offset) 
-                    return false;
-                if (a.rotationScale != b.rotationScale) 
-                    return false;
-                if (a.type != b.type)
-                    return false;
-                if (a.texture != b.texture)
-                    return false;
-                return true;
+                return a != null && b != null && a.isForUnityImage == b.isForUnityImage && a.offset == b.offset && a.rotationScale == b.rotationScale && a.type == b.type && a.texture == b.texture;
             });
 
-            if(selectedMaterialData != null && _materials[selectedMaterialData] != null)
+            if (selectedMaterialData != null && _materials[selectedMaterialData] != null)
+            {
                 return _materials[selectedMaterialData];
+            }
 
             Material material = GetMaterialFromParameters(materialData);
             _materials.Add(materialData.Copy(), material);
@@ -160,8 +174,10 @@ namespace DTT.UI.ProceduralUI
         /// <returns>The updated / created material.</returns>
         public static Material GetMaterialFromParameters(MaterialData materialData, Material material = null)
         {
-            if(material == null)
+            if (material == null)
+            {
                 material = new Material(materialData.isForUnityImage ? RoundedImageAssetManager.gradientShader : RoundedImageAssetManager.roundingShaderGradient);
+            }
 
             material.SetInt("_Type", materialData.type);
             material.SetTextureOffset("_GradientTex", materialData.offset);
@@ -180,11 +196,15 @@ namespace DTT.UI.ProceduralUI
         /// <returns>The updated / created texture.</returns>
         public static Texture2D GetTextureFromParameters(Gradient gradient, Texture2D texture = null)
         {
-            if(texture == null)
+            if (texture == null)
+            {
                 texture = new Texture2D(1024, 1);
+            }
 
             for (int i = 0; i <= 1024; i++)
+            {
                 texture.SetPixel(i, 0, gradient.Evaluate(i / 1024.0f));
+            }
 
             texture.Apply();
 

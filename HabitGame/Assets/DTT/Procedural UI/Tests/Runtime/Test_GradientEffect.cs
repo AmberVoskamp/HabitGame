@@ -24,14 +24,13 @@ namespace DTT.UI.ProceduralUI.Tests
         /// Sets up the testing environment by loading a predefined scene and getting the references from it.
         /// </summary>
         [UnitySetUp]
+        [System.Obsolete]
         public IEnumerator SetUp()
         {
-            string scenePath;
-            if (DTTEditorConfig.GetAssetJson("dtt.proceduralui").assetStoreRelease)
-                scenePath = "Assets/DTT/Procedural UI/Tests/Scenes/Test Scene.unity";
-            else
-                scenePath = "Packages/dtt.proceduralui/Tests/Scenes/Test Scene.unity";
-            EditorSceneManager.LoadSceneInPlayMode(scenePath, new LoadSceneParameters(LoadSceneMode.Single));
+            string scenePath = DTTEditorConfig.GetAssetJson("dtt.proceduralui").assetStoreRelease
+                ? "Assets/DTT/Procedural UI/Tests/Scenes/Test Scene.unity"
+                : "Packages/dtt.proceduralui/Tests/Scenes/Test Scene.unity";
+            _ = EditorSceneManager.LoadSceneInPlayMode(scenePath, new LoadSceneParameters(LoadSceneMode.Single));
             yield return new WaitForSeconds(0.1f);
 
             _gradientEffect = Object.FindObjectOfType<GradientEffect>();
@@ -113,7 +112,7 @@ namespace DTT.UI.ProceduralUI.Tests
         {
             // Arrange.
             _gradientEffect.Gradient = null;
-            Gradient newGradient = new Gradient()
+            Gradient newGradient = new()
             {
                 colorKeys = new[]
                 {
@@ -141,7 +140,7 @@ namespace DTT.UI.ProceduralUI.Tests
         {
             // Arrange.
             Vector2 originalOffset = _gradientEffect.Offset;
-            Vector2 newOffset = new Vector2(4, -4);
+            Vector2 newOffset = new(4, -4);
             _gradientEffect.Batching = false;
 
             // Act.

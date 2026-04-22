@@ -19,8 +19,8 @@ namespace DTT.PublishingTools
         /// <param name="action">The action that draws the content inside.</param>
         public static void CardHeader(Action action)
         {
-            EditorGUILayout.BeginHorizontal(DTTGUI.styles.CardHeader);
-            EditorGUILayout.BeginVertical();
+            _ = EditorGUILayout.BeginHorizontal(DTTGUI.styles.CardHeader);
+            _ = EditorGUILayout.BeginVertical();
             action.Invoke();
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
@@ -32,8 +32,8 @@ namespace DTT.PublishingTools
         /// <param name="action">The action that draws the content inside.</param>
         public static void CardBody(Action action)
         {
-            EditorGUILayout.BeginHorizontal(DTTGUI.styles.CardBody);
-            EditorGUILayout.BeginVertical();
+            _ = EditorGUILayout.BeginHorizontal(DTTGUI.styles.CardBody);
+            _ = EditorGUILayout.BeginVertical();
             action.Invoke();
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();

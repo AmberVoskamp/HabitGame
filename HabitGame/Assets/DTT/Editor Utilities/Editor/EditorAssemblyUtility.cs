@@ -17,14 +17,20 @@ namespace DTT.Utils.EditorUtilities
         /// </summary>
         /// <param name="scriptAssetPath">The asset path of the script.</param>
         /// <returns>Whether the script is part of an assembly inside the project.</returns>
-        public static bool IsPartOfProjectAssembly(string scriptAssetPath) => !string.IsNullOrEmpty(GetAssemblyName(scriptAssetPath));
+        public static bool IsPartOfProjectAssembly(string scriptAssetPath)
+        {
+            return !string.IsNullOrEmpty(GetAssemblyName(scriptAssetPath));
+        }
 
         /// <summary>
         /// Returns the assembly name a script is part of.
         /// </summary>
         /// <param name="scriptAssetPath">The asset path of the script.</param>
         /// <returns>The assembly name.</returns>
-        public static string GetAssemblyName(string scriptAssetPath) => CompilationPipeline.GetAssemblyNameFromScriptPath(scriptAssetPath);
+        public static string GetAssemblyName(string scriptAssetPath)
+        {
+            return CompilationPipeline.GetAssemblyNameFromScriptPath(scriptAssetPath);
+        }
         #endregion
         #endregion
     }

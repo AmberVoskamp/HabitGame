@@ -17,10 +17,7 @@ namespace DTT.Utils.Extensions
         /// <returns>The caught value.</returns>
         public static T ThrowIf<T>(this T value, T faultyValue, Exception onCatch = null)
         {
-            if (value.Equals(faultyValue))
-                throw onCatch ?? new InvalidOperationException($"Value {value} was faulty.");
-
-            return value;
+            return value.Equals(faultyValue) ? throw onCatch ?? new InvalidOperationException($"Value {value} was faulty.") : value;
         }
 
         /// <summary>
@@ -31,6 +28,9 @@ namespace DTT.Utils.Extensions
         /// <param name="faultyValue">The value that should be excepted.</param>
         /// <param name="defaultValue">The default value to use as replacement.</param>
         /// <returns>The caught value.</returns>
-        public static T ReplaceIf<T>(this T value, T faultyValue, T defaultValue = default(T)) => value.Equals(faultyValue) ? defaultValue : value;
+        public static T ReplaceIf<T>(this T value, T faultyValue, T defaultValue = default)
+        {
+            return value.Equals(faultyValue) ? defaultValue : value;
+        }
     }
 }

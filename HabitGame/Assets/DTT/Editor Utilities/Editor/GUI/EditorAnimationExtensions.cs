@@ -55,14 +55,18 @@ namespace DTT.Utils.EditorUtilities
         {
             // Don't draw anything if either the editor or header name is null.
             if (headerName == null || editor == null)
+            {
                 return;
+            }
 
             // Cache an AnimatedFoldout for each separate editor instance its foldout.
             string key = headerName + editor.GetInstanceID().ToString();
             if (!_animatedFoldouts.ContainsKey(key))
+            {
                 _animatedFoldouts.Add(key, new AnimatedFoldout(editor));
+            }
 
-            _animatedFoldouts[key].OnGUI(headerName, drawAction);
+            _ = _animatedFoldouts[key].OnGUI(headerName, drawAction);
         }
 
         /// <summary>
@@ -78,12 +82,16 @@ namespace DTT.Utils.EditorUtilities
         {
             // Don't draw anything if either the editor or header name is null.
             if (headerName == null || editor == null)
+            {
                 return false;
+            }
 
             // Cache an AnimatedFoldout for each separate editor instance its foldout.
             string key = headerName + editor.GetInstanceID().ToString();
             if (!_animatedToggleFoldouts.ContainsKey(key))
+            {
                 _animatedToggleFoldouts.Add(key, new AnimatedToggleFoldout(editor));
+            }
 
             return _animatedToggleFoldouts[key].OnGUI(headerName, toggle, drawAction);
         }
@@ -99,14 +107,18 @@ namespace DTT.Utils.EditorUtilities
         {
             // Don't draw anything if either the editor or header name is null.
             if (headerName == null || window == null)
+            {
                 return;
+            }
 
             // Cache an AnimatedFoldout for each separate editor instance its foldout.
             string key = headerName + window.GetInstanceID().ToString();
             if (!_animatedFoldouts.ContainsKey(key))
+            {
                 _animatedFoldouts.Add(key, new AnimatedFoldout(window));
+            }
 
-            _animatedFoldouts[key].OnGUI(headerName, drawAction);
+            _ = _animatedFoldouts[key].OnGUI(headerName, drawAction);
         }
 
         /// <summary>
@@ -122,12 +134,16 @@ namespace DTT.Utils.EditorUtilities
         {
             // Don't draw anything if either the editor or header name is null.
             if (headerName == null || window == null)
+            {
                 return false;
+            }
 
             // Cache an AnimatedFoldout for each separate editor instance its foldout.
             string key = headerName + window.GetInstanceID().ToString();
             if (!_animatedToggleFoldouts.ContainsKey(key))
+            {
                 _animatedToggleFoldouts.Add(key, new AnimatedToggleFoldout(window));
+            }
 
             return _animatedToggleFoldouts[key].OnGUI(headerName, toggle, drawAction);
         }
@@ -141,19 +157,23 @@ namespace DTT.Utils.EditorUtilities
             if (_animatedFoldouts.Count != 0)
             {
                 // If there are animated foldouts, remove the ones with an invalid target.
-                var invalidPairs = _animatedFoldouts.Where(p => p.Value.target == null).ToArray();
+                KeyValuePair<string, AnimatedFoldout>[] invalidPairs = _animatedFoldouts.Where(p => p.Value.target == null).ToArray();
 
                 for (int i = 0; i < invalidPairs.Length; i++)
-                    _animatedFoldouts.Remove(invalidPairs[i].Key);
+                {
+                    _ = _animatedFoldouts.Remove(invalidPairs[i].Key);
+                }
             }
 
             if (_animatedToggleFoldouts.Count != 0)
             {
                 // If there are animated toggle foldouts, remove the ones with an invalid target.
-                var invalidPairs = _animatedToggleFoldouts.Where(p => p.Value.target == null).ToArray();
+                KeyValuePair<string, AnimatedToggleFoldout>[] invalidPairs = _animatedToggleFoldouts.Where(p => p.Value.target == null).ToArray();
 
                 for (int i = 0; i < invalidPairs.Length; i++)
-                    _animatedToggleFoldouts.Remove(invalidPairs[i].Key);
+                {
+                    _ = _animatedToggleFoldouts.Remove(invalidPairs[i].Key);
+                }
             }
         }
         #endregion

@@ -1,9 +1,9 @@
 #if UNITY_EDITOR
 
+using DTT.Utils.Exceptions;
 using System;
 using System.IO;
 using System.Linq;
-using DTT.Utils.Exceptions;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -60,7 +60,9 @@ namespace DTT.Utils.EditorUtilities
         {
             string[] assetGuids = Selection.assetGUIDs;
             for (int i = 0; i < assetGuids.Length; i++)
+            {
                 ApplyPreProcessingOnAsset(assetGuids[i], UNITY_EDITOR_PREPROCESS_NAME);
+            }
         }
 
         /// <summary>
@@ -72,7 +74,9 @@ namespace DTT.Utils.EditorUtilities
         {
             string[] assetGuids = Selection.assetGUIDs;
             for (int i = 0; i < assetGuids.Length; i++)
+            {
                 ApplyPreProcessingOnAsset(assetGuids[i], IOS_PREPROCESS_NAME);
+            }
         }
 
 
@@ -85,7 +89,9 @@ namespace DTT.Utils.EditorUtilities
         {
             string[] assetGuids = Selection.assetGUIDs;
             for (int i = 0; i < assetGuids.Length; i++)
+            {
                 ApplyPreProcessingOnAsset(assetGuids[i], ANDROID_PREPROCESS_NAME);
+            }
         }
 
         /// <summary>
@@ -96,7 +102,9 @@ namespace DTT.Utils.EditorUtilities
         {
             string[] assetGuids = Selection.assetGUIDs;
             if (assetGuids.Length != 0)
+            {
                 AddScenesToBuildSettings(assetGuids.Select(guid => AssetDatabase.GUIDToAssetPath(guid)).ToArray());
+            }
         }
 
         /// <summary>
@@ -106,9 +114,11 @@ namespace DTT.Utils.EditorUtilities
         public static void AddSceneToBuildSettings(string sceneAssetPath)
         {
             if (sceneAssetPath == null)
+            {
                 throw new ArgumentNullException(nameof(sceneAssetPath));
+            }
 
-            AddScenesToBuildSettings(new string[]{ sceneAssetPath });
+            AddScenesToBuildSettings(new string[] { sceneAssetPath });
         }
 
         /// <summary>
@@ -119,12 +129,18 @@ namespace DTT.Utils.EditorUtilities
         public static bool IsScenePartOfBuildSettings(string sceneAssetPath)
         {
             if (sceneAssetPath == null)
+            {
                 throw new ArgumentNullException(nameof(sceneAssetPath));
+            }
 
             EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
-            for(int i = 0; i < scenes.Length; i++)
+            for (int i = 0; i < scenes.Length; i++)
+            {
                 if (scenes[i].path == sceneAssetPath)
+                {
                     return true;
+                }
+            }
 
             return false;
         }
@@ -136,15 +152,19 @@ namespace DTT.Utils.EditorUtilities
         public static void AddScenesToBuildSettings(string[] sceneAssetPaths)
         {
             if (sceneAssetPaths == null)
+            {
                 throw new ArgumentNullException(nameof(sceneAssetPaths));
-            
+            }
+
             EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
             EditorBuildSettingsScene[] updated = new EditorBuildSettingsScene[scenes.Length + sceneAssetPaths.Length];
-            
+
             Array.Copy(scenes, updated, scenes.Length);
-            
+
             for (int i = 0, j = scenes.Length; i < sceneAssetPaths.Length; i++, j++)
+            {
                 updated[j] = new EditorBuildSettingsScene(sceneAssetPaths[i], true);
+            }
 
             EditorBuildSettings.scenes = updated;
 
@@ -160,11 +180,15 @@ namespace DTT.Utils.EditorUtilities
         public static void ApplyPreProcessingOnAssetAtPath(string assetPath, string preprocessName)
         {
             if (string.IsNullOrEmpty(assetPath))
+            {
                 throw new NullOrEmptyException(nameof(assetPath));
+            }
 
             if (string.IsNullOrEmpty(preprocessName))
+            {
                 throw new NullOrEmptyException(nameof(preprocessName));
-            
+            }
+
             MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(assetPath);
             if (script == null)
             {
@@ -178,29 +202,20 @@ namespace DTT.Utils.EditorUtilities
                 return;
             }
 
-            using (StringReader reader = new StringReader(script.text))
+            using StringReader reader = new(script.text);
+            string firstLine = reader.ReadLine();
+            if (firstLine.Contains(preprocessName))
             {
-                string firstLine = reader.ReadLine();
-                if (firstLine.Contains(preprocessName))
-                {
-                    Debug.LogWarning($"Asset at {assetPath} already has preprocessing statement {preprocessName}.");
-                    return;
-                }
-
-                string text;
-                if (firstLine.Contains(PRE_PROCESS_IF))
-                {
-                    text = script.text.Replace(firstLine, firstLine + $" && {preprocessName}");
-                }
-                else
-                {
-                    text = script.text.Insert(0, string.Format("{0}{1}\n\n", PRE_PROCESS_IF, preprocessName)) +
-                           string.Format("\n{0}", PRE_PROCESS_END_IF);
-                }
-                
-                File.WriteAllText(assetPath, text);
-                AssetDatabase.ImportAsset(assetPath);
+                Debug.LogWarning($"Asset at {assetPath} already has preprocessing statement {preprocessName}.");
+                return;
             }
+
+            string text = firstLine.Contains(PRE_PROCESS_IF)
+                ? script.text.Replace(firstLine, firstLine + $" && {preprocessName}")
+                : script.text.Insert(0, string.Format("{0}{1}\n\n", PRE_PROCESS_IF, preprocessName)) +
+                       string.Format("\n{0}", PRE_PROCESS_END_IF);
+            File.WriteAllText(assetPath, text);
+            AssetDatabase.ImportAsset(assetPath);
         }
 
         /// <summary>
@@ -208,7 +223,10 @@ namespace DTT.Utils.EditorUtilities
         /// </summary>
         /// <param name="assetGuid">The asset guid.</param>
         /// <param name="preprocessName">The preprocess name. (e.g. UNITY_EDITOR)</param>
-        public static void ApplyPreProcessingOnAsset(string assetGuid, string preprocessName) => ApplyPreProcessingOnAssetAtPath(AssetDatabase.GUIDToAssetPath(assetGuid), preprocessName);
+        public static void ApplyPreProcessingOnAsset(string assetGuid, string preprocessName)
+        {
+            ApplyPreProcessingOnAssetAtPath(AssetDatabase.GUIDToAssetPath(assetGuid), preprocessName);
+        }
 
         /// <summary>
         /// Returns the editor icon for a unity object.
@@ -217,18 +235,15 @@ namespace DTT.Utils.EditorUtilities
         /// <returns>The editor icon.</returns>
         public static Texture GetEditorIcon(this Object unityObject)
         {
-            if (unityObject == null)
-                throw new ArgumentNullException(nameof(unityObject));
-
-            if (unityObject is ScriptableObject)
-                return EditorGUIUtility.IconContent("ScriptableObject Icon").image;
-
-            if (unityObject is Component || unityObject is MonoScript)
-                return EditorGUIUtility.IconContent("cs Script Icon").image;
-            
-            return EditorGUIUtility.IconContent($"{unityObject.GetType().Name} Icon").image;
+            return unityObject == null
+                ? throw new ArgumentNullException(nameof(unityObject))
+                : unityObject is ScriptableObject
+                ? EditorGUIUtility.IconContent("ScriptableObject Icon").image
+                : unityObject is Component or MonoScript
+                ? EditorGUIUtility.IconContent("cs Script Icon").image
+                : EditorGUIUtility.IconContent($"{unityObject.GetType().Name} Icon").image;
         }
-        
+
         /// <summary>
         /// Returns the editor icon for an object type.
         /// </summary>
@@ -236,19 +251,15 @@ namespace DTT.Utils.EditorUtilities
         /// <returns>The editor icon.</returns>
         public static Texture GetEditorIcon(this Type objectType)
         {
-            if (objectType == null)
-                throw new ArgumentNullException(nameof(objectType));
-
-            if(!objectType.IsSubclassOf(typeof(Object)))
-                return EditorGUIUtility.IconContent("cs Script Icon").image; 
-            
-            if (objectType.IsSubclassOf(typeof(ScriptableObject)))
-                return EditorGUIUtility.IconContent("ScriptableObject Icon").image;
-
-            if (objectType.IsSubclassOf(typeof(Component)) || objectType == typeof(MonoScript))
-                return EditorGUIUtility.IconContent("cs Script Icon").image;
-            
-            return EditorGUIUtility.IconContent($"{objectType.Name} Icon").image;
+            return objectType == null
+                ? throw new ArgumentNullException(nameof(objectType))
+                : !objectType.IsSubclassOf(typeof(Object))
+                ? EditorGUIUtility.IconContent("cs Script Icon").image
+                : objectType.IsSubclassOf(typeof(ScriptableObject))
+                ? EditorGUIUtility.IconContent("ScriptableObject Icon").image
+                : objectType.IsSubclassOf(typeof(Component)) || objectType == typeof(MonoScript)
+                ? EditorGUIUtility.IconContent("cs Script Icon").image
+                : EditorGUIUtility.IconContent($"{objectType.Name} Icon").image;
         }
     }
 }

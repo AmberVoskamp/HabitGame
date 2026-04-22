@@ -1,6 +1,6 @@
+using DTT.Utils.Workflow;
 using System;
 using System.IO;
-using DTT.Utils.Workflow;
 
 namespace DTT.PublishingTools.Utils
 {
@@ -17,21 +17,23 @@ namespace DTT.PublishingTools.Utils
         public static bool InDTTDirectory(string assetPath)
         {
             if (assetPath == null)
+            {
                 throw new ArgumentNullException(nameof(assetPath));
+            }
 
             string rootDirectory = PathUtility.GetPathElementAt(assetPath, 0);
 
             if (rootDirectory == "Assets")
             {
                 return PathUtility.ContainsDirectory(assetPath, "DTT");
-            } 
-            
+            }
+
             if (rootDirectory == "Packages")
             {
                 string subDirectory = PathUtility.GetPathElementAt(assetPath, 1);
                 return subDirectory.Contains("dtt.") || subDirectory.Contains("nl.dtt.");
             }
-            
+
             return false;
         }
 
@@ -40,7 +42,10 @@ namespace DTT.PublishingTools.Utils
         /// </summary>
         /// <param name="assetPath">The asset path to check.</param>
         /// <returns>Whether the given asset path is corresponding with a dtt asset.json file.</returns>
-        public static bool IsAssetJson(string assetPath) => Path.HasExtension(assetPath)
+        public static bool IsAssetJson(string assetPath)
+        {
+            return Path.HasExtension(assetPath)
                                                             && InDTTDirectory(assetPath) && Path.GetFileName(assetPath) == "asset.json";
+        }
     }
 }

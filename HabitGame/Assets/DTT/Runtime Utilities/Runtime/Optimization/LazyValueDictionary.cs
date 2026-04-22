@@ -41,13 +41,16 @@ namespace DTT.Utils.Optimization
             /// Creates a new instance, storing the given constructor.
             /// </summary>
             /// <param name="constructor">The constructor with which to initialize the value.</param>
-            public Container(Func<TValue> constructor) => _constructor = constructor;
+            public Container(Func<TValue> constructor)
+            {
+                _constructor = constructor;
+            }
         }
 
         /// <summary>
         /// Contains the keys with their value in their respective containers.
         /// </summary>
-        private readonly Dictionary<TKey, Container> _values = new Dictionary<TKey, Container>();
+        private readonly Dictionary<TKey, Container> _values = new();
 
         /// <summary>
         /// Adds a new item to the dictionary with its respective constructor.
@@ -59,10 +62,14 @@ namespace DTT.Utils.Optimization
         public void Add(TKey key, Func<TValue> constructor)
         {
             if (key == null)
+            {
                 throw new LazyDictionaryException("Name of property is null");
+            }
 
             if (constructor == null)
+            {
                 throw new LazyDictionaryException($"Constructor of {key} is null.");
+            }
 
             _values.Add(key, new Container(constructor));
         }
@@ -72,6 +79,9 @@ namespace DTT.Utils.Optimization
         /// </summary>
         /// <param name="key">The key to get the value for.</param>
         /// <returns>The item value.</returns>
-        protected override TValue GetValue(TKey key) => _values[key].Value;
+        protected override TValue GetValue(TKey key)
+        {
+            return _values[key].Value;
+        }
     }
 }

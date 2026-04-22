@@ -113,10 +113,7 @@ namespace DTT.PublishingTools
         public LinkContent GetLink(int index)
         {
             LinkContent[] links = content.links;
-            if (links == null || index > links.Length)
-                return null;
-            else
-                return content.links[index];
+            return links == null || index > links.Length ? null : content.links[index];
         }
 
         /// <summary>
@@ -137,7 +134,9 @@ namespace DTT.PublishingTools
                 // Cache the images loaded, so they will only be loaded once.
                 string path = Path.Combine(folderPath, urls[index]);
                 if (!_imageCache.ContainsKey(path))
+                {
                     _imageCache.Add(path, AssetDatabase.LoadAssetAtPath<Texture>(path));
+                }
 
                 return _imageCache[path];
             }

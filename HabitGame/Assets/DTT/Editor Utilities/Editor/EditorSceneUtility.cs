@@ -20,10 +20,9 @@ namespace DTT.Utils.EditorUtilities
         /// <returns>Whether the component is part of a prefab scene.</returns>
         public static bool IsPartOfPrefabScene(Component component)
         {
-            if (component == null)
-                throw new ArgumentNullException(nameof(component), "Given component to check is null.");
-
-            return IsPartOfPrefabScene(component.gameObject);
+            return component == null
+                ? throw new ArgumentNullException(nameof(component), "Given component to check is null.")
+                : IsPartOfPrefabScene(component.gameObject);
         }
 
         /// <summary>
@@ -34,7 +33,9 @@ namespace DTT.Utils.EditorUtilities
         public static bool IsPartOfPrefabScene(GameObject gameObject)
         {
             if (gameObject == null)
+            {
                 throw new ArgumentNullException(nameof(gameObject), "Given game object to check is null.");
+            }
 
 #pragma warning disable 0618
             return gameObject.scene.name == PrefabUtility.FindPrefabRoot(gameObject).name;

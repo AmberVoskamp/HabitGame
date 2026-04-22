@@ -6,7 +6,7 @@ public class MinigameOpen : MonoBehaviour
     private bool _isInRange;
     private bool _hasEnterd;
 
-    void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
         IsInRange(true, col);
     }
@@ -28,7 +28,7 @@ public class MinigameOpen : MonoBehaviour
                 _hasEnterd = true;
                 if (ConfigManager.Instance != null && PlayerHealth.Instance != null)
                 {
-                    ConfigManager.Instance.TimeLeftInRangeOfChest(PlayerHealth.Instance.CurrentHealth);
+                    ConfigManager.Instance.TimeLeftInRangeOfChest(PlayerHealth.Instance.GetCurrentHealth);
                 }
             }
         }

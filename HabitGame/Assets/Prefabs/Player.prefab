@@ -102,9 +102,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2efd9c5c74fdfa42815638d545b3e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_attackAnimator: {fileID: 8183326891232544012}
-  m_doDamage: 1
-  m_timeBetweenAttack: 0.5
+  _attackAnimator: {fileID: 8183326891232544012}
+  _doDamage: 1
+  _timeBetweenAttack: 0.5
 --- !u!95 &8183326891232544012
 Animator:
   serializedVersion: 7
@@ -632,7 +632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e413f2875d9bb4692c9ab685441068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_movementSpeed: 1
+  _movementSpeed: 1
 --- !u!114 &7361590501984121049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,11 +645,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f754beac7ac5124b985ba38f38b08e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_health: 60
-  m_damageTime: 0.5
-  m_sprite: {fileID: 4435582346095242965}
-  m_takeDamageColor: {r: 0.99215686, g: 0.26666668, b: 0.26666668, a: 1}
-  m_playerAttack: {fileID: 1435333490057795155}
+  HealthAmount: 60
+  DamageTime: 0.5
+  _sprite: {fileID: 4435582346095242965}
+  _takeDamageColor: {r: 1, g: 0, b: 0, a: 1}
+  _playerAttack: {fileID: 1435333490057795155}
 --- !u!1 &7752689015207229620
 GameObject:
   m_ObjectHideFlags: 0

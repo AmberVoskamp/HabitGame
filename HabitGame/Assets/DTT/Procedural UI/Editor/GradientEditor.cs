@@ -1,5 +1,4 @@
 using DTT.PublishingTools;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -20,7 +19,7 @@ namespace DTT.UI.ProceduralUI.Editor
         /// The gradient effect object
         /// </summary>
         private GradientEffect _gradientEffect;
-        
+
         /// <summary>
         /// All the effects currently selected.
         /// </summary>
@@ -34,8 +33,8 @@ namespace DTT.UI.ProceduralUI.Editor
         /// <summary>
         /// All the sections that inspector should draw.
         /// </summary>
-        private readonly List<IDrawable> _sections = new List<IDrawable>();
-        
+        private readonly List<IDrawable> _sections = new();
+
         /// <summary>
         /// Initializes the sections.
         /// </summary>
@@ -52,7 +51,7 @@ namespace DTT.UI.ProceduralUI.Editor
 
             CreateSections();
         }
-        
+
         /// <summary>
         /// Draws the inspector.
         /// </summary>
@@ -64,24 +63,28 @@ namespace DTT.UI.ProceduralUI.Editor
 
             // Draw all the sections.
             for (int i = 0; i < _sections.Count; i++)
+            {
                 _sections[i].Draw();
+            }
 
-            if (EditorGUI.EndChangeCheck() || 
+            if (EditorGUI.EndChangeCheck() ||
                 (Event.current.type == EventType.ValidateCommand &&
                  Event.current.commandName == "UndoRedoPerformed"))
             {
-                serializedObject.ApplyModifiedProperties();
+                _ = serializedObject.ApplyModifiedProperties();
                 foreach (GradientEffect effect in _gradientEffects)
+                {
                     effect.UpdateGradient();
+                }
             }
         }
-        
+
         /// <summary>
         /// Creates the different sections that are in the inspector.
         /// </summary>
         private void CreateSections()
         {
-            UnityAction repaintAction = new UnityAction(Repaint);
+            UnityAction repaintAction = new(Repaint);
 
             // Create the Image Settings section.
             _sections.Add(new GradientSection(_gradientEffect, repaintAction,

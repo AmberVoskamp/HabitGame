@@ -162,69 +162,6 @@ Material:
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!1 &180656014
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 180656015}
-  m_Layer: 0
-  m_Name: Middle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &180656015
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 180656014}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 210150719}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &210150718
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 210150719}
-  m_Layer: 0
-  m_Name: Borders
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &210150719
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 210150718}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.2042847, y: -1.3289952, z: -0.011612451}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 180656015}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &238827016
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,9 +251,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a602273936f2d04c9e2a2c9c28f5e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gameManager: {fileID: 380437865}
-  m_turotial: {fileID: 2119368175}
-  m_minigame: {fileID: 1677081581}
+  _gameManager: {fileID: 380437865}
+  _turotial: {fileID: 2119368175}
+  Minigame: {fileID: 1677081581}
 --- !u!1 &366919225
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,6 +321,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  <RoundingUnit>k__BackingField: 0
   _roundingMode: 1
   _roundingAmount:
   - 0.45
@@ -394,7 +332,6 @@ MonoBehaviour:
   _useHitboxOutside: 0
   _useHitboxInside: 0
   _distanceFalloff: 0
-  _selectedUnit: 0
   _cornerMode: 0
   _side: 0
 --- !u!222 &366919228
@@ -434,12 +371,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c653d269be46ba4f9afd84ed92a7d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fadeToBlack: {fileID: 579212433}
-  m_countDown: {fileID: 1916513571}
-  m_uiManager: {fileID: 2071993103}
-  m_phases: {fileID: 11400000, guid: 074fbb97585d9824aaa1bb9126fdd9e2, type: 2}
-  m_timeLeftAfterSpikes: {x: 0, y: 0}
-  m_walkTutorialText: Use <sprite=1><sprite=2><sprite=3><sprite=0>\nto move around
+  _fadeToBlack: {fileID: 579212433}
+  _countDown: {fileID: 1916513571}
+  _uiManager: {fileID: 2071993103}
+  _phases: {fileID: 11400000, guid: 074fbb97585d9824aaa1bb9126fdd9e2, type: 2}
+  _timeLeftAfterSpikes: {x: 0, y: 0}
+  _walkTutorialText: Use <sprite=1><sprite=2><sprite=3><sprite=0>\nto move around
 --- !u!4 &380437866
 Transform:
   m_ObjectHideFlags: 0
@@ -533,6 +470,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  <RoundingUnit>k__BackingField: 0
   _roundingMode: 0
   _roundingAmount:
   - 0.45
@@ -543,7 +481,6 @@ MonoBehaviour:
   _useHitboxOutside: 0
   _useHitboxInside: 0
   _distanceFalloff: 0
-  _selectedUnit: 0
   _cornerMode: 0
   _side: 0
 --- !u!1 &401968448
@@ -834,7 +771,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02795a8a54dbebc428179a7223077307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_offset: {x: 0, y: 0.3, z: -10}
+  _offset: {x: 0, y: 0.3, z: -10}
 --- !u!1 &558640364
 GameObject:
   m_ObjectHideFlags: 0
@@ -941,7 +878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84d01e2d458dd564d891265e0b5d292a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fadeTime: 1
+  _fadeTime: 1
 --- !u!114 &579212434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1074,6 +1011,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  <RoundingUnit>k__BackingField: 0
   _roundingMode: 1
   _roundingAmount:
   - 1
@@ -1084,7 +1022,6 @@ MonoBehaviour:
   _useHitboxOutside: 1
   _useHitboxInside: 1
   _distanceFalloff: 0.1
-  _selectedUnit: 0
   _cornerMode: 0
   _side: 0
 --- !u!1 &767702040
@@ -1419,6 +1356,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  <RoundingUnit>k__BackingField: 0
   _roundingMode: 1
   _roundingAmount:
   - 1
@@ -1429,7 +1367,6 @@ MonoBehaviour:
   _useHitboxOutside: 0
   _useHitboxInside: 0
   _distanceFalloff: 0.1
-  _selectedUnit: 0
   _cornerMode: 0
   _side: 0
 --- !u!222 &860201759
@@ -1565,6 +1502,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  <RoundingUnit>k__BackingField: 0
   _roundingMode: 1
   _roundingAmount:
   - 0.45
@@ -1575,7 +1513,6 @@ MonoBehaviour:
   _useHitboxOutside: 0
   _useHitboxInside: 0
   _distanceFalloff: 0.1
-  _selectedUnit: 0
   _cornerMode: 0
   _side: 0
 --- !u!222 &942889443
@@ -1913,6 +1850,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  <RoundingUnit>k__BackingField: 0
   _roundingMode: 1
   _roundingAmount:
   - 1
@@ -1923,7 +1861,6 @@ MonoBehaviour:
   _useHitboxOutside: 0
   _useHitboxInside: 0
   _distanceFalloff: 0.1
-  _selectedUnit: 0
   _cornerMode: 0
   _side: 0
 --- !u!222 &1481777711
@@ -1984,9 +1921,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6e5a7209d9a52643aea1c7142831cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_minigamePopup: {fileID: 238827020}
-  m_text: {fileID: 1123006667}
-  m_doTutorial: 0
+  _minigamePopup: {fileID: 238827020}
+  _text: {fileID: 1123006667}
+  _doTutorial: 1
 --- !u!222 &1496004727
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2235,6 +2172,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  <RoundingUnit>k__BackingField: 0
   _roundingMode: 0
   _roundingAmount:
   - 0.45
@@ -2245,7 +2183,6 @@ MonoBehaviour:
   _useHitboxOutside: 0
   _useHitboxInside: 0
   _distanceFalloff: 0
-  _selectedUnit: 0
   _cornerMode: 0
   _side: 0
 --- !u!222 &1588191579
@@ -2306,15 +2243,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e22f8c418acf3f14f886d9841ecdc7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_minigamePopup: {fileID: 238827020}
-  m_spinningImage: {fileID: 667973774}
-  m_slider: {fileID: 401968450}
-  m_landingImage: {fileID: 558640366}
-  m_spinningSpeed: 150
-  m_noTapTime: 1
-  m_barRectTransform: {fileID: 1908711430}
-  m_barPointPrefab: {fileID: 8200610057467091803, guid: 1e01a3335edda644d8d52b0d934e0a92, type: 3}
-  m_barPoints: 4
+  _minigamePopup: {fileID: 238827020}
+  _spinningImage: {fileID: 667973774}
+  _slider: {fileID: 401968450}
+  _landingImage: {fileID: 558640366}
+  _spinningSpeed: 150
+  _noTapTime: 1
+  _barRectTransform: {fileID: 1908711430}
+  _barPointPrefab: {fileID: 8200610057467091803, guid: 1e01a3335edda644d8d52b0d934e0a92, type: 3}
+  _barPoints: 4
 --- !u!1 &1908711429
 GameObject:
   m_ObjectHideFlags: 0
@@ -2468,10 +2405,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a72108d17fb8c464c93d176cd0873a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gameManager: {fileID: 380437865}
-  m_countdownText: {fileID: 1524473818}
-  m_timeLostPrefab: {fileID: 7929771881059472253, guid: b28de7b3e1eef60479fe4cf4a2ae02fa, type: 3}
-  m_lostTimeToTimer: 0.3
+  _gameManager: {fileID: 380437865}
+  _countdownText: {fileID: 1524473818}
+  _timeLostPrefab: {fileID: 7929771881059472253, guid: b28de7b3e1eef60479fe4cf4a2ae02fa, type: 3}
+  _lostTimeToTimer: 0.3
 --- !u!222 &1916513573
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2510,6 +2447,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  <RoundingUnit>k__BackingField: 0
   _roundingMode: 1
   _roundingAmount:
   - 0.71
@@ -2520,7 +2458,6 @@ MonoBehaviour:
   _useHitboxOutside: 0
   _useHitboxInside: 0
   _distanceFalloff: 0.1
-  _selectedUnit: 0
   _cornerMode: 0
   _side: 0
 --- !u!1 &2071993098
@@ -2677,8 +2614,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 226.3, y: -48.3}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 215.9, y: -72.4}
+  m_SizeDelta: {x: 200, y: 63.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2119368175
 MonoBehaviour:
@@ -2786,7 +2723,6 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 809866570}
   - {fileID: 416334320}
-  - {fileID: 210150719}
   - {fileID: 2071993102}
   - {fileID: 1107591021}
   - {fileID: 380437866}

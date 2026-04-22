@@ -12,6 +12,9 @@
         /// <param name="target">The target value.</param>
         /// <param name="perc">The percentage value between 0 and 1.</param>
         /// <returns>The linearly interpolated value.</returns>
-        public static double Lerp(double start, double target, float perc) => start + (target - start) * perc;
+        public static double Lerp(double start, double target, float perc)
+        {
+            return start + ((target - start) * perc);
+        }
     }
 }

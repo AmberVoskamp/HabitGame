@@ -55,7 +55,7 @@ namespace DTT.PublishingTools
         {
             Add(nameof(Label), () =>
             {
-                GUIStyle style = new GUIStyle(DTTGUI.Skin.label);
+                GUIStyle style = new(DTTGUI.Skin.label);
                 style.normal.textColor = EditorStyles.label.normal.textColor;
                 style.fontSize = 12;
                 return style;
@@ -63,8 +63,10 @@ namespace DTT.PublishingTools
 
             Add(nameof(TitleLabel), () =>
             {
-                GUIStyle style = new GUIStyle(DTTGUI.Skin.label);
-                style.font = DTTGUI.TitleFont;
+                GUIStyle style = new(DTTGUI.Skin.label)
+                {
+                    font = DTTGUI.TitleFont
+                };
                 style.normal.textColor = EditorStyles.label.normal.textColor;
                 style.fontSize = 12;
                 return style;
@@ -72,7 +74,7 @@ namespace DTT.PublishingTools
 
             Add(nameof(CardHeader), () =>
             {
-                GUIStyle style = new GUIStyle(DTTGUI.Skin.box);
+                GUIStyle style = new(DTTGUI.Skin.box);
 
                 // No scaled backgrounds should be used, only use the card background texture.
                 style.normal.scaledBackgrounds = null;
@@ -92,7 +94,7 @@ namespace DTT.PublishingTools
 
             Add(nameof(CardBody), () =>
             {
-                GUIStyle style = new GUIStyle(DTTGUI.Skin.box);
+                GUIStyle style = new(DTTGUI.Skin.box);
 
                 // No scaled backgrounds should be used, only use the card background texture.
                 style.normal.scaledBackgrounds = null;
@@ -111,10 +113,12 @@ namespace DTT.PublishingTools
 
             Add(nameof(Button), () =>
             {
-                GUIStyle style = new GUIStyle(DTTGUI.Skin.button);
-                style.normal = EditorStyles.miniButton.normal;
-                style.hover = EditorStyles.miniButton.hover;
-                style.active = EditorStyles.miniButton.active;
+                GUIStyle style = new(DTTGUI.Skin.button)
+                {
+                    normal = EditorStyles.miniButton.normal,
+                    hover = EditorStyles.miniButton.hover,
+                    active = EditorStyles.miniButton.active
+                };
                 return style;
             });
         }

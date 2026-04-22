@@ -1,7 +1,6 @@
-﻿using System;
+﻿using DTT.Utils.Workflow;
+using System;
 using System.Text;
-using System.Text.RegularExpressions;
-using DTT.Utils.Workflow;
 using UnityEngine;
 
 namespace DTT.Utils.Extensions
@@ -17,7 +16,9 @@ namespace DTT.Utils.Extensions
         /// <param name="input">Text to render in boldface.</param>
         /// <returns>Text rendered in boldface.</returns>
         public static string Bold(this string input)
-            => WrapAround("<b>", input, "</b>");
+        {
+            return WrapAround("<b>", input, "</b>");
+        }
 
         /// <summary>
         /// Renders the text in italics.
@@ -25,7 +26,9 @@ namespace DTT.Utils.Extensions
         /// <param name="input">Text to render in italics.</param>
         /// <returns>Text rendered in italics.</returns>
         public static string Italics(this string input)
-            => WrapAround("<i>", input, "</i>");
+        {
+            return WrapAround("<i>", input, "</i>");
+        }
 
         /// <summary>
         /// Sets the size of the text according to the parameter value, given in pixels.
@@ -37,7 +40,9 @@ namespace DTT.Utils.Extensions
         /// <param name="size">The size for the text, given in pixels.</param>
         /// <returns>Text that has been sized.</returns>
         public static string Size(this string input, int size)
-            => WrapAround($"<size={size}>", input, "</size>");
+        {
+            return WrapAround($"<size={size}>", input, "</size>");
+        }
 
         /// <summary>
         /// Sets the color of the text according to the parameter value.
@@ -46,7 +51,9 @@ namespace DTT.Utils.Extensions
         /// <param name="color">The color to set the text to.</param>
         /// <returns>Text that a color has been applied to.</returns>
         public static string Color(this string input, Color color)
-            => WrapAround($"<color=#{ColorUtility.ToHtmlStringRGB(color)}>", input, "</color>");
+        {
+            return WrapAround($"<color=#{ColorUtility.ToHtmlStringRGB(color)}>", input, "</color>");
+        }
 
         /// <summary>
         /// Sets the color of the text according to the parameter value.
@@ -55,7 +62,9 @@ namespace DTT.Utils.Extensions
         /// <param name="color">The color type to set the text to.</param>
         /// <returns>Text that a color has been applied to.</returns>
         public static string Color(this string input, RichTextColor color)
-            => WrapAround($"<color={color}>", input, "</color>");
+        {
+            return WrapAround($"<color={color}>", input, "</color>");
+        }
 
         /// <summary>
         /// Sets the color of the text according to the parameter value.
@@ -65,15 +74,16 @@ namespace DTT.Utils.Extensions
         /// <returns>Text that a color has been applied to.</returns>
         public static string Color(this string input, string hexColor)
         {
-            StringBuilder sb = new StringBuilder(hexColor);
+            StringBuilder sb = new(hexColor);
             if (sb[0] != '#')
-                sb.Insert(0, '#');
+            {
+                _ = sb.Insert(0, '#');
+            }
 
             string newHex = sb.ToString();
-            if (!StringUtility.IsHexadecimal(newHex))
-                throw new ArgumentException(nameof(hexColor), $"Passed hex color string isn't a valid notation. Passed value: {hexColor}");
-
-            return WrapAround($"<color={newHex}>", input, "</color>");
+            return !StringUtility.IsHexadecimal(newHex)
+                ? throw new ArgumentException(nameof(hexColor), $"Passed hex color string isn't a valid notation. Passed value: {hexColor}")
+                : WrapAround($"<color={newHex}>", input, "</color>");
         }
 
         /// <summary>
@@ -86,6 +96,8 @@ namespace DTT.Utils.Extensions
         /// <param name="endElement">The last element.</param>
         /// <returns>The new string with elements wrapped around the input.</returns>
         private static string WrapAround(string startElement, string input, string endElement)
-            => string.Join(string.Empty, startElement, input, endElement);
+        {
+            return string.Join(string.Empty, startElement, input, endElement);
+        }
     }
 }

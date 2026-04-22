@@ -14,14 +14,14 @@ namespace DTT.Utils.EditorUtilities
         private class SettingsProperties : SerializedPropertyCache
         {
             public SerializedProperty setting => base[nameof(setting)];
-            
+
             public SerializedProperty anotherSetting => base[nameof(anotherSetting)];
-            
+
             public SerializedProperty andAnotherSetting => base[nameof(andAnotherSetting)];
-            
+
             public SerializedProperty subSetting => base[nameof(subSetting)];
-            
-            
+
+
             public SettingsProperties(SerializedObject serializedObject) : base(serializedObject) { }
         }
 
@@ -30,12 +30,12 @@ namespace DTT.Utils.EditorUtilities
         /// </summary>
         private class SubSettingsProperties : RelativePropertyCache
         {
-            
+
             public SerializedProperty name => base[nameof(name)];
-            
+
             public SerializedProperty value => base[nameof(value)];
 
-            
+
             public SubSettingsProperties(SerializedProperty serializedProperty) : base(serializedProperty) { }
         }
 
@@ -47,21 +47,25 @@ namespace DTT.Utils.EditorUtilities
             public GUIStyle NameStyle => base[nameof(NameStyle)];
 
             public GUIStyle ValueStyle => base[nameof(ValueStyle)];
-            
-            
+
+
             public PropertyStyles()
             {
                 Add(nameof(NameStyle), () =>
                 {
-                    GUIStyle style = new GUIStyle(EditorStyles.textField);
-                    style.fontStyle = FontStyle.Bold;
+                    GUIStyle style = new(EditorStyles.textField)
+                    {
+                        fontStyle = FontStyle.Bold
+                    };
                     return style;
                 });
-                
+
                 Add(nameof(ValueStyle), () =>
                 {
-                    GUIStyle style = new GUIStyle(EditorStyles.numberField);
-                    style.fontSize = 10;
+                    GUIStyle style = new(EditorStyles.numberField)
+                    {
+                        fontSize = 10
+                    };
                     return style;
                 });
             }
@@ -71,13 +75,13 @@ namespace DTT.Utils.EditorUtilities
         {
             [InspectorName("Using SerializedObject")]
             USING_SERIALIZED_OBJECT = 0,
-            
+
             [InspectorName("Using Caches")]
             USING_CACHED = 1,
-            
+
             [InspectorName("SubSetting Only")]
             SUB_SETTING_ONLY = 2,
-            
+
             [InspectorName("Draw Tools")]
             DRAW_TOOLS = 3,
         }
@@ -107,11 +111,11 @@ namespace DTT.Utils.EditorUtilities
                 case DrawMethod.USING_CACHED:
                     DrawUsingCaches();
                     break;
-                
+
                 case DrawMethod.USING_SERIALIZED_OBJECT:
                     DrawUsingSerializedObject();
                     break;
-                
+
                 case DrawMethod.SUB_SETTING_ONLY:
                     DrawSubSetting();
                     break;
@@ -124,7 +128,7 @@ namespace DTT.Utils.EditorUtilities
         /// </summary>
         private void DrawUsingSerializedObject()
         {
-            serializedObject.DrawProperties();
+            _ = serializedObject.DrawProperties();
         }
 
         /// <summary>
@@ -134,12 +138,12 @@ namespace DTT.Utils.EditorUtilities
         {
             GUIDrawing.Colored(Color.blue, () =>
             {
-                EditorGUILayout.PropertyField(_settingsProperties.anotherSetting, true);
+                _ = EditorGUILayout.PropertyField(_settingsProperties.anotherSetting, true);
             });
-            
-            EditorGUILayout.PropertyField(_settingsProperties.andAnotherSetting, true);
-            EditorGUILayout.PropertyField(_settingsProperties.subSetting, true);
-            EditorGUILayout.PropertyField(_settingsProperties.setting, true);
+
+            _ = EditorGUILayout.PropertyField(_settingsProperties.andAnotherSetting, true);
+            _ = EditorGUILayout.PropertyField(_settingsProperties.subSetting, true);
+            _ = EditorGUILayout.PropertyField(_settingsProperties.setting, true);
         }
 
         /// <summary>
@@ -147,7 +151,7 @@ namespace DTT.Utils.EditorUtilities
         /// </summary>
         private void DrawSubSetting()
         {
-            EditorGUILayout.PropertyField(_subSettingsProperties.value, true);
+            _ = EditorGUILayout.PropertyField(_subSettingsProperties.value, true);
         }
     }
 }

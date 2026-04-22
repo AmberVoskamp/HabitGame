@@ -19,15 +19,16 @@ namespace DTT.Utils.Extensions
         public static void Swap<T>(this IList<T> list, int firstIndex, int secondIndex)
         {
             if (list == null)
+            {
                 throw new ArgumentNullException(nameof(list));
+            }
 
             if (list.Count < 2)
+            {
                 throw new ArgumentException("List count should be at least 2 for a swap.");
-            
-            T firstValue = list[firstIndex];
-            
-            list[firstIndex] = list[secondIndex];
-            list[secondIndex] = firstValue;
+            }
+
+            (list[secondIndex], list[firstIndex]) = (list[firstIndex], list[secondIndex]);
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace DTT.Utils.Extensions
                 Swap(list, randomIndex, i);
             }
         }
-        
+
         /// <summary>
         /// Shuffles the list using the Fisher-Yates algorithm.
         /// </summary>
@@ -52,9 +53,9 @@ namespace DTT.Utils.Extensions
         /// <typeparam name="T">The type of list.</typeparam>
         public static void Shuffle<T>(this IList<T> list, int seed)
         {
-            var state = Random.state;
+            Random.State state = Random.state;
             Random.InitState(seed);
-            
+
             Shuffle(list);
 
             Random.state = state;
@@ -69,10 +70,14 @@ namespace DTT.Utils.Extensions
         public static void RotateLeft<T>(this IList<T> list, int count = 1)
         {
             if (list == null)
+            {
                 throw new ArgumentNullException(nameof(list));
+            }
 
             if (list.Count < 2)
+            {
                 return;
+            }
 
             for (int current = 0; current < count; current++)
             {
@@ -91,10 +96,14 @@ namespace DTT.Utils.Extensions
         public static void RotateRight<T>(this IList<T> list, int count = 1)
         {
             if (list == null)
+            {
                 throw new ArgumentNullException(nameof(list));
+            }
 
             if (list.Count < 2)
+            {
                 return;
+            }
 
             int lastIndex = list.Count - 1;
             for (int current = 0; current < count; current++)
@@ -113,8 +122,12 @@ namespace DTT.Utils.Extensions
         public static void RemoveNullEntries<T>(this IList<T> list) where T : class
         {
             for (int i = list.Count - 1; i >= 0; i--)
+            {
                 if (Equals(list[i], null))
+                {
                     list.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>
@@ -125,8 +138,12 @@ namespace DTT.Utils.Extensions
         public static void RemoveDefaultValues<T>(this IList<T> list)
         {
             for (int i = list.Count - 1; i >= 0; i--)
+            {
                 if (Equals(default(T), list[i]))
+                {
                     list.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>
@@ -136,6 +153,9 @@ namespace DTT.Utils.Extensions
         /// <param name="list">The list to check the bounds of.</param>
         /// <param name="index">The index to check.</param>
         /// <returns>Whether the index is inside the bounds.</returns>
-        public static bool HasIndex<T>(this IList<T> list, int index) => index.InRange(0, list.Count - 1);
+        public static bool HasIndex<T>(this IList<T> list, int index)
+        {
+            return index.InRange(0, list.Count - 1);
+        }
     }
 }

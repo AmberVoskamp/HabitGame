@@ -14,7 +14,10 @@ namespace DTT.UI.ProceduralUI
         /// Opens the ReadMe of this package.
         /// </summary>
         [MenuItem("Tools/DTT/ProceduralUI/ReadMe")]
-        private static void OpenReadMe() => DTTEditorConfig.OpenReadMe("dtt.proceduralui");
+        private static void OpenReadMe()
+        {
+            DTTEditorConfig.OpenReadMe("dtt.proceduralui");
+        }
     }
 }
 #endif

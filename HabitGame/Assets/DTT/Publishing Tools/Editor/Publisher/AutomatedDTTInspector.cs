@@ -31,7 +31,7 @@ namespace DTT.PublishingTools
             public HelpBoxContent(string message, MessageType type, Func<bool> condition)
             {
                 this.message = message;
-                this.messageType = type;
+                messageType = type;
                 this.condition = condition;
             }
 
@@ -59,7 +59,7 @@ namespace DTT.PublishingTools
                 {
                     try
                     {
-                        condition.Invoke();
+                        _ = condition.Invoke();
                         return true;
                     }
                     catch
@@ -78,28 +78,28 @@ namespace DTT.PublishingTools
         /// <see cref="SerializedProperty"/>'s.
         /// </summary>
         private readonly Dictionary<string, HelpBoxContent> _helpBoxContent =
-            new Dictionary<string, HelpBoxContent>();
+            new();
 
         /// <summary>
         /// Contains the conditions for <see cref="SerializedProperty"/>'s to be shown.
         /// </summary>
         private readonly Dictionary<string, Func<bool>> _conditionalProperties
-            = new Dictionary<string, Func<bool>>();
+            = new();
 
         /// <summary>
         /// Contains HelpBoxContent to be shown at the bottom of the inspector window.
         /// </summary>
-        private readonly List<HelpBoxContent> _trailingHelpBoxContent = new List<HelpBoxContent>();
+        private readonly List<HelpBoxContent> _trailingHelpBoxContent = new();
 
         /// <summary>
         /// Contains names of <see cref="SerializedProperty"/>'s to be hidden.
         /// </summary>
-        private readonly List<string> _hiddenProperties = new List<string>();
+        private readonly List<string> _hiddenProperties = new();
 
         /// <summary>
         /// Contains names of <see cref="SerializedProperty"/>'s to be disabled.
         /// </summary>
-        private readonly List<string> _disabledProperties = new List<string>();
+        private readonly List<string> _disabledProperties = new();
         #endregion
         #endregion
 
@@ -120,7 +120,9 @@ namespace DTT.PublishingTools
             bool changed = EditorGUI.EndChangeCheck();
             OnEndChangeCheck(changed);
             if (changed)
+            {
                 ApplyChanges();
+            }
 
             DrawTrailingHelpBoxContent();
         }
@@ -149,7 +151,7 @@ namespace DTT.PublishingTools
             try
             {
                 // Invoke the condition to test for exceptions.
-                condition.Invoke();
+                _ = condition.Invoke();
 
                 _conditionalProperties.Add(name, condition);
             }
@@ -167,7 +169,9 @@ namespace DTT.PublishingTools
         protected void AddHiddenProperty(string name)
         {
             if (string.IsNullOrEmpty(name))
+            {
                 throw new ArgumentException("The name of the property was null or empty.");
+            }
 
             _hiddenProperties.Add(name);
         }
@@ -180,7 +184,9 @@ namespace DTT.PublishingTools
         protected void AddDisabledProperty(string name)
         {
             if (string.IsNullOrEmpty(name))
+            {
                 throw new ArgumentException("The name of the property was null or empty.");
+            }
 
             _disabledProperties.Add(name);
         }
@@ -194,7 +200,9 @@ namespace DTT.PublishingTools
         protected void AddHelpBoxContent(string name, HelpBoxContent content)
         {
             if (!content.HasValidCondition)
+            {
                 throw new ArgumentException("Helpbox content has invalid condition.");
+            }
 
             _helpBoxContent.Add(name, content);
         }
@@ -206,7 +214,9 @@ namespace DTT.PublishingTools
         protected void AddHelpBoxContent(HelpBoxContent content)
         {
             if (!content.HasValidCondition)
+            {
                 throw new ArgumentException("Helpbox content has invalid condition.");
+            }
 
             _trailingHelpBoxContent.Add(content);
         }
@@ -214,7 +224,10 @@ namespace DTT.PublishingTools
         /// <summary>
         /// Applies modified properties to serialized object.
         /// </summary>
-        protected void ApplyChanges() => serializedObject.ApplyModifiedProperties();
+        protected void ApplyChanges()
+        {
+            _ = serializedObject.ApplyModifiedProperties();
+        }
 
         /// <summary>
         /// Override this method to execute functionality to know if 
@@ -254,17 +267,22 @@ namespace DTT.PublishingTools
             if (!IsHidden(nameOfProperty))
             {
                 if (IsDisabled(nameOfProperty))
+                {
                     DrawDisabledPropertyField(property);
+                }
                 else
-                    EditorGUILayout.PropertyField(property);
+                {
+                    _ = EditorGUILayout.PropertyField(property);
+                }
             }
 
             if (_helpBoxContent.ContainsKey(nameOfProperty))
             {
                 HelpBoxContent content = _helpBoxContent[nameOfProperty];
                 if (content.condition())
+                {
                     EditorGUILayout.HelpBox(content.message, content.messageType);
-
+                }
             }
         }
 
@@ -276,7 +294,7 @@ namespace DTT.PublishingTools
         {
             GUI.enabled = false;
 
-            EditorGUILayout.PropertyField(property);
+            _ = EditorGUILayout.PropertyField(property);
 
             GUI.enabled = true;
         }
@@ -290,7 +308,10 @@ namespace DTT.PublishingTools
         /// whether the given name corresponds with a <see cref="SerializedProperty"/>
         /// that is stored as disabled.
         /// </returns>
-        private bool IsDisabled(string nameOfProperty) => _disabledProperties.Contains(nameOfProperty);
+        private bool IsDisabled(string nameOfProperty)
+        {
+            return _disabledProperties.Contains(nameOfProperty);
+        }
 
         /// <summary>
         /// Returns whether the given name corresponds with a <see cref="SerializedProperty"/>
@@ -320,7 +341,9 @@ namespace DTT.PublishingTools
             {
                 HelpBoxContent content = _trailingHelpBoxContent[i];
                 if (content.condition())
+                {
                     EditorGUILayout.HelpBox(content.message, content.messageType);
+                }
             }
         }
         #endregion

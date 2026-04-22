@@ -22,32 +22,30 @@ namespace DTT.UI.ProceduralUI
         /// </summary>
         public float BorderThickness
         {
-            get
+            get => RoundingUnit switch
             {
-                switch (_selectedUnit)
-                {
-                    case RoundingUnit.PERCENTAGE:
-                        return _borderThickness;
-                    case RoundingUnit.WORLD:
-                        return _borderThickness / rectTransform.rect.GetShortLength() * 2;
-                    default:
-                        throw new NotSupportedException("This unit is not supported " +
-                                                        "for getting border thickness.");
-                }
-            }
+                RoundingUnit.PERCENTAGE => _borderThickness,
+                RoundingUnit.WORLD => _borderThickness / rectTransform.rect.GetShortLength() * 2,
+                _ => throw new NotSupportedException("This unit is not supported " +
+                                                                        "for getting border thickness."),
+            };
             set
             {
-                switch (_selectedUnit)
+                switch (RoundingUnit)
                 {
                     case RoundingUnit.PERCENTAGE:
                         if (_borderThickness != value)
+                        {
                             _propertyChanged = true;
+                        }
 
                         _borderThickness = value;
                         break;
                     case RoundingUnit.WORLD:
                         if (_borderThickness != value)
+                        {
                             _propertyChanged = true;
+                        }
 
                         _borderThickness = value * rectTransform.rect.GetShortLength() / 2;
                         break;
@@ -72,7 +70,9 @@ namespace DTT.UI.ProceduralUI
             set
             {
                 if (value != null && RoundedImageAssetManager.RoundingShaders.Contains(value.shader))
+                {
                     base.material = value;
+                }
             }
         }
 
@@ -85,7 +85,7 @@ namespace DTT.UI.ProceduralUI
             set
             {
                 _roundingMode = value;
-                base.material = this.material;
+                base.material = material;
             }
         }
 
@@ -99,10 +99,15 @@ namespace DTT.UI.ProceduralUI
             set
             {
                 if (value < 0)
+                {
                     throw new ArgumentOutOfRangeException($"Distance fall off can't be a value below zero. Error value: {value}");
+                }
 
                 if (_distanceFalloff != value)
+                {
                     _propertyChanged = true;
+                }
+
                 _distanceFalloff = value;
             }
         }
@@ -120,7 +125,9 @@ namespace DTT.UI.ProceduralUI
                 // If the Outer Hitbox setting has been turned off
                 // this makes sure the Inner Hitbox setting is also turned off.
                 if (!_useHitboxOutside)
+                {
                     _useHitboxInside = false;
+                }
             }
         }
 
@@ -136,11 +143,8 @@ namespace DTT.UI.ProceduralUI
         /// <summary>
         /// The current rounding unit mode for this image.
         /// </summary>
-        public RoundingUnit RoundingUnit
-        {
-            get => _selectedUnit;
-            set => _selectedUnit = value;
-        }
+        [field: SerializeField]
+        public RoundingUnit RoundingUnit { get; set; } = RoundingUnit.PERCENTAGE;
 
         /// <summary>
         /// The error handler checks and throws errors for relevant problems.
@@ -149,8 +153,7 @@ namespace DTT.UI.ProceduralUI
         {
             get
             {
-                if (_errorHandler == null)
-                    _errorHandler = new RoundedImageErrorHandler(this);
+                _errorHandler ??= new RoundedImageErrorHandler(this);
                 return _errorHandler;
             }
         }
@@ -162,8 +165,7 @@ namespace DTT.UI.ProceduralUI
         {
             get
             {
-                if (_hitbox == null)
-                    _hitbox = new RoundedImageHitbox(this);
+                _hitbox ??= new RoundedImageHitbox(this);
                 return _hitbox;
             }
         }
@@ -217,12 +219,6 @@ namespace DTT.UI.ProceduralUI
         [SerializeField]
         private float _distanceFalloff = 0.5f;
 
-        /// <summary>
-        /// The unit that is currently being used.
-        /// </summary>
-        [SerializeField]
-        private RoundingUnit _selectedUnit = RoundingUnit.PERCENTAGE;
-
         // These are only relevant for the custom inspector.
         // Warnings for their usage are disabled since they are
         // only used in the editor.
@@ -273,7 +269,7 @@ namespace DTT.UI.ProceduralUI
         {
             base.OnPopulateMesh(vh);
 
-            var rounding = GetCornerRounding();
+            ReadOnlyDictionary<Corner, float> rounding = GetCornerRounding();
             Vector2 displaySize = GetImageSize();
             float borderData = (_roundingMode == RoundingMode.BORDER ? BorderThickness : 1) * Mathf.Min(displaySize.x, displaySize.y) * MAX_FACTOR_BORDER;
 
@@ -290,24 +286,28 @@ namespace DTT.UI.ProceduralUI
             Vector4 spriteOuterUV = sprite == null ? new Vector4(0, 0, 1, 1) : UnityEngine.Sprites.DataUtility.GetOuterUV(sprite);
 
             // Populate the vertices with the UV data.
-            UIVertex vert = new UIVertex();
-            
-            float x = 0; 
-            if(displaySize.x != 0) 
+            UIVertex vert = new();
+
+            float x = 0;
+            if (displaySize.x != 0)
+            {
                 x = DistanceFalloff / displaySize.x;
-            
-            float y = 0; 
-            if(displaySize.y != 0) 
+            }
+
+            float y = 0;
+            if (displaySize.y != 0)
+            {
                 y = DistanceFalloff / displaySize.y;
+            }
 
             Vector2 uv1 = displaySize;
-            Vector2 uv2 = new Vector2(rightSideEncoded, leftSideEncoded);
+            Vector2 uv2 = new(rightSideEncoded, leftSideEncoded);
 
             float falloff = DistanceFalloff / (sprite == null ? 1 : 2);
-            Vector2 uv3 = new Vector2(falloff, borderData);
+            Vector2 uv3 = new(falloff, borderData);
 
-            Vector3 positionScalar = Vector3.one + new Vector3(x, y, 0) * 2;
-            Vector2 uv0Offset = new Vector2((spriteOuterUV.z - spriteOuterUV.x) / 2 + spriteOuterUV.x, (spriteOuterUV.w - spriteOuterUV.y) / 2 + spriteOuterUV.y);
+            Vector3 positionScalar = Vector3.one + (new Vector3(x, y, 0) * 2);
+            Vector2 uv0Offset = new(((spriteOuterUV.z - spriteOuterUV.x) / 2) + spriteOuterUV.x, ((spriteOuterUV.w - spriteOuterUV.y) / 2) + spriteOuterUV.y);
 
             for (int i = 0; i < vh.currentVertCount; i++)
             {
@@ -330,7 +330,7 @@ namespace DTT.UI.ProceduralUI
 #if UNITY_2020_2_OR_NEWER
                 float z = (vert.uv0.x - spriteOuterUV.x) / (spriteOuterUV.z - spriteOuterUV.x);
                 float w = (vert.uv0.y - spriteOuterUV.y) / (spriteOuterUV.w - spriteOuterUV.y);
-                vert.uv1 = new Vector4(uv1.x, uv1.y, Single.IsNaN(z) ? 0 : z, Single.IsNaN(w) ? 0 : w);
+                vert.uv1 = new Vector4(uv1.x, uv1.y, float.IsNaN(z) ? 0 : z, float.IsNaN(w) ? 0 : w);
 #else
                 vert.uv1 = uv1;
 #endif
@@ -382,7 +382,9 @@ namespace DTT.UI.ProceduralUI
 
             ReadOnlyDictionary<Corner, float> corners = other.GetCornerRounding();
             foreach (KeyValuePair<Corner, float> corner in corners)
+            {
                 ApplyCornerRounding(corner.Key, corner.Value);
+            }
         }
 
         /// <summary>
@@ -398,7 +400,9 @@ namespace DTT.UI.ProceduralUI
         /// Whether the screen point hit the graphic.
         /// </returns>
         public override bool IsRaycastLocationValid(Vector2 screenPoint, Camera eventCamera)
-            => Hitbox.HitTest(screenPoint) && base.IsRaycastLocationValid(screenPoint, eventCamera);
+        {
+            return Hitbox.HitTest(screenPoint) && base.IsRaycastLocationValid(screenPoint, eventCamera);
+        }
 
         /// <summary>
         /// Returns the percentage rounding of the given corner.
@@ -411,16 +415,13 @@ namespace DTT.UI.ProceduralUI
         /// </returns>
         public float GetCornerRounding(Corner corner)
         {
-            switch (_selectedUnit)
+            return RoundingUnit switch
             {
-                case RoundingUnit.PERCENTAGE:
-                    return _roundingAmount[(int)corner];
-                case RoundingUnit.WORLD:
-                    return Mathf.Clamp01(_roundingAmount[(int)corner] / rectTransform.rect.GetShortLength() * 2);
-                default:
-                    throw new NotSupportedException("This unit is not supported " +
-                                                    "for getting corner rounding.");
-            }
+                RoundingUnit.PERCENTAGE => _roundingAmount[(int)corner],
+                RoundingUnit.WORLD => Mathf.Clamp01(_roundingAmount[(int)corner] / rectTransform.rect.GetShortLength() * 2),
+                _ => throw new NotSupportedException("This unit is not supported " +
+                                                                    "for getting corner rounding."),
+            };
         }
 
         /// <summary>
@@ -431,7 +432,7 @@ namespace DTT.UI.ProceduralUI
         /// </returns>
         public ReadOnlyDictionary<Corner, float> GetCornerRounding()
         {
-            Dictionary<Corner, float> output = new Dictionary<Corner, float>();
+            Dictionary<Corner, float> output = new();
             for (int i = 0; i < _roundingAmount.Length; i++)
             {
                 Corner c = (Corner)i;
@@ -451,7 +452,10 @@ namespace DTT.UI.ProceduralUI
         /// How much the corner should be rounded.
         /// Amount should be within the bounds of zero to one.
         /// </param>
-        public void SetCornerRounding(Corner corner, float amount) => ApplyCornerRounding(corner, amount);
+        public void SetCornerRounding(Corner corner, float amount)
+        {
+            ApplyCornerRounding(corner, amount);
+        }
 
         /// <summary>
         /// Sets the rounding of all the corners.
@@ -461,7 +465,10 @@ namespace DTT.UI.ProceduralUI
         /// How much the corner should be rounded.
         /// Amount should be within the bounds of zero to one.
         /// </param>
-        public void SetCornerRounding(float amount) => SetCornerRounding(amount, amount, amount, amount);
+        public void SetCornerRounding(float amount)
+        {
+            SetCornerRounding(amount, amount, amount, amount);
+        }
 
         /// <summary>
         /// Sets the corner amount of every corner.
@@ -487,7 +494,9 @@ namespace DTT.UI.ProceduralUI
         {
             float[] rounding = new float[] { topLeft, topRight, bottomLeft, bottomRight };
             for (int i = 0; i < ShapeInfo.RECTANGLE_CORNER_AMOUNT; i++)
+            {
                 ApplyCornerRounding((Corner)i, rounding[i]);
+            }
         }
 
         /// <summary>
@@ -498,7 +507,9 @@ namespace DTT.UI.ProceduralUI
         public void SetCornerRounding(params (Corner type, float amount)[] corners)
         {
             for (int i = 0; i < corners.Length; i++)
+            {
                 ApplyCornerRounding(corners[i].type, corners[i].amount);
+            }
         }
 
         /// <summary>
@@ -509,7 +520,9 @@ namespace DTT.UI.ProceduralUI
         {
             Rect imageRect = GetPixelAdjustedRect();
             if (preserveAspect && sprite != null)
+            {
                 PreserveSpriteAspectRatio(ref imageRect, sprite.rect.size);
+            }
 
             return imageRect.size;
         }
@@ -518,7 +531,10 @@ namespace DTT.UI.ProceduralUI
         /// Returns the hash code for this object.
         /// </summary>
         /// <returns>The hash code.</returns>
-        public override int GetHashCode() => base.GetHashCode();
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
         /// <summary>
         /// Returns whether a rounded image is equal to this one based on its properties.
@@ -527,26 +543,25 @@ namespace DTT.UI.ProceduralUI
         /// <returns>Whether the rounded image is equal to this one.</returns>
         public bool ValueEquals(RoundedImage other)
         {
-            if (other == null)
-                throw new ArgumentNullException(nameof(other));
-
-            if (other == this)
-                return true;
-
-            return material == other.material
+            return other == null
+                ? throw new ArgumentNullException(nameof(other))
+                : other == this || (material == other.material
                 && Mode == other.Mode
                 && RoundingUnit == other.RoundingUnit
                 && BorderThickness == other.BorderThickness
                 && DistanceFalloff == other.DistanceFalloff
                 && UseHitboxOutside == other.UseHitboxOutside
                 && UseHitboxInside == other.UseHitboxInside
-                && CompareCorners();
-
+                && CompareCorners());
             bool CompareCorners()
             {
                 foreach (KeyValuePair<Corner, float> corner in other.GetCornerRounding())
+                {
                     if (corner.Value != _roundingAmount[(int)corner.Key])
+                    {
                         return false;
+                    }
+                }
 
                 return true;
             }
@@ -577,21 +592,29 @@ namespace DTT.UI.ProceduralUI
         /// </param>
         private void ApplyCornerRounding(Corner corner, float amount)
         {
-            if (amount < 0 || amount > 1)
+            if (amount is < 0 or > 1)
+            {
                 throw new ArgumentOutOfRangeException(
                     $"Given amount should be within a range of zero to one. Error value: {amount}, corner: {corner}");
+            }
 
-            switch (_selectedUnit)
+            switch (RoundingUnit)
             {
                 case RoundingUnit.PERCENTAGE:
                     if (amount != _roundingAmount[(int)corner])
+                    {
                         _propertyChanged = true;
+                    }
+
                     _roundingAmount[(int)corner] = amount;
                     break;
                 case RoundingUnit.WORLD:
                     float newValue = amount * rectTransform.rect.GetShortLength() / 2;
                     if (newValue != _roundingAmount[(int)corner])
+                    {
                         _propertyChanged = true;
+                    }
+
                     _roundingAmount[(int)corner] = newValue;
                     break;
                 default:

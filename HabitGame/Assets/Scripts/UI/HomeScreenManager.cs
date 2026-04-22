@@ -7,33 +7,33 @@ using UnityEngine.UI;
 
 public class HomeScreenManager : MonoBehaviour
 {
-    [SerializeField] private Button m_playButton;
-    [SerializeField] private Button m_downloadButton;
-    [SerializeField] private Image m_donwPlaying;
+    [SerializeField] private Button _playButton;
+    [SerializeField] private Button _downloadButton;
+    [SerializeField] private Image _donwPlaying;
 
     private ConfigManager _configManager;
 
     private void Start()
     {
-        m_playButton.onClick.AddListener(GameScene);
+        _playButton.onClick.AddListener(GameScene);
         DonePanel(false);
 
         if (_configManager == null)
         {
             _configManager = ConfigManager.Instance;
-            m_downloadButton.onClick.AddListener(DownloadButton);
+            _downloadButton.onClick.AddListener(DownloadButton);
 
             if (_configManager != null)
             {
-                DonePanel(_configManager.config.finishedAllBosses);
+                DonePanel(_configManager.Config.FinishedAllBosses);
             }
         }
     }
 
     private void DonePanel(bool enabled)
     {
-        m_donwPlaying.gameObject.SetActive(enabled);
-        m_playButton.gameObject.SetActive(!enabled);
+        _donwPlaying.gameObject.SetActive(enabled);
+        _playButton.gameObject.SetActive(!enabled);
     }
 
     private void DownloadButton()
@@ -43,7 +43,7 @@ public class HomeScreenManager : MonoBehaviour
             return;
         }
 
-        Config.Download(_configManager.config);
+        Config.Download(_configManager.Config);
     }
 
     private void GameScene()

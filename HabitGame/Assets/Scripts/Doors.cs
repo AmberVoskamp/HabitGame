@@ -7,16 +7,16 @@ using UnityEngine;
 public class Doors : MonoBehaviour
 {
     [Header("Doors")]
-    [SerializeField] private SpriteRenderer m_leftDoor;
-    [SerializeField] private SpriteRenderer m_rightDoor;
-    [SerializeField] private Sprite m_leftDoorOpen;
-    [SerializeField] private Sprite m_rightDoorOpen;
-    [SerializeField] private BoxCollider2D m_doorCollider;
+    [SerializeField] private SpriteRenderer _leftDoor;
+    [SerializeField] private SpriteRenderer _rightDoor;
+    [SerializeField] private Sprite _leftDoorOpen;
+    [SerializeField] private Sprite _rightDoorOpen;
+    [SerializeField] private BoxCollider2D _doorCollider;
 
     private bool _isInRange;
     private bool _doorOpen;
 
-    void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
         if (_doorOpen)
         {
@@ -30,7 +30,7 @@ public class Doors : MonoBehaviour
 
             if (ConfigManager.Instance != null)
             {
-                ConfigManager.Instance.TimeLeftDoorOpens(playerHealth.CurrentHealth);
+                ConfigManager.Instance.TimeLeftDoorOpens(playerHealth.GetCurrentHealth);
             }
         }
     }
@@ -38,7 +38,7 @@ public class Doors : MonoBehaviour
     public void OpenDoor()
     {
         _doorOpen = true;
-        m_leftDoor.sprite = m_leftDoorOpen;
-        m_rightDoor.sprite = m_rightDoorOpen;
+        _leftDoor.sprite = _leftDoorOpen;
+        _rightDoor.sprite = _rightDoorOpen;
     }
 }

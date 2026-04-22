@@ -9,10 +9,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(BossAttack))]
 public class BossHealth : Health
 {
-    [SerializeField] private GameManager m_gameManager;
+    [SerializeField] private GameManager _gameManager;
 
-    [SerializeField] private Animator m_animator;
-    [SerializeField] private Slider m_healthSlider;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private Slider _healthSlider;
 
     private PlayerHealth _playerHealth;
     private BossAttackController _attack;
@@ -25,31 +25,31 @@ public class BossHealth : Health
         SetHealthSlider();
 
         _playerHealth = PlayerHealth.Instance;
-        _attack = this.GetComponent<BossAttackController>();
+        _attack = GetComponent<BossAttackController>();
 
         _attack.BossActivate(_playerHealth, this);
         _playerHealth.ActivateAttack();
 
-        if (m_gameManager == null)
+        if (_gameManager == null)
         {
             Phase phase = GetComponentInParent<Phase>();
-            m_gameManager = phase.GameManager;
+            _gameManager = phase.GameManager;
         }
 
-        m_gameManager.EnterBossRoom(CurrentHealth);
+        _gameManager.EnterBossRoom(CurrentHealth);
     }
 
     public void SetBossHealth()
     {
-        if (_configManager == null)
+        if (ConfigManager == null)
         {
             return;
         }
 
-        float bossHealth = _configManager.GetBossHealth();
+        float bossHealth = ConfigManager.GetBossHealth();
         if (bossHealth == 0)
         {
-            SetHealth(m_health);
+            SetHealth(HealthAmount);
             return;
         }
         SetHealth(bossHealth);
@@ -62,18 +62,18 @@ public class BossHealth : Health
             return;
         }
 
-        StartCoroutine(Damage());
+        _ = StartCoroutine(Damage());
         base.TakeDamage(damage, type);
 
         SetHealthSlider();
 
         #region Boss died
-        if (_currentHealth <= 0)
+        if (CurrentHealth <= 0)
         {
             //Boss dies you win
             _attack?.StopAttacks();
-            m_animator.SetTrigger("Dead");
-            float animationLenght = m_animator.GetCurrentAnimatorStateInfo(0).length;
+            _animator.SetTrigger("Dead");
+            float animationLenght = _animator.GetCurrentAnimatorStateInfo(0).length;
             StartCoroutine(HelperWait.ActionAfterWait(animationLenght, EndGame));
             return;
         }
@@ -82,12 +82,12 @@ public class BossHealth : Health
 
     private void EndGame()
     {
-        m_gameManager.EndGame(true, _playerHealth.CurrentHealth);
+        _gameManager.EndGame(true, _playerHealth.GetCurrentHealth);
     }
 
     private void SetHealthSlider()
     {
-        float healthPercentage = _currentHealth / m_health;
-        m_healthSlider.value = healthPercentage;
+        float healthPercentage = CurrentHealth / HealthAmount;
+        _healthSlider.value = healthPercentage;
     }
 }

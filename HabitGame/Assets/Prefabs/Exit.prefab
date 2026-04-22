@@ -268,7 +268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b829e2efef93140abcaff21c98635b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_action:
+  _action:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4356889348258554956}
@@ -295,5 +295,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba373ed8c09ba34e8584e0b9be142d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextPhase: {fileID: 0}
   _moveForwardAmount: 0

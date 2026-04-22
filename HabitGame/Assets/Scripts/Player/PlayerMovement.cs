@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float m_movementSpeed = 5f;
+    [SerializeField] private float _movementSpeed = 5f;
 
     private UIManager _uiManager;
     private Rigidbody2D _rigidbody;
@@ -17,20 +17,20 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsInMinigameRange
     {
-        set { _isInMinigameRange = value; }
+        set => _isInMinigameRange = value;
     }
 
     #region Unity methods
-    void Start()
+    private void Start()
     {
         _cameraFollow = Camera.main.gameObject.GetComponent<CameraFollow>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _uiManager = UIManager.Instance;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        _rigidbody.linearVelocity = _moveInput * m_movementSpeed;
+        _rigidbody.linearVelocity = _moveInput * _movementSpeed;
     }
 
     #endregion
@@ -49,7 +49,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     #region Inputs
-
     public void OpenMinigamePopup()
     {
         if (_uiManager == null)

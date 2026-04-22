@@ -32,9 +32,11 @@ namespace DTT.Utils.EditorUtilities
         {
             Add(nameof(LinkLabel), () =>
             {
-                GUIStyle style = new GUIStyle(EditorStyles.linkLabel);
-                style.contentOffset = new Vector2(0, -2f);
-                style.clipping = TextClipping.Overflow;
+                GUIStyle style = new(EditorStyles.linkLabel)
+                {
+                    contentOffset = new Vector2(0, -2f),
+                    clipping = TextClipping.Overflow
+                };
 
                 if (!EditorGUIUtility.isProSkin)
                 {
@@ -47,8 +49,10 @@ namespace DTT.Utils.EditorUtilities
 
             Add(nameof(MiniLinkLabel), () =>
             {
-                GUIStyle style = new GUIStyle(LinkLabel);
-                style.fontSize = EditorStyles.miniLabel.fontSize;
+                GUIStyle style = new(LinkLabel)
+                {
+                    fontSize = EditorStyles.miniLabel.fontSize
+                };
                 return style;
             });
         }

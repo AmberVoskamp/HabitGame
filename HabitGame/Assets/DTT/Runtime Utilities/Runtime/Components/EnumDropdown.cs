@@ -43,11 +43,17 @@ namespace DTT.Utils.Components
             {
                 List<Dropdown.OptionData> options = p_dropdown.options;
                 if (options.Count != p_defaultOptions.Length)
+                {
                     return false;
-                
-                for(int i = 0; i < options.Count; i++)
+                }
+
+                for (int i = 0; i < options.Count; i++)
+                {
                     if (options[i].text != p_defaultOptions[i].text)
+                    {
                         return false;
+                    }
+                }
 
                 return true;
             }
@@ -67,22 +73,32 @@ namespace DTT.Utils.Components
         /// </summary>
         private void Awake()
         {
-            if(p_dropdown == null)
+            if (p_dropdown == null)
+            {
                 p_dropdown = GetComponent<Dropdown>();
-           
-            if(!p_UsesDefaultOptions)
+            }
+
+            if (!p_UsesDefaultOptions)
+            {
                 ResetOptions();
+            }
         }
 
         /// <summary>
         /// Starts listening for value changes.
         /// </summary>
-        private void OnEnable() => p_dropdown.onValueChanged.AddListener(OnValueChanged);
-        
+        private void OnEnable()
+        {
+            p_dropdown.onValueChanged.AddListener(OnValueChanged);
+        }
+
         /// <summary>
         /// Stops listening for value changes.
         /// </summary>
-        private void OnDisable() => p_dropdown.onValueChanged.RemoveListener(OnValueChanged);
+        private void OnDisable()
+        {
+            p_dropdown.onValueChanged.RemoveListener(OnValueChanged);
+        }
 
         /// <summary>
         /// Sets the current value displayed on the dropdown.
@@ -93,7 +109,9 @@ namespace DTT.Utils.Components
             string newEnumName = newValue.ToString();
             int index = Array.IndexOf(p_enumNames, newEnumName);
             if (index != -1)
+            {
                 p_dropdown.value = index;
+            }
         }
 
         /// <summary>
@@ -117,10 +135,12 @@ namespace DTT.Utils.Components
         private void Reset()
         {
             p_dropdown = GetComponent<Dropdown>();
-           
-            if(!p_UsesDefaultOptions)
+
+            if (!p_UsesDefaultOptions)
+            {
                 ResetOptions();
-            
+            }
+
             p_dropdown.SetValueWithoutNotify(0);
         }
 
@@ -136,4 +156,3 @@ namespace DTT.Utils.Components
 }
 
 
-    

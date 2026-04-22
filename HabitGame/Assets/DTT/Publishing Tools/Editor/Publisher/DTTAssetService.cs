@@ -1,16 +1,15 @@
-﻿using System;
+﻿using DTT.PublishingTools.Attributes;
+using DTT.Utils.Workflow;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DTT.PublishingTools.Attributes;
+using System.Reflection;
+using System.Text;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.Compilation;
 using UnityEngine;
-using System.Reflection;
-using System.Text;
-using DTT.Utils.Workflow;
-
 using Assembly = System.Reflection.Assembly;
 using UnityAssembly = UnityEditor.Compilation.Assembly;
 
@@ -19,7 +18,7 @@ namespace DTT.PublishingTools
     /// <summary>
     /// Handles DTT Asset attribute implementation.
     /// </summary>
-    internal static class DTTAssetService 
+    internal static class DTTAssetService
     {
         /// <summary>
         /// Represents a scriptable object that uses an asset attribute.
@@ -47,7 +46,7 @@ namespace DTT.PublishingTools
                 this.assetType = assetType;
             }
         }
-        
+
         /// <summary>
         /// Called when scripts are reloaded to go through dtt's runtime assemblies
         /// and create assets for scriptable objects with an Asset attribute.
@@ -56,9 +55,11 @@ namespace DTT.PublishingTools
         private static void CreateDTTAssetsIfNecessary()
         {
             AssetWithAttribute[] attributes = GetAssetsWithAttributes();
-            
-            for(int i = 0; i < attributes.Length; i++) 
-                CreateDTTAssetIfNecessary(attributes[i]); 
+
+            for (int i = 0; i < attributes.Length; i++)
+            {
+                CreateDTTAssetIfNecessary(attributes[i]);
+            }
         }
 
         /// <summary>
@@ -69,8 +70,8 @@ namespace DTT.PublishingTools
         private static AssetWithAttribute[] GetAssetsWithAttributes()
         {
             // Get all dtt assemblies.
-            var assetsWithAttributes = new List<AssetWithAttribute>();
-            var dttAssemblies = CompilationPipeline.GetAssemblies().Where(IsDTTRuntimeAssembly);
+            List<AssetWithAttribute> assetsWithAttributes = new();
+            IEnumerable<UnityAssembly> dttAssemblies = CompilationPipeline.GetAssemblies().Where(IsDTTRuntimeAssembly);
 
             // Start adding types with their asset attributes from assemblies to the result list.
             foreach (UnityAssembly assembly in dttAssemblies)
@@ -78,21 +79,23 @@ namespace DTT.PublishingTools
                 Type[] types;
                 try
                 {
-                    string dataPathWithoutAssets = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/') + 1);
+                    string dataPathWithoutAssets = Application.dataPath[..(Application.dataPath.LastIndexOf('/') + 1)];
                     string combinedPath = Path.Combine(dataPathWithoutAssets, assembly.outputPath);
-                    types  = Assembly.LoadFile(combinedPath).GetTypes();
+                    types = Assembly.LoadFile(combinedPath).GetTypes();
                 }
-                catch(FileNotFoundException)
+                catch (FileNotFoundException)
                 {
                     // Catch file not found exceptions that sometimes occur when trying to load assembly's from unity.
                     continue;
                 }
-                
+
                 for (int i = 0; i < types.Length; i++)
                 {
-                    var attribute = types[i].GetCustomAttributes(typeof(DTTAssetAttribute)).FirstOrDefault();
+                    Attribute attribute = types[i].GetCustomAttributes(typeof(DTTAssetAttribute)).FirstOrDefault();
                     if (attribute != null)
+                    {
                         assetsWithAttributes.Add(new AssetWithAttribute((DTTAssetAttribute)attribute, types[i]));
+                    }
                 }
             }
 
@@ -111,10 +114,12 @@ namespace DTT.PublishingTools
                 Debug.LogWarning("DTT asset could not be created :: full package name was null.");
                 return;
             }
-            
+
             AssetJson assetJson = DTTEditorConfig.GetAssetJson(fullPackageName);
             if (assetJson == null)
+            {
                 return;
+            }
 
             if (!asset.assetType.IsSubclassOf(typeof(ScriptableObject)))
             {
@@ -122,31 +127,39 @@ namespace DTT.PublishingTools
                                  "Only scriptable objects can use the DTTAsset attribute.");
                 return;
             }
-            
+
             string projectFolderPath = DTTEditorConfig.DTTProjectFolder + "/" + assetJson.displayName;
-            StringBuilder assetPathBuilder = new StringBuilder(projectFolderPath);
+            StringBuilder assetPathBuilder = new(projectFolderPath);
 
             // Apply relative path or resources path if necessary.
             if (asset.attribute.relativePath != null)
+            {
                 AppendAssetPath(assetPathBuilder, asset.attribute.relativePath);
+            }
             else if (asset.attribute.isResource)
+            {
                 AppendAssetPath(assetPathBuilder, "Resources");
-            
+            }
+
             // Ensure the directory exists before creating the asset.
-            EnsureDirectoryExistence(assetPathBuilder.ToString()); 
-            
+            EnsureDirectoryExistence(assetPathBuilder.ToString());
+
             // Append an asset name if none has been added manually.
-            if(!Path.HasExtension(assetPathBuilder.ToString()))
+            if (!Path.HasExtension(assetPathBuilder.ToString()))
+            {
                 AppendAssetPath(assetPathBuilder, GetNameForAsset(asset));
-            
-            string assetPath = assetPathBuilder.ToString(); 
-            
+            }
+
+            string assetPath = assetPathBuilder.ToString();
+
             // Do nothing if the file for the asset already exists.
             if (File.Exists(assetPath))
+            {
                 return;
+            }
 
             // If the asset has not yet been created, create one at the asset path.
-            var scriptableObject = ScriptableObject.CreateInstance(asset.assetType);
+            ScriptableObject scriptableObject = ScriptableObject.CreateInstance(asset.assetType);
             AssetDatabase.CreateAsset(scriptableObject, assetPath);
             AssetDatabase.SaveAssets();
         }
@@ -157,7 +170,9 @@ namespace DTT.PublishingTools
         /// <param name="assembly">The assembly to check.</param>
         /// <returns>Whether it is a dtt runtime assembly.</returns>
         private static bool IsDTTRuntimeAssembly(UnityAssembly assembly)
-            => assembly.name.StartsWith("DTT") && assembly.name.EndsWith("Runtime");
+        {
+            return assembly.name.StartsWith("DTT") && assembly.name.EndsWith("Runtime");
+        }
 
         /// <summary>
         /// Ensures the existence of the directory at given asset path.
@@ -166,8 +181,10 @@ namespace DTT.PublishingTools
         private static void EnsureDirectoryExistence(string assetPath)
         {
             if (Path.HasExtension(assetPath))
-                assetPath = assetPath.Remove(assetPath.LastIndexOf('/'));
-            
+            {
+                assetPath = assetPath[..assetPath.LastIndexOf('/')];
+            }
+
             PathUtility.EnsureDirectoryExistence(assetPath);
         }
 
@@ -180,10 +197,14 @@ namespace DTT.PublishingTools
         {
             string name = asset.attribute.assetName;
             if (name == null)
+            {
                 return asset.assetType.Name + ".asset";
+            }
 
             if (!name.EndsWith(".asset"))
+            {
                 name += ".asset";
+            }
 
             return name;
         }
@@ -195,8 +216,8 @@ namespace DTT.PublishingTools
         /// <param name="pathToAppend">The path to append.</param>
         private static void AppendAssetPath(StringBuilder assetPathBuilder, string pathToAppend)
         {
-            assetPathBuilder.Append("/");
-            assetPathBuilder.Append(pathToAppend);
+            _ = assetPathBuilder.Append("/");
+            _ = assetPathBuilder.Append(pathToAppend);
         }
     }
 }

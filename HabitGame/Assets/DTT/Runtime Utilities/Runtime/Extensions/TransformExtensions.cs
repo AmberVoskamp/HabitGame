@@ -15,13 +15,9 @@ namespace DTT.Utils.Extensions
         /// <returns>The first child.</returns>
         public static Transform FirstChild(this Transform transform)
         {
-            if (transform == null)
-                throw new ArgumentNullException(nameof(transform));
-
-            if (transform.childCount == 0)
-                return null;
-            
-            return transform.GetChild(0);
+            return transform == null
+                ? throw new ArgumentNullException(nameof(transform))
+                : transform.childCount == 0 ? null : transform.GetChild(0);
         }
 
         /// <summary>
@@ -31,13 +27,9 @@ namespace DTT.Utils.Extensions
         /// <returns>The last child.</returns>
         public static Transform LastChild(this Transform transform)
         {
-            if (transform == null)
-                throw new ArgumentNullException(nameof(transform));
-
-            if (transform.childCount == 0)
-                return null;
-            
-            return transform.GetChild(transform.childCount - 1);
+            return transform == null
+                ? throw new ArgumentNullException(nameof(transform))
+                : transform.childCount == 0 ? null : transform.GetChild(transform.childCount - 1);
         }
     }
 }

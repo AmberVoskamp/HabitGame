@@ -58,42 +58,42 @@ namespace DTT.UI.ProceduralUI.Editor
                 Add(nameof(UniformInfoMessage), () => new GUIContent("Uniform mode will automatically round your image to be as rounded as possible.", EditorGUIUtility.IconContent("console.infoicon.sml@2x").image));
             }
         }
-        
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public override string HeaderName => "Corner Target Mode";
-        
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         protected override bool OpenFoldoutOnEnter => true;
-        
+
         /// <summary>
         /// The corner mode property of <see cref="RoundedImage"/>.
         /// </summary>
-        private SerializedProperty _cornerMode;
+        private readonly SerializedProperty _cornerMode;
 
         /// <summary>
         /// The rounding amount property of <see cref="RoundedImage"/>.
         /// </summary>
-        private SerializedProperty _roundingAmount;
+        private readonly SerializedProperty _roundingAmount;
 
         /// <summary>
         /// The selected unit property of <see cref="RoundedImage"/>.
         /// </summary>
-        private SerializedProperty _selectedUnit;
+        private readonly SerializedProperty _selectedUnit;
 
         /// <summary>
         /// The side property of <see cref="RoundedImage"/>.
         /// </summary>
-        private SerializedProperty _side;
+        private readonly SerializedProperty _side;
 
         /// <summary>
         /// All the GUIContent for <see cref="CornerTargetModeSection"/>.
         /// </summary>
-        private CornerTargetModeContent _content;
-        
+        private readonly CornerTargetModeContent _content;
+
         /// <summary>
         /// Creates a new corner target mode section.
         /// </summary>
@@ -124,14 +124,14 @@ namespace DTT.UI.ProceduralUI.Editor
             SerializedProperty side
         ) : base(roundedImage, repaint)
         {
-            this._cornerMode = cornerMode;
-            this._roundingAmount = roundingAmount;
-            this._selectedUnit = selectedUnit;
-            this._side = side;
+            _cornerMode = cornerMode;
+            _roundingAmount = roundingAmount;
+            _selectedUnit = selectedUnit;
+            _side = side;
 
             _content = new CornerTargetModeContent();
         }
-        
+
         /// <summary>
         /// Draws the toolbar where the user can select their option, and draws the selected option.
         /// </summary>
@@ -159,7 +159,7 @@ namespace DTT.UI.ProceduralUI.Editor
                         $"{(RoundingCornerMode)_cornerMode.enumValueIndex} is not supported.");
             }
         }
-        
+
         /// <summary>
         /// Draws the inspector section for when <see cref="RoundingCornerMode.UNIFORM"/> is selected.
         /// </summary>
@@ -192,7 +192,7 @@ namespace DTT.UI.ProceduralUI.Editor
         /// </summary>
         private void DrawSideMode()
         {
-            EditorGUILayout.BeginHorizontal();
+            _ = EditorGUILayout.BeginHorizontal();
 
             // Set the selected side mode based on an enum popup.
             RoundingSide prevSide = (RoundingSide)_side.enumValueIndex;
@@ -208,7 +208,7 @@ namespace DTT.UI.ProceduralUI.Editor
             // rounding from the previous side to maintain the users rounding.
             if ((int)prevSide != _side.enumValueIndex)
             {
-                var previousUsedCorners = RoundedImageEditor.SideToCorners(prevSide);
+                (Corner, Corner) previousUsedCorners = RoundedImageEditor.SideToCorners(prevSide);
                 rounding = _roundingAmount.GetArrayElementAtIndex((int)previousUsedCorners.Item2).floatValue;
             }
 
@@ -230,7 +230,9 @@ namespace DTT.UI.ProceduralUI.Editor
             float rounding = _roundingAmount.GetArrayElementAtIndex(0).floatValue;
             rounding = DrawSlider((RoundingUnit)_selectedUnit.enumValueIndex, rounding);
             for (int i = 0; i < _roundingAmount.arraySize; i++)
+            {
                 _roundingAmount.GetArrayElementAtIndex(i).floatValue = rounding;
+            }
         }
 
         /// <summary>

@@ -10,8 +10,8 @@ using UnityEngine;
 
 public class SpikeRow : MonoBehaviour
 {
-    [SerializeField] private Spikes m_spikePrefab;
-    [SerializeField] private float m_spaceBetweenSpikes;
+    [SerializeField] private Spikes _spikePrefab;
+    [SerializeField] private float _spaceBetweenSpikes;
 
     private Spikes[] _spikeArray;
 
@@ -47,7 +47,7 @@ public class SpikeRow : MonoBehaviour
 
         if (transform.childCount > 0)
         {
-            for (int i = transform.childCount - (1); i >= 0; i--)
+            for (int i = transform.childCount - 1; i >= 0; i--)
             {
                 GameObject child = transform.GetChild(i).gameObject;
                 DestroyImmediate(child);
@@ -56,11 +56,11 @@ public class SpikeRow : MonoBehaviour
 
         #region spawn spikes
         _spikeArray = new Spikes[size];
-        float oldSpikePlacement = -m_spaceBetweenSpikes;
+        float oldSpikePlacement = -_spaceBetweenSpikes;
         for (int i = 0; i < size; i++)
         {
-            Spikes spike = Instantiate(m_spikePrefab, transform);
-            float newSpikePlacement = oldSpikePlacement + m_spaceBetweenSpikes;
+            Spikes spike = Instantiate(_spikePrefab, transform);
+            float newSpikePlacement = oldSpikePlacement + _spaceBetweenSpikes;
             spike.transform.localPosition = new Vector3(newSpikePlacement, 0, 0);
             oldSpikePlacement = newSpikePlacement;
             _spikeArray[i] = spike;
@@ -68,7 +68,17 @@ public class SpikeRow : MonoBehaviour
         #endregion
     }
 
-    IEnumerator SpikeUp(float upTime)
+    public void GetSpikes()
+    {
+        if (!_spikeArray.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        _spikeArray = GetComponentsInChildren<Spikes>(); 
+    }
+
+    private IEnumerator SpikeUp(float upTime)
     {
         yield return new WaitForSeconds(upTime);
         SpikesDown();

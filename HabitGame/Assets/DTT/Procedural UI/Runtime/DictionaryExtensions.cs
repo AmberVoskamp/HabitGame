@@ -18,14 +18,14 @@ namespace DTT.UI.ProceduralUI
         /// <param name="originalKey"> The original key.</param>
         /// <param name="comparer"> The function that checks if there equal.</param>
         /// <returns>The object found to be equal.</returns>
-        public static TKey GetComparableKey<TKey,TValue>(
-            this Dictionary<TKey,TValue> dictionary, 
-            TKey originalKey, 
-            Func<TKey,TKey,bool> comparer )
+        public static TKey GetComparableKey<TKey, TValue>(
+            this Dictionary<TKey, TValue> dictionary,
+            TKey originalKey,
+            Func<TKey, TKey, bool> comparer)
         {
-            foreach(TKey key in dictionary.Keys)
+            foreach (TKey key in dictionary.Keys)
             {
-                if(comparer(key, originalKey))
+                if (comparer(key, originalKey))
                 {
                     return key;
                 }

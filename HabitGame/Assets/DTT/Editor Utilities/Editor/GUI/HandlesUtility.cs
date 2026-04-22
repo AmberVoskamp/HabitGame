@@ -21,23 +21,27 @@ namespace DTT.EditorUtilities
             Vector3 top;
             Vector3 bottom;
             if (start.y > end.y)
+            {
                 (top, bottom) = (start, end);
+            }
             else
+            {
                 (bottom, top) = (start, end);
+            }
 
-            Vector3 topRight = new Vector3(1, 1, 0);
-            
+            Vector3 topRight = new(1, 1, 0);
+
             Handles.DrawLine(top, bottom);
             if (enableStartArrowCap)
             {
-                Handles.DrawLine(top, top - topRight * capLength);
-                Handles.DrawLine(top, top - (Vector3.left + Vector3.up) * capLength);
+                Handles.DrawLine(top, top - (topRight * capLength));
+                Handles.DrawLine(top, top - ((Vector3.left + Vector3.up) * capLength));
             }
 
             if (enableEndArrowCap)
             {
-                Handles.DrawLine(bottom, bottom - (Vector3.right + Vector3.down) * capLength);
-                Handles.DrawLine(bottom, bottom + topRight * capLength);
+                Handles.DrawLine(bottom, bottom - ((Vector3.right + Vector3.down) * capLength));
+                Handles.DrawLine(bottom, bottom + (topRight * capLength));
             }
         }
     }

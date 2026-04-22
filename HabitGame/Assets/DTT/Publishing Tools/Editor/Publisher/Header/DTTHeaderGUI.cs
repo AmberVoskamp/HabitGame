@@ -39,7 +39,7 @@ namespace DTT.PublishingTools
         /// <summary>
         /// The asset json of the package displayed by the header.
         /// </summary>
-        private AssetJson _assetJson;
+        private readonly AssetJson _assetJson;
 
         /// <summary>
         /// The margin between the icon and the labels.
@@ -84,7 +84,7 @@ namespace DTT.PublishingTools
             _customDocumentationUrl = customDocumentationUrl;
 
             // Use the custom display name if it isn't null. Otherwise use the asset json display name with a DTT prefix.
-            string displayName = customDisplayName ?? "DTT " + assetJson.displayName.AddSpacesBeforeCapitals();
+            string displayName = customDisplayName ?? ("DTT " + assetJson.displayName.AddSpacesBeforeCapitals());
             string version = DTTEditorConfig.GetPackageVersion(assetJson.packageName);
             _content = new DTTHeaderContent(displayName, version);
 
@@ -168,7 +168,9 @@ namespace DTT.PublishingTools
         /// </summary>
         /// <param name="initRect">The initial rectangle the header is drawn in.</param>
         private void DrawBackground(Rect initRect)
-            => EditorGUI.DrawRect(initRect, EditorGUIUtility.isProSkin ? DTTColors.dark.inspector : DTTColors.light.inspector);
+        {
+            EditorGUI.DrawRect(initRect, EditorGUIUtility.isProSkin ? DTTColors.dark.inspector : DTTColors.light.inspector);
+        }
 
         /// <summary>
         /// Draws the header content inside the initial rectangle.
@@ -190,8 +192,10 @@ namespace DTT.PublishingTools
         /// <param name="initRect">The initial rectangle the header is drawn in.</param>
         private void DrawIcon(Rect initRect)
         {
-            Rect iconRect = new Rect(initRect);
-            iconRect.width = initRect.height;
+            Rect iconRect = new(initRect)
+            {
+                width = initRect.height
+            };
 
             if (_customIcon != null)
             {
@@ -210,7 +214,7 @@ namespace DTT.PublishingTools
         /// <param name="initRect">The initial rectangle the header is drawn in.</param>
         private void DrawTitle(Rect initRect)
         {
-            Rect titleRect = new Rect(initRect);
+            Rect titleRect = new(initRect);
             titleRect.x += HEADER_HEIGHT + LABEL_MARGIN;
             titleRect.y += LABEL_MARGIN;
 
@@ -227,17 +231,21 @@ namespace DTT.PublishingTools
         /// <param name="initRect">The initial rectangle the header is drawn in.</param>
         private void DrawDocumentationLink(Rect initRect)
         {
-            Rect linkRect = new Rect(initRect);
+            Rect linkRect = new(initRect);
             linkRect.x += HEADER_HEIGHT + LABEL_MARGIN;
-            linkRect.y += (HEADER_HEIGHT * 0.5f);
+            linkRect.y += HEADER_HEIGHT * 0.5f;
             linkRect.height = _content.DocumentationLabel.GetGUISize(_styles.Link).y;
 
             if (GUIDrawTools.LinkLabel(linkRect, _content.DocumentationLabel, _styles.Link))
             {
                 if (_customDocumentationUrl != null)
+                {
                     DTTEditorConfig.OpenPackageLink(_assetJson, _customDocumentationUrl);
+                }
                 else
+                {
                     DTTEditorConfig.OpenPackageDocumentation(_assetJson);
+                }
             }
         }
 
@@ -249,10 +257,12 @@ namespace DTT.PublishingTools
         {
             float scrollBarOffset = _activeInspectorScrollBar ? 18f : 0f;
             Vector2 size = _content.VersionLabel.GetGUISize(_styles.Label);
-            Rect versionRect = new Rect(initRect);
-            versionRect.x = initRect.xMax - size.x - LABEL_MARGIN - scrollBarOffset;
-            versionRect.width = size.x;
-            versionRect.height = size.y;
+            Rect versionRect = new(initRect)
+            {
+                x = initRect.xMax - size.x - LABEL_MARGIN - scrollBarOffset,
+                width = size.x,
+                height = size.y
+            };
             versionRect.y += LABEL_MARGIN;
 
             GUI.Label(versionRect, _content.VersionLabel, _styles.Label);

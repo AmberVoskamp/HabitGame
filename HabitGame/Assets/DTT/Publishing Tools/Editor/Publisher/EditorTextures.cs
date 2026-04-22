@@ -23,13 +23,14 @@ namespace DTT.PublishingTools
         public static T Load<T>(string fullPackageName, string relativePath) where T : Texture
         {
             if (fullPackageName == null)
+            {
                 throw new ArgumentNullException(nameof(fullPackageName));
+            }
 
             AssetJson assetJson = DTTEditorConfig.GetAssetJson(fullPackageName);
-            if (assetJson == null)
-                throw new ArgumentNullException(nameof(assetJson), $"Could not find asset json with package name: {fullPackageName}");
-
-            return Load<T>(assetJson, relativePath);
+            return assetJson == null
+                ? throw new ArgumentNullException(nameof(assetJson), $"Could not find asset json with package name: {fullPackageName}")
+                : Load<T>(assetJson, relativePath);
         }
 
         /// <summary>
@@ -43,10 +44,14 @@ namespace DTT.PublishingTools
         public static T Load<T>(AssetJson assetJson, string relativePath) where T : Texture
         {
             if (assetJson == null)
+            {
                 throw new ArgumentNullException(nameof(assetJson));
+            }
 
             if (relativePath == null)
+            {
                 throw new ArgumentNullException(relativePath);
+            }
 
             string path = Path.Combine(DTTEditorConfig.GetContentFolderPath(assetJson), "Editor", "Art", relativePath);
             return AssetDatabase.LoadAssetAtPath<T>(path);

@@ -69,14 +69,16 @@ namespace DTT.Utils.EditorUtilities
         public bool OnGUI(string headerName, Action drawAction, Action<Rect> headerDrawAction = null)
         {
             _animation.target = EditorGUILayout.Foldout(_animation.target, headerName);
-            
+
             headerDrawAction?.Invoke(GUILayoutUtility.GetLastRect());
 
             if (EditorGUILayout.BeginFadeGroup(_animation.faded))
             {
                 int indentLevel = EditorGUI.indentLevel;
                 if (_useIndent)
+                {
                     EditorGUI.indentLevel += 1;
+                }
 
                 drawAction?.Invoke();
 
@@ -100,14 +102,16 @@ namespace DTT.Utils.EditorUtilities
         public bool OnGUI(Rect rect, string headerName, Action drawAction, Action<Rect> headerDrawAction = null)
         {
             _animation.target = EditorGUI.Foldout(rect, _animation.target, headerName);
-            
+
             headerDrawAction?.Invoke(rect);
-            
+
             if (EditorGUILayout.BeginFadeGroup(_animation.faded))
             {
                 int indentLevel = EditorGUI.indentLevel;
                 if (_useIndent)
+                {
                     EditorGUI.indentLevel += 1;
+                }
 
                 drawAction?.Invoke();
 

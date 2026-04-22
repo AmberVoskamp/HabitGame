@@ -18,7 +18,10 @@ namespace DTT.Utils.EditorUtilities
         /// <summary>
         /// Initializes the styles.
         /// </summary>
-        static GUIDrawTools() => styles = new ExtendedGUIStyles();
+        static GUIDrawTools()
+        {
+            styles = new ExtendedGUIStyles();
+        }
 
         #region Methods
         #region Public
@@ -28,7 +31,10 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="rect">The position.</param>
         /// <param name="label">The label text.</param>
         /// <returns>Whether the link label has been clicked.</returns>
-        public static bool LinkLabel(Rect rect, string label) => LinkLabel(rect, new GUIContent(label), styles.LinkLabel);
+        public static bool LinkLabel(Rect rect, string label)
+        {
+            return LinkLabel(rect, new GUIContent(label), styles.LinkLabel);
+        }
 
         /// <summary>
         /// Draws a clickable link label.
@@ -36,7 +42,10 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="rect">The position.</param>
         /// <param name="content">The text content.</param>
         /// <returns>Whether the link label has been clicked.</returns>
-        public static bool LinkLabel(Rect rect, GUIContent content) => LinkLabel(rect, content, styles.LinkLabel);
+        public static bool LinkLabel(Rect rect, GUIContent content)
+        {
+            return LinkLabel(rect, content, styles.LinkLabel);
+        }
 
         /// <summary>
         /// Draws a clickable link label.
@@ -45,7 +54,10 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="label">The text content.</param>
         /// <param name="linkStyle">The link style.</param>
         /// <returns>Whether the link label has been clicked.</returns>
-        public static bool LinkLabel(Rect rect, string label, GUIStyle linkStyle) => LinkLabel(rect, new GUIContent(label), linkStyle);
+        public static bool LinkLabel(Rect rect, string label, GUIStyle linkStyle)
+        {
+            return LinkLabel(rect, new GUIContent(label), linkStyle);
+        }
 
         /// <summary>
         /// Draws a clickable link label.
@@ -57,8 +69,10 @@ namespace DTT.Utils.EditorUtilities
         public static bool LinkLabel(Rect rect, GUIContent content, GUIStyle linkStyle)
         {
             float width = linkStyle.CalcSize(content).x;
-            Rect textRect = new Rect(rect);
-            textRect.xMax = rect.xMin + width;
+            Rect textRect = new(rect)
+            {
+                xMax = rect.xMin + width
+            };
 
             Vector2 offset = linkStyle.contentOffset;
             RectOffset padding = linkStyle.padding;
@@ -82,14 +96,20 @@ namespace DTT.Utils.EditorUtilities
         /// </summary>
         /// <param name="label">The label text.</param>
         /// <returns>Whether the link label has been clicked.</returns>
-        public static bool LinkLabel(string label) => LinkLabel(new GUIContent(label), styles.LinkLabel);
+        public static bool LinkLabel(string label)
+        {
+            return LinkLabel(new GUIContent(label), styles.LinkLabel);
+        }
 
         /// <summary>
         /// Draws a clickable link label.
         /// </summary>
         /// <param name="content">The text content.</param>
         /// <returns>Whether the link label has been clicked.</returns>
-        public static bool LinkLabel(GUIContent content) => LinkLabel(content, styles.LinkLabel);
+        public static bool LinkLabel(GUIContent content)
+        {
+            return LinkLabel(content, styles.LinkLabel);
+        }
 
         /// <summary>
         /// Draws a clickable label in given link style.
@@ -97,7 +117,10 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="label">The label text.</param>
         /// <param name="linkStyle">The link style.</param>
         /// <returns>Whether the link has been clicked.</returns>
-        public static bool LinkLabel(string label, GUIStyle linkStyle) => LinkLabel(new GUIContent(label), linkStyle);
+        public static bool LinkLabel(string label, GUIStyle linkStyle)
+        {
+            return LinkLabel(new GUIContent(label), linkStyle);
+        }
 
         /// <summary>
         /// Draws a clickable label in given link style.
@@ -145,7 +168,7 @@ namespace DTT.Utils.EditorUtilities
             Color color = EditorGUIUtility.isProSkin ? GUIColors.light.line : GUIColors.light.unityInspector;
             Separator(rect, color, margin);
         }
-        
+
         /// <summary>
         /// Draws a horizontal separating line in given color.
         /// </summary>
@@ -162,8 +185,8 @@ namespace DTT.Utils.EditorUtilities
             Handles.color = color;
 
             float yPosition = rect.yMax - offset.top + offset.bottom;
-            Vector3 left = new Vector3(rect.xMin + offset.left, yPosition);
-            Vector3 right = new Vector3(rect.xMax - offset.right, yPosition);
+            Vector3 left = new(rect.xMin + offset.left, yPosition);
+            Vector3 right = new(rect.xMax - offset.right, yPosition);
             Handles.DrawLine(left, right);
 
             Handles.color = originalColor;
@@ -175,7 +198,10 @@ namespace DTT.Utils.EditorUtilities
         /// </summary>
         /// <param name="searchText">The current search text.</param>
         /// <returns>The updated search text.</returns>
-        public static string SearchField(string searchText) => EditorGUILayout.TextField(searchText, EditorStyles.toolbarSearchField);
+        public static string SearchField(string searchText)
+        {
+            return EditorGUILayout.TextField(searchText, EditorStyles.toolbarSearchField);
+        }
 
         /// <summary>
         /// Draws a search field you can use to filter lists. It outputs whether

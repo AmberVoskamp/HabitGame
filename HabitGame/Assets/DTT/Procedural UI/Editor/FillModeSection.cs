@@ -37,37 +37,37 @@ namespace DTT.UI.ProceduralUI.Editor
                 Add(nameof(BorderOption), () => new GUIContent("Border", "Makes the inside invisible"));
             }
         }
-        
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public override string HeaderName => "Fill Mode";
-        
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         protected override bool OpenFoldoutOnEnter => true;
-        
+
         /// <summary>
         /// The border thickness property of <see cref="RoundedImage"/>.
         /// </summary>
-        private SerializedProperty _borderThickness;
+        private readonly SerializedProperty _borderThickness;
 
         /// <summary>
         /// The mode property of <see cref="RoundedImage"/>.
         /// </summary>
-        private SerializedProperty _mode;
+        private readonly SerializedProperty _mode;
 
         /// <summary>
         /// The selected unit property of <see cref="RoundedImage"/>.
         /// </summary>
-        private SerializedProperty _selectedUnit;
+        private readonly SerializedProperty _selectedUnit;
 
         /// <summary>
         /// The GUIContent for <see cref="FillModeSection"/>.
         /// </summary>
-        private FillModeContent _content;
-        
+        private readonly FillModeContent _content;
+
         /// <summary>
         /// Creates a new fillmode section.
         /// </summary>
@@ -94,13 +94,13 @@ namespace DTT.UI.ProceduralUI.Editor
             SerializedProperty selectedUnit
         ) : base(roundedImage, repaint)
         {
-            this._borderThickness = borderThickness;
-            this._mode = mode;
-            this._selectedUnit = selectedUnit;
+            _borderThickness = borderThickness;
+            _mode = mode;
+            _selectedUnit = selectedUnit;
 
             _content = new FillModeContent();
         }
-        
+
         /// <summary>
         /// Draws the fill mode section where the user can 
         /// select how they want to fill their rounded image.
@@ -111,7 +111,9 @@ namespace DTT.UI.ProceduralUI.Editor
 
             // Show border amount when border rounding mode is enabled.
             if ((RoundingMode)_mode.enumValueIndex == RoundingMode.BORDER)
+            {
                 _borderThickness.floatValue = DrawSlider((RoundingUnit)_selectedUnit.enumValueIndex, _borderThickness.floatValue);
+            }
         }
     }
 }

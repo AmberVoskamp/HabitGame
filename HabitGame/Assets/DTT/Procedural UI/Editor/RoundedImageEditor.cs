@@ -18,11 +18,11 @@ namespace DTT.UI.ProceduralUI.Editor
         /// Contains the styles used by the editor.
         /// </summary>
         public static RoundedImageStyling Styling { get; private set; } = new RoundedImageStyling();
-        
+
         /// <summary>
         /// All the sections that inspector should draw.
         /// </summary>
-        private List<IDrawable> _sections = new List<IDrawable>();
+        private readonly List<IDrawable> _sections = new();
 
         /// <summary>
         /// Reference to the target of the inspector.
@@ -38,7 +38,7 @@ namespace DTT.UI.ProceduralUI.Editor
         /// The serialized properties of <see cref="RoundedImage"/>.
         /// </summary>
         private RoundedImageSerializedProperties _serializedProperties;
-        
+
         /// <summary>
         /// Initializes the sections.
         /// </summary>
@@ -52,7 +52,7 @@ namespace DTT.UI.ProceduralUI.Editor
 
             CreateSections();
         }
-        
+
         /// <summary>
         /// Draws the inspector.
         /// </summary>
@@ -65,21 +65,27 @@ namespace DTT.UI.ProceduralUI.Editor
             // If there are any errors active, draw the error section to notify user.
             bool anyErrors = _roundedImage.ErrorHandler.AnyErrors;
             if (anyErrors)
+            {
                 _errorHandlingSection.Draw();
+            }
 
             // If there are any errors active, disable the editor. 
             EditorGUI.BeginDisabledGroup(anyErrors);
 
             // Draw all the sections.
             for (int i = 0; i < _sections.Count; i++)
+            {
                 _sections[i].Draw();
+            }
 
             EditorGUI.EndDisabledGroup();
 
             if (EditorGUI.EndChangeCheck())
-                serializedObject.ApplyModifiedProperties();
+            {
+                _ = serializedObject.ApplyModifiedProperties();
+            }
         }
-        
+
         /// <summary>
         /// Returns a tuple of the corners related to a certain side.
         /// </summary>
@@ -87,25 +93,21 @@ namespace DTT.UI.ProceduralUI.Editor
         /// <returns>The corners from the given side.</returns>
         public static (Corner, Corner) SideToCorners(RoundingSide side)
         {
-            switch (side)
+            return side switch
             {
-                case RoundingSide.TOP:
-                    return (Corner.TOP_LEFT, Corner.TOP_RIGHT);
-                case RoundingSide.LEFT:
-                    return (Corner.TOP_LEFT, Corner.BOTTOM_LEFT);
-                case RoundingSide.BOTTOM:
-                    return (Corner.BOTTOM_LEFT, Corner.BOTTOM_RIGHT);
-                case RoundingSide.RIGHT:
-                    return (Corner.TOP_RIGHT, Corner.BOTTOM_RIGHT);
-                default:
-                    throw new NotSupportedException($"This side is not support for side rounding: {side}");
-            }
+                RoundingSide.TOP => (Corner.TOP_LEFT, Corner.TOP_RIGHT),
+                RoundingSide.LEFT => (Corner.TOP_LEFT, Corner.BOTTOM_LEFT),
+                RoundingSide.BOTTOM => (Corner.BOTTOM_LEFT, Corner.BOTTOM_RIGHT),
+                RoundingSide.RIGHT => (Corner.TOP_RIGHT, Corner.BOTTOM_RIGHT),
+                _ => throw new NotSupportedException($"This side is not support for side rounding: {side}"),
+            };
         }
 
         /// <summary>
         /// Adds the Rounded image in the "Create Gameobject" menu.
         /// </summary>
         [MenuItem("GameObject/UI/Rounded Image")]
+        [Obsolete]
         public static void RoundedImageMenuItem()
         {
             RoundedImage roundedImage = new GameObject().AddComponent<RoundedImage>();
@@ -118,7 +120,9 @@ namespace DTT.UI.ProceduralUI.Editor
             else
             {
                 if (FindObjectOfType<Canvas>() == null)
-                    EditorApplication.ExecuteMenuItem("GameObject/UI/Canvas");
+                {
+                    _ = EditorApplication.ExecuteMenuItem("GameObject/UI/Canvas");
+                }
 
                 Canvas canvas = FindObjectOfType<Canvas>();
 
@@ -126,14 +130,14 @@ namespace DTT.UI.ProceduralUI.Editor
             }
             Selection.activeGameObject = roundedImage.gameObject;
         }
-        
+
         /// <summary>
         /// Creates the different sections that are in the inspector.
         /// </summary>
         private void CreateSections()
         {
             // Define all the serialized properties for the Image Settings.
-            var imageProperties = new ImageSettingsSection.ImageSerializedProperties
+            ImageSettingsSection.ImageSerializedProperties imageProperties = new()
             {
                 type = _serializedProperties.m_Type,
                 fillMethod = _serializedProperties.m_FillMethod,
@@ -148,7 +152,7 @@ namespace DTT.UI.ProceduralUI.Editor
                 maskable = _serializedProperties.m_Maskable
             };
 
-            UnityAction repaintAction = new UnityAction(Repaint);
+            UnityAction repaintAction = new(Repaint);
 
             // Create the Image Settings section.
             _sections.Add(new ImageSettingsSection(_roundedImage, repaintAction, imageProperties));

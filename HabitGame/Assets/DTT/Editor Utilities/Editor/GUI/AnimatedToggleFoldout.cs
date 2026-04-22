@@ -68,7 +68,9 @@ namespace DTT.Utils.EditorUtilities
             toggle = EditorGUILayout.Toggle(headerName, toggle);
             _animation.target = toggle;
             if (EditorGUILayout.BeginFadeGroup(_animation.faded))
+            {
                 drawAction?.Invoke();
+            }
 
             EditorGUILayout.EndFadeGroup();
 
