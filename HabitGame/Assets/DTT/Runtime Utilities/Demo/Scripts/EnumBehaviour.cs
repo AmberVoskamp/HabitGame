@@ -20,10 +20,10 @@ namespace DTT.Utils.Extensions.Demo
         private void Awake()
         {
             // Retrieve the next value. It will loop around if at the last value.
-            CharacterEnum next = _character.Next();
+            _ = _character.Next();
 
             // Retrieve the previous value. It will loop around if at the first value.
-            CharacterEnum previous = _character.Previous();
+            _ = _character.Previous();
         }
     }
 

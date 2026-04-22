@@ -23,7 +23,9 @@ namespace DTT.Utils.EditorUtilities
         public static TextureImporter GetImporterOfSprite(this Sprite sprite)
         {
             if (sprite == null)
+            {
                 throw new ArgumentNullException(nameof(sprite));
+            }
 
             string path = AssetDatabase.GetAssetPath(sprite);
             return path != PathNames.BUILDIN_RESOURCES ? (TextureImporter)TextureImporter.GetAtPath(path) : null;
@@ -37,7 +39,9 @@ namespace DTT.Utils.EditorUtilities
         public static bool IsSpriteFromUnity(this Sprite sprite)
         {
             if (sprite == null)
+            {
                 throw new ArgumentNullException(nameof(sprite));
+            }
 
             string path = AssetDatabase.GetAssetPath(sprite);
             return path == PathNames.BUILDIN_RESOURCES;
@@ -52,10 +56,12 @@ namespace DTT.Utils.EditorUtilities
         public static bool IsImportedWithMultipleSpriteMode(this Sprite sprite)
         {
             if (sprite == null)
+            {
                 throw new ArgumentNullException(nameof(sprite));
+            }
 
             TextureImporter importer = GetImporterOfSprite(sprite);
-            return importer != null ? importer.spriteImportMode == SpriteImportMode.Multiple : false;
+            return importer != null && importer.spriteImportMode == SpriteImportMode.Multiple;
         }
 
         /// <summary>
@@ -67,14 +73,18 @@ namespace DTT.Utils.EditorUtilities
         public static bool IsAtlasPacked(this Sprite sprite)
         {
             if (sprite == null)
+            {
                 throw new ArgumentNullException(nameof(sprite));
+            }
 
             string[] guids = AssetDatabase.FindAssets("t:spriteatlas");
             foreach (string guid in guids)
             {
                 SpriteAtlas atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(AssetDatabase.GUIDToAssetPath(guid));
                 if (atlas.CanBindTo(sprite))
+                {
                     return true;
+                }
             }
 
             return false;

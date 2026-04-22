@@ -9,10 +9,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class FadeToBlack : MonoBehaviour
 {
-    [SerializeField] private float m_fadeTime;
+    [SerializeField] private float _fadeTime;
     private Image _image;
 
-    void Start()
+    private void Start()
     {
         gameObject.SetActive(true);
         _image = GetComponent<Image>();
@@ -23,7 +23,7 @@ public class FadeToBlack : MonoBehaviour
 
     public void Fade()
     {
-        _image.DOFade(1f, m_fadeTime)
+        _image.DOFade(1f, _fadeTime)
             .OnComplete(() =>
             {
                 SceneSwitchManager.Instance.SwitchScene(Scenes.HomeScene);

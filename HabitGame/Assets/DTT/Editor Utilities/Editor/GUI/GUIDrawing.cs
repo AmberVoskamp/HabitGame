@@ -25,7 +25,9 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="propertiesToIgnore">The names of property to not draw.</param>
         /// <returns>A value has been changed when drawing the properties.</returns>
         public static bool DrawProperties(this SerializedObject serializedObject, params string[] propertiesToIgnore)
-            => DrawProperties(serializedObject, true, propertiesToIgnore);
+        {
+            return DrawProperties(serializedObject, true, propertiesToIgnore);
+        }
 
         /// <summary>
         /// Draws the properties of the serialized object. Will update the serialized object if 
@@ -35,7 +37,9 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="disableScriptProperty">Whether the script property should be drawn.</param>
         /// <returns>A value has been changed when drawing the properties.</returns>
         public static bool DrawProperties(this SerializedObject serializedObject, bool disableScriptProperty = true)
-            => DrawProperties(serializedObject, disableScriptProperty, Array.Empty<string>());
+        {
+            return DrawProperties(serializedObject, disableScriptProperty, Array.Empty<string>());
+        }
 
         /// <summary>
         /// Draws the properties of the serialized object. Will update the serialized object if 
@@ -45,7 +49,7 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="disableScriptProperty">Whether the script property should be drawn.</param>
         /// <param name="propertiesToIgnore">The names of property to not draw.</param>
         /// <returns>A value has been changed when drawing the properties.</returns>
-        public static bool DrawProperties(this SerializedObject serializedObject, bool disableScriptProperty, 
+        public static bool DrawProperties(this SerializedObject serializedObject, bool disableScriptProperty,
             params string[] propertiesToIgnore)
         {
             EditorGUI.BeginChangeCheck();
@@ -57,27 +61,31 @@ namespace DTT.Utils.EditorUtilities
             {
                 enterChildren = false;
                 if (propertiesToIgnore.Contains(property.name))
+                {
                     continue;
-                
+                }
+
                 if (disableScriptProperty)
                 {
                     EditorGUI.BeginDisabledGroup(property.name == SCRIPT_PROPERTY_NAME);
-                    EditorGUILayout.PropertyField(property);
+                    _ = EditorGUILayout.PropertyField(property);
                     EditorGUI.EndDisabledGroup();
                 }
                 else
                 {
-                    EditorGUILayout.PropertyField(property);
+                    _ = EditorGUILayout.PropertyField(property);
                 }
             }
 
             bool changed = EditorGUI.EndChangeCheck();
             if (changed)
-                serializedObject.ApplyModifiedProperties();
+            {
+                _ = serializedObject.ApplyModifiedProperties();
+            }
 
             return changed;
         }
-        
+
         /// <summary>
         /// Draws everything in your draw action using the given gui color. 
         /// <para>This modifies <see cref="GUI.color"/> and resets.</para>
@@ -126,7 +134,7 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="drawAction">The drawing action.</param>
         public static void Horizontal(GUIStyle style, Action drawAction)
         {
-            EditorGUILayout.BeginHorizontal(style);
+            _ = EditorGUILayout.BeginHorizontal(style);
             drawAction.Invoke();
             EditorGUILayout.EndHorizontal();
         }
@@ -138,7 +146,7 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="drawAction">The drawing action.</param>
         public static void Vertical(GUIStyle style, Action action)
         {
-            EditorGUILayout.BeginVertical(style);
+            _ = EditorGUILayout.BeginVertical(style);
             action.Invoke();
             EditorGUILayout.EndVertical();
         }

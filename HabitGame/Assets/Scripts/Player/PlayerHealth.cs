@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 /// <summary>
@@ -10,7 +9,7 @@ public class PlayerHealth : Health
 {
     public static PlayerHealth Instance;
 
-    [SerializeField] private Attack m_playerAttack;
+    [SerializeField] private Attack _playerAttack;
 
     private CountDown _countdown;
 
@@ -26,7 +25,12 @@ public class PlayerHealth : Health
 
     public void ActivateAttack()
     {
-        m_playerAttack.BossRoom();
+        _playerAttack.BossRoom();
+    }
+
+    public void UpgradeAttack()
+    {
+        _playerAttack.UpgradeAttack();
     }
 
     public void SetData(float time, CountDown countdown)
@@ -38,33 +42,33 @@ public class PlayerHealth : Health
 
     public override void TakeDamage(float damage, DamageType type)
     {
-        if (_isTakingDamage || m_health <= 0)
+        if (IsTakingDamage || HealthAmount <= 0)
         {
             return;
         }
 
-        StartCoroutine(Damage());
+        _ = StartCoroutine(Damage());
 
-        Action action = () =>
+        void action()
         {
             base.TakeDamage(damage, type);
             //Update current counter
-            _countdown.UpdateTimer(_currentHealth);
-        };
+            _countdown.UpdateTimer(CurrentHealth);
+        }
 
         Vector3 screenPosition = _mainCamera.WorldToScreenPoint(transform.position);
-        _countdown.LoseTime(m_damageTime, screenPosition, action);
+        _countdown.LoseTime(DamageTime, screenPosition, action);
     }
 
     //If we have started, the timer will go down
     private void Update()
     {
-        if (!_isPlaying || _currentHealth <= 0)
+        if (!_isPlaying || CurrentHealth <= 0)
         {
             return;
         }
 
-        _currentHealth -= Time.deltaTime;
-        _countdown.UpdateTimer(_currentHealth);
+        CurrentHealth -= Time.deltaTime;
+        _countdown.UpdateTimer(CurrentHealth);
     }
 }

@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46c34c82ebcccb442b67b2a0371b69ab, type: 3}
   m_Name: PhasesData
   m_EditorClassIdentifier: 
-  phasesOne:
-  - phase: {fileID: 665508996373918562, guid: d2c4b93103b696b45922d25f19999b27, type: 3}
-    phaseTime: 20
-  - phase: {fileID: 296823060232562143, guid: d35f5c9bfb1f8dd4f9ddab640f67ef13, type: 3}
-    phaseTime: 30
-  phasesTwo:
-    phase: {fileID: 2254876843409693039, guid: 56aa9a3bacfebfe4c83cd638a41ddd65, type: 3}
-    phaseTime: 15
-  phasesThree:
-  - phase: {fileID: 3561860285486744107, guid: 974dd5c5ee8b9be40bb175269fad526d, type: 3}
-    phaseTime: 25
-  - phase: {fileID: 3561860285486744107, guid: 7f4bd2e4ec0c73d44abff99c179ab682, type: 3}
-    phaseTime: 10
+  PhasesOne:
+  - Phase: {fileID: 665508996373918562, guid: d2c4b93103b696b45922d25f19999b27, type: 3}
+    PhaseTime: 20
+  - Phase: {fileID: 296823060232562143, guid: d35f5c9bfb1f8dd4f9ddab640f67ef13, type: 3}
+    PhaseTime: 30
+  PhasesTwo:
+    Phase: {fileID: 2254876843409693039, guid: 56aa9a3bacfebfe4c83cd638a41ddd65, type: 3}
+    PhaseTime: 15
+  PhasesThree:
+  - Phase: {fileID: 3561860285486744107, guid: 974dd5c5ee8b9be40bb175269fad526d, type: 3}
+    PhaseTime: 25
+  - Phase: {fileID: 3561860285486744107, guid: 7f4bd2e4ec0c73d44abff99c179ab682, type: 3}
+    PhaseTime: 10

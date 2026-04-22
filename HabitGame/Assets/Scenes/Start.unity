@@ -285,8 +285,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be7c4739274d8c94da07be811310d907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_homeSceneIndex: 1
-  m_GameSceneIndex: 2
+  _homeSceneIndex: 1
+  _gameSceneIndex: 2
 --- !u!4 &1493758745
 Transform:
   m_ObjectHideFlags: 0
@@ -331,9 +331,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffe028977e70a0e408c206a6bbffe9a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config:
-    tutorialFinished: 0
-    spikeDificulty: 0
+  Config:
+    TutorialFinished: 0
+    FinishedAllBosses: 0
+    CurrentSpikeDificulty: 0
+    LevelsData: []
 --- !u!4 &1835306766
 Transform:
   m_ObjectHideFlags: 0

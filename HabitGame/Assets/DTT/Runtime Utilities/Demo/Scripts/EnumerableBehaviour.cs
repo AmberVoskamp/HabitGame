@@ -14,10 +14,14 @@ namespace DTT.Utils.Extensions.Demo
         {
             // Check whether the numbers enumerable is null or empty and throw an exception if it is.
             if (numbers.IsNullOrEmpty())
+            {
                 throw new ArgumentException("There were no numbers given because the IEnumerable was null or empty.");
+            }
 
             foreach (int number in numbers)
+            {
                 Debug.Log(number);
+            }
         }
     }
 

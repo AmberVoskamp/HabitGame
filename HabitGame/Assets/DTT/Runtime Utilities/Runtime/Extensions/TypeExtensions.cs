@@ -16,23 +16,35 @@ namespace DTT.Utils.Extensions
         public static bool ImplementsInterface(this Type type, Type interfaceType)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException(nameof(type));
+            }
 
             if (interfaceType == null)
+            {
                 throw new ArgumentNullException(nameof(interfaceType));
+            }
 
             Type[] interfaces = type.GetInterfaces();
             if (interfaceType.IsGenericTypeDefinition)
             {
-                foreach (var item in interfaces)
+                foreach (Type item in interfaces)
+                {
                     if (item.IsConstructedGenericType && item.GetGenericTypeDefinition() == interfaceType)
+                    {
                         return true;
+                    }
+                }
             }
             else
             {
-                foreach (var item in interfaces)
+                foreach (Type item in interfaces)
+                {
                     if (item == interfaceType)
+                    {
                         return true;
+                    }
+                }
             }
 
             return false;

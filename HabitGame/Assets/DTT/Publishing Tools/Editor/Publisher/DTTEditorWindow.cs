@@ -29,7 +29,10 @@ namespace DTT.PublishingTools
         /// <summary>
         /// Finds the attributes and creates the header based on found info.
         /// </summary>
-        protected virtual void OnEnable() => Initialize();
+        protected virtual void OnEnable()
+        {
+            Initialize();
+        }
 
         /// <summary>
         /// Draws the header if it can be displayed and sets the GUI skin to the 
@@ -38,7 +41,9 @@ namespace DTT.PublishingTools
         protected virtual void OnGUI()
         {
             if (_canDisplay)
+            {
                 _dttHeader.OnGUI();
+            }
         }
         #endregion
         #region Private
@@ -81,7 +86,9 @@ namespace DTT.PublishingTools
             {
                 object attribute = attributes[i];
                 if (attribute is T)
+                {
                     return (T)attribute;
+                }
             }
 
             return null;

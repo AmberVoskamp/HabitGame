@@ -30,7 +30,7 @@ namespace DTT.PublishingTools
         /// The inline content link style.
         /// </summary>
         public GUIStyle InlineContentLink => base[nameof(InlineContentLink)];
-        
+
         /// <summary>
         /// Creates a new instance initializing the styles.
         /// </summary>
@@ -38,8 +38,10 @@ namespace DTT.PublishingTools
         {
             Add(nameof(ContentTitle), () =>
             {
-                GUIStyle style = new GUIStyle(DTTGUI.Skin.label);
-                style.fontSize = 16;
+                GUIStyle style = new(DTTGUI.Skin.label)
+                {
+                    fontSize = 16
+                };
                 style.margin.top = 3;
                 style.margin.bottom = 3;
                 style.font = DTTGUI.TitleFont;
@@ -50,8 +52,10 @@ namespace DTT.PublishingTools
 
             Add(nameof(Content), () =>
             {
-                GUIStyle style = new GUIStyle(DTTGUI.Skin.label);
-                style.fontSize = 13;
+                GUIStyle style = new(DTTGUI.Skin.label)
+                {
+                    fontSize = 13
+                };
                 style.margin.top = 3;
                 style.margin.bottom = 3;
                 style.wordWrap = true;
@@ -62,8 +66,10 @@ namespace DTT.PublishingTools
 
             Add(nameof(ContentLink), () =>
             {
-                GUIStyle style = new GUIStyle(GUIDrawTools.styles.LinkLabel);
-                style.fontSize = 13;
+                GUIStyle style = new(GUIDrawTools.styles.LinkLabel)
+                {
+                    fontSize = 13
+                };
                 style.padding.left = 3;
                 style.margin.top = 3;
                 style.margin.bottom = 3;
@@ -75,8 +81,10 @@ namespace DTT.PublishingTools
 
             Add(nameof(InlineContentLink), () =>
             {
-                GUIStyle style = new GUIStyle(GUIDrawTools.styles.LinkLabel);
-                style.fontSize = 13;
+                GUIStyle style = new(GUIDrawTools.styles.LinkLabel)
+                {
+                    fontSize = 13
+                };
                 style.padding.left = 0;
                 style.padding.top = 5;
                 style.margin.top = 3;

@@ -11,13 +11,13 @@ public class PlayerEvent : UnityEvent<PlayerMovement> { }
 [RequireComponent(typeof(BoxCollider2D))]
 public class ActionOnTrigger : MonoBehaviour
 {
-    [SerializeField] private PlayerEvent m_action;
+    [SerializeField] private PlayerEvent _action;
 
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.TryGetComponent<PlayerMovement>(out PlayerMovement player))
         {
-            m_action.Invoke(player);
+            _action.Invoke(player);
         }
     }
 }

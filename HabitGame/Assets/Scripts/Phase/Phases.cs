@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public enum Phases
 {
     Phase1, //The spike phase

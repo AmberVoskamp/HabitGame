@@ -3,48 +3,48 @@ using UnityEngine;
 
 public class BossAttackController : MonoBehaviour
 {
-    [SerializeField] private float m_waitForStart;
-    [SerializeField] private AttackPaternHealth[] m_attackPaternHealth;
+    [SerializeField] private float _waitForStart;
+    [SerializeField] private AttackPaternHealth[] _attackPaternHealth;
 
-    private int m_attackPaternHealthIndex;
-    private int m_attackIndex;
-    private Coroutine m_attackCoroutine;
-    private PlayerHealth m_player;
-    private BossHealth m_bossHealth;
+    private int _attackPaternHealthIndex;
+    private int _attackIndex;
+    private Coroutine _attackCoroutine;
+    private PlayerHealth _player;
+    private BossHealth _bossHealth;
 
     #region structs
-    [Serializable] 
+    [Serializable]
     public struct AttackPaternHealth
     {
-        public float health;
-        public BossAttackPatern[] attackPatern;
+        public float Health;
+        public BossAttackPatern[] AttackPatern;
     }
 
     [Serializable]
     public struct BossAttackPatern
     {
-        public BossAttack attack;
-        public float timeBeforeNextAttack;
+        public BossAttack Attack;
+        public float TimeBeforeNextAttack;
     }
     #endregion
 
     //Activated once the player enters the boss room
     public void BossActivate(PlayerHealth player, BossHealth bossHealth)
     {
-        m_player = player;
-        m_bossHealth = bossHealth;
-        SetCurrentAttackPatternIndex(bossHealth.CurrentHealth);
-        WaitForAttack(m_waitForStart);
+        _player = player;
+        _bossHealth = bossHealth;
+        SetCurrentAttackPatternIndex(bossHealth.GetCurrentHealth);
+        WaitForAttack(_waitForStart);
     }
 
     private void SetCurrentAttackPatternIndex(float bossHealth)
     {
-        m_attackPaternHealthIndex = 0;
-        for (int i = 0; i < m_attackPaternHealth.Length; i++)
+        _attackPaternHealthIndex = 0;
+        for (int i = 0; i < _attackPaternHealth.Length; i++)
         {
-            if (bossHealth <= m_attackPaternHealth[i].health)
+            if (bossHealth <= _attackPaternHealth[i].Health)
             {
-                m_attackPaternHealthIndex = i;
+                _attackPaternHealthIndex = i;
             }
             else
             {
@@ -55,29 +55,40 @@ public class BossAttackController : MonoBehaviour
 
     private void Attack()
     {
-        m_attackCoroutine = null;
-        BossAttackPatern[] currentAttackPatern = m_attackPaternHealth[m_attackPaternHealthIndex].attackPatern;
-        if (m_attackIndex >= currentAttackPatern.Length)
+        _attackCoroutine = null;
+
+        if (_attackPaternHealth == null || _attackPaternHealth.Length <= _attackPaternHealthIndex)
         {
-            m_attackIndex = 0;
-            SetCurrentAttackPatternIndex(m_bossHealth.CurrentHealth);
+            Debug.LogError("Boss Attack Index out of range!");
+            return;
+        }
+
+        BossAttackPatern[] currentAttackPatern = _attackPaternHealth[_attackPaternHealthIndex].AttackPatern;
+        if (_attackIndex >= currentAttackPatern.Length)
+        {
+            _attackIndex = 0;
+            SetCurrentAttackPatternIndex(_bossHealth.GetCurrentHealth);
             Attack();
             return;
         }
 
-        BossAttackPatern bossAttack = currentAttackPatern[m_attackIndex];
-        m_attackIndex++;
-        bossAttack.attack.Attack(m_player);
-        WaitForAttack(bossAttack.timeBeforeNextAttack);
+        BossAttackPatern bossAttack = currentAttackPatern[_attackIndex];
+        _attackIndex++;
+        bossAttack.Attack.Attack(_player);
+        WaitForAttack(bossAttack.TimeBeforeNextAttack);
     }
 
     private void WaitForAttack(float time)
     {
-       m_attackCoroutine = StartCoroutine(HelperWait.ActionAfterWait(time, Attack));
+        _attackCoroutine = StartCoroutine(HelperWait.ActionAfterWait(time, Attack));
     }
 
     public void StopAttacks()
     {
-        StopCoroutine(m_attackCoroutine);
+        if (_attackCoroutine == null)
+        {
+            return;
+        }
+        StopCoroutine(_attackCoroutine);
     }
 }

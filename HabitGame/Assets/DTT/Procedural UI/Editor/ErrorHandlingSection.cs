@@ -18,17 +18,20 @@ namespace DTT.UI.ProceduralUI.Editor
         /// <summary>
         /// Reference to the error handler, that checks for the errors.
         /// </summary>
-        private RoundedImageErrorHandler _errorHandler;
-        
+        private readonly RoundedImageErrorHandler _errorHandler;
+
         /// <summary>
         /// Creates a new error handling section.
         /// </summary>
         /// <param name="errorHandler">
         /// Reference to the error handler, that checks for the errors.
         /// </param>
-        public ErrorHandlingSection(RoundedImageErrorHandler errorHandler) => this._errorHandler = errorHandler;
-        
-        
+        public ErrorHandlingSection(RoundedImageErrorHandler errorHandler)
+        {
+            _errorHandler = errorHandler;
+        }
+
+
         /// <summary>
         /// Draws the error handling section 
         /// if <see cref="RoundedImageErrorHandler.CheckForErrors"/> throws an exception.
@@ -49,7 +52,9 @@ namespace DTT.UI.ProceduralUI.Editor
                     // draw a button to provide the user with the option
                     // to fix all errors.
                     if (GUILayout.Button("Update Canvas Settings"))
+                    {
                         _errorHandler.FixFixableErrors();
+                    }
                 }
                 else
                 {

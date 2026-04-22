@@ -9,82 +9,79 @@ using UnityEngine;
 public class ConfigManager : MonoBehaviour
 {
     public static ConfigManager Instance;
-    public Config config;
+    public Config Config;
 
-    public int SpikeDificulty
-    {
-        get { return config.currentSpikeDificulty; }
-    }
+    public int SpikeDificulty => Config.CurrentSpikeDificulty;
 
-    void Awake()
+    private void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        config = Config.Load();
+        Config = Config.Load();
     }
 
     public void UpdateSpikeDificulty(int newDificulty)
     {
-        config.currentSpikeDificulty = newDificulty;
-        Config.Save(config);
+        Config.CurrentSpikeDificulty = newDificulty;
+        Config.Save(Config);
     }
 
     public void TutorialDone(bool done = true)
     {
-        config.tutorialFinished = done;
-        Config.Save(config);
+        Config.TutorialFinished = done;
+        Config.Save(Config);
     }
 
     public void StartLevelData()
     {
         int bossIndex = 0;
         float bossHealth = 0;
-        if (!config.levelsData.IsNullOrEmpty())
+        if (!Config.LevelsData.IsNullOrEmpty())
         {
-            LevelData lastLevel = config.levelsData[GetCurrentLevelIndex()];
-            bossIndex = lastLevel.currentBoss;
-            if (lastLevel.killedTheBoss)
+            LevelData lastLevel = Config.LevelsData[GetCurrentLevelIndex()];
+            bossIndex = lastLevel.CurrentBoss;
+            if (lastLevel.KilledTheBoss)
             {
                 bossIndex++;
-                if (!config.tutorialFinished)
+                if (!Config.TutorialFinished)
                 {
                     TutorialDone(true);
                 }
             }
-            bossHealth = lastLevel.bossHealthLeft;
+            bossHealth = lastLevel.BossHealthLeft;
         }
 
-        LevelData newLevelData = new LevelData()
+        LevelData newLevelData = new()
         {
-            index = config.levelsData.Count,
-            phaseTimes = new System.Collections.Generic.List<PhaseTimeData>(),
-            spikeDificulty = config.currentSpikeDificulty,
-            currentBoss = bossIndex,
-            bossHealthLeft = bossHealth,
+            Index = Config.LevelsData.Count,
+            PhaseTimes = new System.Collections.Generic.List<PhaseTimeData>(),
+            SpikeDificulty = Config.CurrentSpikeDificulty,
+            CurrentBoss = bossIndex,
+            BossHealthLeft = bossHealth,
         };
 
-        config.levelsData.Add(newLevelData);
-        Config.Save(config);
+        Config.LevelsData.Add(newLevelData);
+        Config.Save(Config);
     }
 
     public void SetTotalTime(float levelTime)
     {
         int currentIndex = GetCurrentLevelIndex();
-        config.levelsData[currentIndex].levelTime = levelTime;
+        Config.LevelsData[currentIndex].LevelTime = levelTime;
     }
 
     public void AddPhaseTime(Phases phase, float timeLeft)
     {
         int currentIndex = GetCurrentLevelIndex();
-        float totalLevelTime = config.levelsData[currentIndex].levelTime;
+        float totalLevelTime = Config.LevelsData[currentIndex].LevelTime;
 
-        PhaseTimeData phaseTime = new PhaseTimeData()
+        PhaseTimeData phaseTime = new()
         {
-            phase = phase,
-            exitPhaseTime = totalLevelTime - timeLeft,
+            Phase = phase,
+            ExitPhaseTime = totalLevelTime - timeLeft,
         };
 
-        config.levelsData[currentIndex].phaseTimes.Add(phaseTime);
+        Config.LevelsData[currentIndex].PhaseTimes.Add(phaseTime);
     }
 
     public void Hit(float damage, DamageType type)
@@ -94,13 +91,13 @@ public class ConfigManager : MonoBehaviour
         switch (type)
         {
             case DamageType.Spike:
-                config.levelsData[currentIndex].spikesDamageTaken += damage;
+                Config.LevelsData[currentIndex].SpikesDamageTaken += damage;
                 break;
             case DamageType.Boss:
-                config.levelsData[currentIndex].bossDamageTaken += damage;
+                Config.LevelsData[currentIndex].BossDamageTaken += damage;
                 break;
             case DamageType.Player:
-                config.levelsData[currentIndex].bossDamageDone += damage;
+                Config.LevelsData[currentIndex].BossDamageDone += damage;
                 break;
             case DamageType.Other:
             default:
@@ -111,71 +108,66 @@ public class ConfigManager : MonoBehaviour
     public void SpikeLevelData(float endSpikeTime, int newSpikeDificulty)
     {
         int currentIndex = GetCurrentLevelIndex();
-        config.levelsData[currentIndex].endSpikeTime = endSpikeTime;
+        Config.LevelsData[currentIndex].EndSpikeTime = endSpikeTime;
 
-        config.currentSpikeDificulty = newSpikeDificulty;
-        Config.Save(config);
+        Config.CurrentSpikeDificulty = newSpikeDificulty;
+        Config.Save(Config);
     }
 
     public void SafeWalkData(WalkData.Data[] walkData)
     {
         int currentIndex = GetCurrentLevelIndex();
-        config.levelsData[currentIndex].walkData = walkData;
+        Config.LevelsData[currentIndex].WalkData = walkData;
     }
 
     public void TimeLeftInRangeOfChest(float timeLeft)
     {
         int currentIndex = GetCurrentLevelIndex();
-        config.levelsData[currentIndex].timeLeftWhenInChestRange = timeLeft;
+        Config.LevelsData[currentIndex].TimeLeftWhenInChestRange = timeLeft;
     }
 
     public void TimeLeftDoorOpens(float timeLeft)
     {
         int currentIndex = GetCurrentLevelIndex();
-        config.levelsData[currentIndex].timeLeftWhenDoorOpens = timeLeft;
+        Config.LevelsData[currentIndex].TimeLeftWhenDoorOpens = timeLeft;
     }
 
     public void MinigameData(bool hasOpend, bool hasFinished)
     {
         int currentIndex = GetCurrentLevelIndex();
-        config.levelsData[currentIndex].opendMinigame = hasOpend;
-        config.levelsData[currentIndex].finishedMinigame = hasFinished;
-        Config.Save(config);
+        Config.LevelsData[currentIndex].OpendMinigame = hasOpend;
+        Config.LevelsData[currentIndex].FinishedMinigame = hasFinished;
+        Config.Save(Config);
     }
 
     public void BossRoom(float bossHealth)
     {
         int currentIndex = GetCurrentLevelIndex();
-        config.levelsData[currentIndex].enteredBossRoom = true;
-        if (config.levelsData[currentIndex].bossHealthLeft == 0)
+        Config.LevelsData[currentIndex].EnteredBossRoom = true;
+        if (Config.LevelsData[currentIndex].BossHealthLeft == 0)
         {
-            config.levelsData[currentIndex].bossHealthLeft = bossHealth;
+            Config.LevelsData[currentIndex].BossHealthLeft = bossHealth;
         }
-        Config.Save(config);
+        Config.Save(Config);
     }
 
     public void BossFightEnd(bool killedBoss, bool isLastBoss, float timeLeft)
     {
         int currentIndex = GetCurrentLevelIndex();
-        config.finishedAllBosses = killedBoss && isLastBoss;
-        config.levelsData[currentIndex].killedTheBoss = killedBoss;
-        config.levelsData[currentIndex].timeLeft = timeLeft;
+        Config.FinishedAllBosses = killedBoss && isLastBoss;
+        Config.LevelsData[currentIndex].KilledTheBoss = killedBoss;
+        Config.LevelsData[currentIndex].TimeLeft = timeLeft;
 
-        LevelData levelData = config.levelsData[currentIndex];
-        float bossHealthLeft = levelData.bossHealthLeft - levelData.bossDamageDone;
-        config.levelsData[currentIndex].bossHealthLeft = math.max(0, bossHealthLeft);
-        Config.Save(config);
+        LevelData levelData = Config.LevelsData[currentIndex];
+        float bossHealthLeft = levelData.BossHealthLeft - levelData.BossDamageDone;
+        Config.LevelsData[currentIndex].BossHealthLeft = math.max(0, bossHealthLeft);
+        Config.Save(Config);
     }
 
     public int CurrentBoss()
     {
         int currentIndex = GetCurrentLevelIndex();
-        if (currentIndex < 0)
-        {
-            return 0;
-        }
-
-        return config.levelsData[currentIndex].currentBoss;
+        return currentIndex < 0 ? 0 : Config.LevelsData[currentIndex].CurrentBoss;
     }
 
     public float GetBossHealth()
@@ -185,12 +177,12 @@ public class ConfigManager : MonoBehaviour
         {
             return 0;
         }
-        LevelData levelData = config.levelsData[currentIndex];
-        return levelData.bossHealthLeft;
+        LevelData levelData = Config.LevelsData[currentIndex];
+        return levelData.BossHealthLeft;
     }
 
     private int GetCurrentLevelIndex()
     {
-        return config.levelsData.Count - 1;
+        return Config.LevelsData.Count - 1;
     }
 }

@@ -46,7 +46,9 @@ namespace DTT.Utils.Exceptions
         /// <param name="message">The message to be formatted.</param>
         /// <returns>The formatted message.</returns>
         protected static string Format(string prefix, string message)
-            => message.Insert(0, prefix);
+        {
+            return message.Insert(0, prefix);
+        }
         #endregion
         #endregion
     }

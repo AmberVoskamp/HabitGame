@@ -19,22 +19,22 @@ namespace DTT.UI.ProceduralUI.Editor
         /// The name of the header of this section. This will be directly shown in the inspector.
         /// </summary>
         public abstract string HeaderName { get; }
-        
+
         /// <summary>
         /// Reference to the target instance of this inspector.
         /// </summary>
         protected T _roundedImage;
-        
+
         /// <summary>
         /// The animation boolean for folding the section.
         /// </summary>
-        private AnimBool _foldoutAnimation;
+        private readonly AnimBool _foldoutAnimation;
 
         /// <summary>
         /// Whether to automatically open the foldout when opening the inspector.
         /// </summary>
         protected abstract bool OpenFoldoutOnEnter { get; }
-        
+
         /// <summary>
         /// Base constructor for creating section.
         /// </summary>
@@ -46,11 +46,11 @@ namespace DTT.UI.ProceduralUI.Editor
         /// </param>
         public Section(T roundedImage, UnityAction repaint)
         {
-            this._roundedImage = roundedImage;
-            this._foldoutAnimation = new AnimBool(OpenFoldoutOnEnter);
+            _roundedImage = roundedImage;
+            _foldoutAnimation = new AnimBool(OpenFoldoutOnEnter);
             _foldoutAnimation.valueChanged.AddListener(repaint);
         }
-        
+
         /// <summary>
         /// Will draw the section.
         /// </summary>
@@ -58,10 +58,13 @@ namespace DTT.UI.ProceduralUI.Editor
         {
             DrawHeader();
             if (EditorGUILayout.BeginFadeGroup(_foldoutAnimation.faded))
+            {
                 DrawSection();
+            }
+
             EditorGUILayout.EndFadeGroup();
         }
-        
+
         /// <summary>
         /// Can be used to add additional layout to your section.
         /// </summary>
@@ -97,7 +100,10 @@ namespace DTT.UI.ProceduralUI.Editor
         /// <param name="unit">The unit to draw a slider for.</param>
         /// <param name="currentValue">The current value of what be should slided between.</param>
         /// <returns>The new slider value.</returns>
-        protected float DrawSlider(RoundingUnit unit, float currentValue) => DrawSlider(unit, currentValue, new GUIContent());
+        protected float DrawSlider(RoundingUnit unit, float currentValue)
+        {
+            return DrawSlider(unit, currentValue, new GUIContent());
+        }
 
         /// <summary>
         /// Draws a slider that adjusts based on the passed unit.
@@ -107,8 +113,11 @@ namespace DTT.UI.ProceduralUI.Editor
         /// <param name="label">The name of the slider.</param>
         /// <param name="tooltip">The tooltip that appears when hovering above the label.</param>
         /// <returns>The new slider value.</returns>
-        protected float DrawSlider(RoundingUnit unit, float currentValue, string label, string tooltip) => DrawSlider(unit, currentValue, new GUIContent(label, tooltip));
-        
+        protected float DrawSlider(RoundingUnit unit, float currentValue, string label, string tooltip)
+        {
+            return DrawSlider(unit, currentValue, new GUIContent(label, tooltip));
+        }
+
         /// <summary>
         /// Draws the header label of section.
         /// </summary>

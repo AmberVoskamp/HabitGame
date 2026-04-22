@@ -49,14 +49,13 @@ namespace DTT.UI.ProceduralUI.Tests
         /// Sets up the testing environment by loading a predefined scene and getting the references from it.
         /// </summary>
         [UnitySetUp]
+        [Obsolete]
         public IEnumerator SetUp()
         {
-            string scenePath;
-            if (DTTEditorConfig.GetAssetJson("dtt.proceduralui").assetStoreRelease)
-                scenePath = "Assets/DTT/Procedural UI/Tests/Scenes/Test Scene.unity";
-            else
-                scenePath = "Packages/dtt.proceduralui/Tests/Scenes/Test Scene.unity";
-            EditorSceneManager.LoadSceneInPlayMode(scenePath, new LoadSceneParameters(LoadSceneMode.Single));
+            string scenePath = DTTEditorConfig.GetAssetJson("dtt.proceduralui").assetStoreRelease
+                ? "Assets/DTT/Procedural UI/Tests/Scenes/Test Scene.unity"
+                : "Packages/dtt.proceduralui/Tests/Scenes/Test Scene.unity";
+            _ = EditorSceneManager.LoadSceneInPlayMode(scenePath, new LoadSceneParameters(LoadSceneMode.Single));
             yield return new WaitForSeconds(0.1f);
             _camera = Object.FindObjectOfType<Camera>();
             _roundedImage = Object.FindObjectOfType<RoundedImage>();
@@ -81,11 +80,11 @@ namespace DTT.UI.ProceduralUI.Tests
         [Test]
         public void TestSetRoundingExceptionThrownIncorrectAmount()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => _roundedImage.SetCornerRounding(Corner.TOP_RIGHT, 2),
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => _roundedImage.SetCornerRounding(Corner.TOP_RIGHT, 2),
                 "No out of range exception thrown.");
-            Assert.Throws<ArgumentOutOfRangeException>(() => _roundedImage.SetCornerRounding(Corner.BOTTOM_LEFT, -10),
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => _roundedImage.SetCornerRounding(Corner.BOTTOM_LEFT, -10),
                 "No out of range exception thrown.");
-            Assert.Throws<ArgumentOutOfRangeException>(() => _roundedImage.SetCornerRounding(-7, 10, -3, 5),
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => _roundedImage.SetCornerRounding(-7, 10, -3, 5),
                 "No out of range exception thrown.");
         }
 
@@ -109,7 +108,7 @@ namespace DTT.UI.ProceduralUI.Tests
         [Test]
         public void TestSetRoundingActuallyGetsApplied()
         {
-            Dictionary<Corner, float> testValues = new Dictionary<Corner, float>
+            Dictionary<Corner, float> testValues = new()
             {
                 { Corner.TOP_LEFT, 0.3f },
                 { Corner.TOP_RIGHT, 0.7f },
@@ -153,7 +152,7 @@ namespace DTT.UI.ProceduralUI.Tests
             float testValue = 0.5f;
             _selectedUnitFieldInfo.SetValue(_roundedImage, RoundingUnit.PERCENTAGE);
 
-            _applyCornerRoundingMethodInfo.Invoke(_roundedImage, new object[] { sampleCorner, testValue });
+            _ = _applyCornerRoundingMethodInfo.Invoke(_roundedImage, new object[] { sampleCorner, testValue });
 
             Assert.AreEqual(testValue, _roundedImage.GetCornerRounding(sampleCorner),
                 $"Sample corner {sampleCorner} doesn't reflect set value {testValue}");
@@ -169,7 +168,7 @@ namespace DTT.UI.ProceduralUI.Tests
             float testValue = 0.5f;
             _selectedUnitFieldInfo.SetValue(_roundedImage, RoundingUnit.WORLD);
 
-            _applyCornerRoundingMethodInfo.Invoke(_roundedImage, new object[] { sampleCorner, testValue });
+            _ = _applyCornerRoundingMethodInfo.Invoke(_roundedImage, new object[] { sampleCorner, testValue });
 
             Assert.AreEqual(testValue, _roundedImage.GetCornerRounding(sampleCorner),
                 $"Sample corner {sampleCorner} doesn't reflect set value {testValue}");
@@ -187,21 +186,21 @@ namespace DTT.UI.ProceduralUI.Tests
             KeyValuePair<Vector2, bool>[] screenPointShouldHitPairs = new KeyValuePair<Vector2, bool>[]
             {
 				// Corner Samples
-				new KeyValuePair<Vector2, bool>(new Vector2(1449.7f, 1556.6f), false),
-                new KeyValuePair<Vector2, bool>(new Vector2(2357.1f, 1513.3f), false),
-                new KeyValuePair<Vector2, bool>(new Vector2(2293.4f, 733.4f), false),
+				new(new Vector2(1449.7f, 1556.6f), false),
+                new(new Vector2(2357.1f, 1513.3f), false),
+                new(new Vector2(2293.4f, 733.4f), false),
 
 				// Inside samples
-				new KeyValuePair<Vector2, bool>(new Vector2(2163.4f, 1322.1f), false),
-                new KeyValuePair<Vector2, bool>(new Vector2(1676.6f, 1324.7f), false),
-                new KeyValuePair<Vector2, bool>(new Vector2(1674.0f, 843.0f), false),
-                new KeyValuePair<Vector2, bool>(new Vector2(2109.9f, 939.8f), false),
+				new(new Vector2(2163.4f, 1322.1f), false),
+                new(new Vector2(1676.6f, 1324.7f), false),
+                new(new Vector2(1674.0f, 843.0f), false),
+                new(new Vector2(2109.9f, 939.8f), false),
 
 				// Inside on border samples
-				new KeyValuePair<Vector2, bool>(new Vector2(1513.5f, 1487.8f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(2270.5f, 1444.5f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(2188.9f, 858.3f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(1577.2f, 730.8f), true),
+				new(new Vector2(1513.5f, 1487.8f), true),
+                new(new Vector2(2270.5f, 1444.5f), true),
+                new(new Vector2(2188.9f, 858.3f), true),
+                new(new Vector2(1577.2f, 730.8f), true),
             };
 
             _roundedImage.SetCornerRounding(.25f, .5f, .0f, 1.0f);
@@ -211,8 +210,10 @@ namespace DTT.UI.ProceduralUI.Tests
             _roundedImage.UseHitboxOutside = true;
             _roundedImage.UseHitboxInside = true;
 
-            foreach (var pair in screenPointShouldHitPairs)
+            foreach (KeyValuePair<Vector2, bool> pair in screenPointShouldHitPairs)
+            {
                 Assert.AreEqual(pair.Value, _roundedImage.IsRaycastLocationValid(pair.Key, _camera));
+            }
         }
 
         /// <summary>
@@ -226,21 +227,21 @@ namespace DTT.UI.ProceduralUI.Tests
             KeyValuePair<Vector2, bool>[] screenPointShouldHitPairs = new KeyValuePair<Vector2, bool>[]
             {
 				// Corner samples.
-				new KeyValuePair<Vector2, bool>(new Vector2(1449.7f, 1556.6f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(2357.1f, 1513.3f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(2293.4f, 733.4f), true),
+				new(new Vector2(1449.7f, 1556.6f), true),
+                new(new Vector2(2357.1f, 1513.3f), true),
+                new(new Vector2(2293.4f, 733.4f), true),
 
 				// Inside samples.
-				new KeyValuePair<Vector2, bool>(new Vector2(2163.4f, 1322.1f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(1676.6f, 1324.7f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(1674.0f, 843.0f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(2109.9f, 939.8f), true),
+				new(new Vector2(2163.4f, 1322.1f), true),
+                new(new Vector2(1676.6f, 1324.7f), true),
+                new(new Vector2(1674.0f, 843.0f), true),
+                new(new Vector2(2109.9f, 939.8f), true),
 
 				// Inside on border samples.
-				new KeyValuePair<Vector2, bool>(new Vector2(1513.5f, 1487.8f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(2270.5f, 1444.5f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(2188.9f, 858.3f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(1577.2f, 730.8f), true),
+				new(new Vector2(1513.5f, 1487.8f), true),
+                new(new Vector2(2270.5f, 1444.5f), true),
+                new(new Vector2(2188.9f, 858.3f), true),
+                new(new Vector2(1577.2f, 730.8f), true),
             };
 
             _roundedImage.SetCornerRounding(.25f, .5f, .0f, 1.0f);
@@ -248,8 +249,10 @@ namespace DTT.UI.ProceduralUI.Tests
             _roundedImage.UseHitboxOutside = false;
             _roundedImage.UseHitboxInside = false;
 
-            foreach (var pair in screenPointShouldHitPairs)
+            foreach (KeyValuePair<Vector2, bool> pair in screenPointShouldHitPairs)
+            {
                 Assert.AreEqual(pair.Value, _roundedImage.IsRaycastLocationValid(pair.Key, _camera));
+            }
         }
 
         /// <summary>
@@ -263,21 +266,21 @@ namespace DTT.UI.ProceduralUI.Tests
             KeyValuePair<Vector2, bool>[] screenPointShouldHitPairs = new KeyValuePair<Vector2, bool>[]
             {
 				// Corner Samples
-				new KeyValuePair<Vector2, bool>(new Vector2(1449.7f, 1556.6f), false),
-                new KeyValuePair<Vector2, bool>(new Vector2(2357.1f, 1513.3f), false),
-                new KeyValuePair<Vector2, bool>(new Vector2(2293.4f, 733.4f), false),
+				new(new Vector2(1449.7f, 1556.6f), false),
+                new(new Vector2(2357.1f, 1513.3f), false),
+                new(new Vector2(2293.4f, 733.4f), false),
 
 				// Inside samples
-				new KeyValuePair<Vector2, bool>(new Vector2(2163.4f, 1322.1f), false),
-                new KeyValuePair<Vector2, bool>(new Vector2(1676.6f, 1324.7f), false),
-                new KeyValuePair<Vector2, bool>(new Vector2(1674.0f, 843.0f), false),
-                new KeyValuePair<Vector2, bool>(new Vector2(2109.9f, 939.8f), false),
+				new(new Vector2(2163.4f, 1322.1f), false),
+                new(new Vector2(1676.6f, 1324.7f), false),
+                new(new Vector2(1674.0f, 843.0f), false),
+                new(new Vector2(2109.9f, 939.8f), false),
 
 				// Inside on border samples
-				new KeyValuePair<Vector2, bool>(new Vector2(1513.5f, 1487.8f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(2270.5f, 1444.5f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(2188.9f, 858.3f), true),
-                new KeyValuePair<Vector2, bool>(new Vector2(1577.2f, 730.8f), true),
+				new(new Vector2(1513.5f, 1487.8f), true),
+                new(new Vector2(2270.5f, 1444.5f), true),
+                new(new Vector2(2188.9f, 858.3f), true),
+                new(new Vector2(1577.2f, 730.8f), true),
             };
 
             _roundedImage.SetCornerRounding(.25f, .5f, .0f, 1.0f);
@@ -287,8 +290,10 @@ namespace DTT.UI.ProceduralUI.Tests
             _roundedImage.UseHitboxOutside = true;
             _roundedImage.UseHitboxInside = true;
 
-            foreach (var pair in screenPointShouldHitPairs)
+            foreach (KeyValuePair<Vector2, bool> pair in screenPointShouldHitPairs)
+            {
                 Assert.AreEqual(pair.Value, _roundedImage.IsRaycastLocationValid(pair.Key, _camera));
+            }
         }
 
         /// <summary>
@@ -327,7 +332,7 @@ namespace DTT.UI.ProceduralUI.Tests
         [Test]
         public void TestDistanceFalloffOutOfRangeValue()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => _roundedImage.DistanceFalloff = -1,
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => _roundedImage.DistanceFalloff = -1,
                 "Expected out of range exception to be thrown.");
         }
 
@@ -384,14 +389,14 @@ namespace DTT.UI.ProceduralUI.Tests
         {
             Canvas canvas = _roundedImage.canvas;
             canvas.gameObject.SetActive(false);
-            Assert.Throws<CanvasMissingException>(() => _roundedImage.ErrorHandler.CheckForErrors());
+            _ = Assert.Throws<CanvasMissingException>(() => _roundedImage.ErrorHandler.CheckForErrors());
             canvas.gameObject.SetActive(true);
             _roundedImage.canvas.additionalShaderChannels = AdditionalCanvasShaderChannels.None;
-            Assert.Throws<TexCoord1MissingException>(() => _roundedImage.ErrorHandler.CheckForErrors());
+            _ = Assert.Throws<TexCoord1MissingException>(() => _roundedImage.ErrorHandler.CheckForErrors());
             _roundedImage.canvas.additionalShaderChannels |= AdditionalCanvasShaderChannels.TexCoord1;
-            Assert.Throws<TexCoord2MissingException>(() => _roundedImage.ErrorHandler.CheckForErrors());
+            _ = Assert.Throws<TexCoord2MissingException>(() => _roundedImage.ErrorHandler.CheckForErrors());
             _roundedImage.canvas.additionalShaderChannels |= AdditionalCanvasShaderChannels.TexCoord2;
-            Assert.Throws<TexCoord3MissingException>(() => _roundedImage.ErrorHandler.CheckForErrors());
+            _ = Assert.Throws<TexCoord3MissingException>(() => _roundedImage.ErrorHandler.CheckForErrors());
             _roundedImage.canvas.additionalShaderChannels |= AdditionalCanvasShaderChannels.TexCoord3;
             Assert.DoesNotThrow(() => _roundedImage.ErrorHandler.CheckForErrors());
         }
@@ -425,10 +430,10 @@ namespace DTT.UI.ProceduralUI.Tests
         public void Test_CopyFrom()
         {
             // Arrange.
-            GameObject gameObjectOne = new GameObject();
+            GameObject gameObjectOne = new();
             RoundedImage image = gameObjectOne.AddComponent<RoundedImage>();
 
-            GameObject gameObjectTwo = new GameObject();
+            GameObject gameObjectTwo = new();
             RoundedImage imageTwo = gameObjectTwo.AddComponent<RoundedImage>();
 
             image.Mode = RoundingMode.FILL;
@@ -457,8 +462,9 @@ namespace DTT.UI.ProceduralUI.Tests
                 .GetValue(imageTwo) as float[];
 
             foreach (KeyValuePair<Corner, float> corner in imageTwo.GetCornerRounding())
+            {
                 Assert.AreEqual(corner.Value, roundingAmmount[(int)corner.Key]);
-
+            }
         }
 
         /// <summary>
@@ -471,7 +477,7 @@ namespace DTT.UI.ProceduralUI.Tests
             _selectedUnitFieldInfo.SetValue(_roundedImage, -1);
 
             // Assert.
-            Assert.Catch<NotSupportedException>(() =>
+            _ = Assert.Catch<NotSupportedException>(() =>
             {
                 // Act.
                 float thickness = _roundedImage.BorderThickness;
@@ -491,7 +497,7 @@ namespace DTT.UI.ProceduralUI.Tests
             _selectedUnitFieldInfo.SetValue(_roundedImage, -1);
 
             // Assert.
-            Assert.Catch<NotSupportedException>(() =>
+            _ = Assert.Catch<NotSupportedException>(() =>
             {
                 // Act.
                 _roundedImage.BorderThickness = 2f;
@@ -511,10 +517,10 @@ namespace DTT.UI.ProceduralUI.Tests
             _selectedUnitFieldInfo.SetValue(_roundedImage, -1);
 
             // Assert.
-            Assert.Catch<NotSupportedException>(() =>
+            _ = Assert.Catch<NotSupportedException>(() =>
             {
                 // Act.
-                _roundedImage.GetCornerRounding(Corner.TOP_LEFT);
+                _ = _roundedImage.GetCornerRounding(Corner.TOP_LEFT);
             }, "Unsupported RoundingUnit didn't throw exception.");
 
             // CleanUp.
@@ -531,7 +537,7 @@ namespace DTT.UI.ProceduralUI.Tests
             _selectedUnitFieldInfo.SetValue(_roundedImage, -1);
 
             // Assert.
-            Assert.Catch<NotSupportedException>(() =>
+            _ = Assert.Catch<NotSupportedException>(() =>
             {
                 // Act.
                 _roundedImage.SetCornerRounding(1f);
@@ -551,7 +557,7 @@ namespace DTT.UI.ProceduralUI.Tests
             _roundedImage.preserveAspect = true;
             Vector2 originalSize = _roundedImage.GetImageSize();
             float originalAspect = originalSize.x / originalSize.y;
-            Vector2 newSize = new Vector2(_roundedImage.rectTransform.sizeDelta.x, _roundedImage.rectTransform.sizeDelta.y * 3);
+            Vector2 newSize = new(_roundedImage.rectTransform.sizeDelta.x, _roundedImage.rectTransform.sizeDelta.y * 3);
 
             // Act.
             _roundedImage.rectTransform.sizeDelta = newSize;
@@ -572,14 +578,17 @@ namespace DTT.UI.ProceduralUI.Tests
         public void Test_ValueEquality_Other_Null()
         {
             // Arrange.
-            GameObject gameObjectOne = new GameObject();
+            GameObject gameObjectOne = new();
             RoundedImage image = gameObjectOne.AddComponent<RoundedImage>();
 
             // Act.
-            TestDelegate action = () => image.ValueEquals(null);
+            void action()
+            {
+                _ = image.ValueEquals(null);
+            }
 
             // Assert.
-            Assert.Catch<ArgumentNullException>(action, "Expected the null image to cause an exception but it didn't.");
+            _ = Assert.Catch<ArgumentNullException>(action, "Expected the null image to cause an exception but it didn't.");
         }
 
         /// <summary>
@@ -591,7 +600,7 @@ namespace DTT.UI.ProceduralUI.Tests
         public void Test_ValueEquality__Self_True()
         {
             // Arrange.
-            GameObject gameObjectOne = new GameObject();
+            GameObject gameObjectOne = new();
             RoundedImage image = gameObjectOne.AddComponent<RoundedImage>();
 
             // Act.
@@ -610,10 +619,10 @@ namespace DTT.UI.ProceduralUI.Tests
         public void Test_ValueEquality_Other_False()
         {
             // Arrange.
-            GameObject gameObjectOne = new GameObject();
+            GameObject gameObjectOne = new();
             RoundedImage image = gameObjectOne.AddComponent<RoundedImage>();
 
-            GameObject gameObjectTwo = new GameObject();
+            GameObject gameObjectTwo = new();
             RoundedImage imageTwo = gameObjectTwo.AddComponent<RoundedImage>();
             imageTwo.Mode = RoundingMode.BORDER;
             imageTwo.RoundingUnit = RoundingUnit.WORLD;
@@ -633,10 +642,10 @@ namespace DTT.UI.ProceduralUI.Tests
         public void Test_ValueEquality_Other_True()
         {
             // Arrange.
-            GameObject gameObjectOne = new GameObject();
+            GameObject gameObjectOne = new();
             RoundedImage image = gameObjectOne.AddComponent<RoundedImage>();
 
-            GameObject gameObjectTwo = new GameObject();
+            GameObject gameObjectTwo = new();
             RoundedImage imageTwo = gameObjectTwo.AddComponent<RoundedImage>();
 
             image.Mode = RoundingMode.FILL;

@@ -21,7 +21,7 @@ namespace DTT.PublishingTools
         /// The header instance used for drawing the DTT header.
         /// </summary>
         private DTTHeaderGUI _dttHeader;
-        
+
         /// <summary>
         /// Draws the header if it can be displayed and sets the GUI skin to the 
         /// DTT GUI skin.
@@ -29,13 +29,18 @@ namespace DTT.PublishingTools
         public override void OnInspectorGUI()
         {
             if (_canDisplay)
+            {
                 _dttHeader.OnGUI();
+            }
         }
 
         /// <summary>
         /// Finds the attributes and creates the header based on found info.
         /// </summary>
-        protected virtual void OnEnable() => Initialize();
+        protected virtual void OnEnable()
+        {
+            Initialize();
+        }
 
         /// <summary>
         /// Draws the base header if the DTT header can't be displayed.
@@ -47,7 +52,9 @@ namespace DTT.PublishingTools
         protected override void OnHeaderGUI()
         {
             if (!_canDisplay)
+            {
                 base.OnHeaderGUI();
+            }
         }
 
         /// <summary>

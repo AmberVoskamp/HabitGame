@@ -1,14 +1,14 @@
 ﻿#if UNITY_EDITOR
 
+using DTT.PublishingTools.Utils;
 using DTT.Utils.EditorUtilities;
 using DTT.Utils.Extensions;
 using DTT.Utils.Workflow;
+using System.Collections.Generic;
 using System.IO;
-using DTT.PublishingTools.Utils;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace DTT.PublishingTools
 {
@@ -21,7 +21,7 @@ namespace DTT.PublishingTools
         /// <summary>
         /// Dictionary for different values for illegal characters.
         /// </summary>
-        private static readonly Dictionary<string, string> _illegalCharacterReplacements = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> _illegalCharacterReplacements = new()
         {
             { "&", "AND" },
         };
@@ -33,6 +33,7 @@ namespace DTT.PublishingTools
         /// <param name="deletedAssets">The deleted assets.</param>
         /// <param name="movedAssets">The moved assets.</param>
         /// <param name="movedFromAssetPaths">The moved assets from asset paths.</param>
+        [System.Obsolete]
         private static void OnPostprocessAllAssets(
             string[] importedAssets,
             string[] deletedAssets,
@@ -59,11 +60,12 @@ namespace DTT.PublishingTools
         /// </summary>
         /// <param name="assetJsonPath">The path at which the asset.json file resides.</param>
         /// <param name="inAssetsFolder">Whether the package is inside the assets folder.</param>
+        [System.Obsolete]
         private static void UpdateAssetInfo(string assetJsonPath, bool inAssetsFolder)
         {
             // Get current asset info.
             string json = File.ReadAllText(assetJsonPath);
-            AssetJson assetJson = new AssetJson();
+            AssetJson assetJson = new();
             EditorJsonUtility.FromJsonOverwrite(json, assetJson);
 
             if (inAssetsFolder)
@@ -81,7 +83,9 @@ namespace DTT.PublishingTools
                 // Loop through all illegal characters and replace it with the legal value.
                 string assetName = "";
                 foreach (KeyValuePair<string, string> replacement in _illegalCharacterReplacements)
+                {
                     assetName = assetJson.displayName.Replace(replacement.Key, replacement.Value);
+                }
 
                 // Remove all unnecessary spaces in the string.
                 assetName = Regex.Replace(assetName, @"\s+", " ");
@@ -94,8 +98,10 @@ namespace DTT.PublishingTools
                 // If the package is not in the assets folder, it should not be an asset store release.
                 // Package files are immutable, that is why we can't update it manually.
                 if (assetJson.assetStoreRelease)
+                {
                     Debug.LogWarning("The asset json is imported as a package but set as asset store release. " +
                         "Make sure the asset store release flag in the asset.json file is up to date.");
+                }
             }
         }
 
@@ -103,6 +109,7 @@ namespace DTT.PublishingTools
         /// Adds a define symbol for a package that is set for asset store release.
         /// </summary>
         /// <param name="displayName">The display name of the package.</param>
+        [System.Obsolete]
         private static void AddScriptingDefineSymbolForAsset(string displayName)
         {
             string symbol = $"{displayName.FromReadableFormatToAllCaps()}_ASSET_STORE_RELEASE";

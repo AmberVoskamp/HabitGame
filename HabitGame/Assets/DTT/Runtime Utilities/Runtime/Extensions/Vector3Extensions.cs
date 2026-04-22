@@ -16,13 +16,19 @@ namespace DTT.Utils.Extensions
         public static Vector3 Flatten(this Vector3 vector, Vector3Axis axis)
         {
             if (axis.HasFlag(Vector3Axis.X))
+            {
                 vector.x = 0.0f;
+            }
 
             if (axis.HasFlag(Vector3Axis.Y))
+            {
                 vector.y = 0.0f;
+            }
 
             if (axis.HasFlag(Vector3Axis.Z))
+            {
                 vector.z = 0.0f;
+            }
 
             return vector;
         }

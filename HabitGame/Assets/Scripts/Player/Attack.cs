@@ -6,13 +6,25 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
-    [SerializeField] private Animator m_attackAnimator;
-    [SerializeField] private float m_doDamage;
-    [SerializeField] private float m_timeBetweenAttack;
+    [SerializeField] private Animator _attackAnimator;
+    [SerializeField] private float _normalDamage;
+    [SerializeField] private float _upgradeDamage;
+    [SerializeField] private float _timeBetweenAttack;
 
     private bool _isInBossRoom;
     private bool _bossInRange;
     private BossHealth _bossHealth;
+    private float _doDamage;
+
+    private void Start()
+    {
+        _doDamage = _normalDamage;
+    }
+
+    public void UpgradeAttack()
+    {
+        _doDamage = _upgradeDamage;
+    }
 
     //Gets triggerd on input
     public void DoAttack()
@@ -22,12 +34,12 @@ public class Attack : MonoBehaviour
             return;
         }
 
-        m_attackAnimator.SetTrigger("Attack");
+        _attackAnimator.SetTrigger("Attack");
 
         if (_bossInRange && _bossHealth != null)
         {
             //Damage boss
-            _bossHealth.TakeDamage(m_doDamage, DamageType.Player);
+            _bossHealth.TakeDamage(_doDamage, DamageType.Player);
         }
     }
 
@@ -37,7 +49,7 @@ public class Attack : MonoBehaviour
         _isInBossRoom = true;
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.TryGetComponent<BossHealth>(out BossHealth bossHealth))
         {
@@ -50,9 +62,9 @@ public class Attack : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D col)
+    private void OnTriggerExit2D(Collider2D col)
     {
-        if (col.gameObject.TryGetComponent<BossHealth>(out BossHealth bossHealth))
+        if (col.gameObject.TryGetComponent<BossHealth>(out _))
         {
             _bossInRange = false;
         }

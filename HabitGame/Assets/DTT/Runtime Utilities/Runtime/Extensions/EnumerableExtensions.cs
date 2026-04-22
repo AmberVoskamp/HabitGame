@@ -14,6 +14,9 @@ namespace DTT.Utils.Extensions
         /// <typeparam name="T">The type of enumerable.</typeparam>
         /// <param name="enumerable">The enumerable to check.</param>
         /// <returns>Whether the enumerable is null or empty.</returns>
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable) => enumerable == null || !enumerable.Any();
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable == null || !enumerable.Any();
+        }
     }
 }

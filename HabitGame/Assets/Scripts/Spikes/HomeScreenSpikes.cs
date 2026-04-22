@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class HomeScreenSpikes : MonoBehaviour
 {
-    [SerializeField] private SpikeRow[] m_spikeRows;
-    [SerializeField] private int m_spikesInRow = 16;
-    [SerializeField] private float m_upTime;
-    [SerializeField] private float m_nextTime;
-    [SerializeField] private float m_repeatTime;
-    [SerializeField] private int m_openSpace;
+    [SerializeField] private SpikeRow[] _spikeRows;
+    [SerializeField] private int _spikesInRow = 16;
+    [SerializeField] private float _upTime;
+    [SerializeField] private float _nextTime;
+    [SerializeField] private float _repeatTime;
+    [SerializeField] private int _openSpace;
 
     private void Start()
     {
-        for (int i = 0; i < m_spikeRows.Length; i++)
+        for (int i = 0; i < _spikeRows.Length; i++)
         {
-            m_spikeRows[i].SpawnSpikes(m_spikesInRow);
+            _spikeRows[i].GetSpikes();
         }
 
         Spike(0);
@@ -23,23 +23,23 @@ public class HomeScreenSpikes : MonoBehaviour
 
     private void Spike(int index)
     {
-        int2 openSpace = new int2();
-        int maxStartIndex = m_spikesInRow - m_openSpace;
+        int2 openSpace = new();
+        int maxStartIndex = _spikesInRow - _openSpace;
         openSpace.x = UnityEngine.Random.Range(0, maxStartIndex);
-        openSpace.y = openSpace.x + m_openSpace;
+        openSpace.y = openSpace.x + _openSpace;
 
         StartCoroutine(WaitSpikeNext(openSpace, index));
     }
 
-    IEnumerator WaitSpikeNext(int2 openSpace, int startRow)
+    private IEnumerator WaitSpikeNext(int2 openSpace, int startRow)
     {
-        for (int i = startRow; i < m_spikeRows.Length; i++)
+        for (int i = startRow; i < _spikeRows.Length; i++)
         {
-            yield return new WaitForSeconds(m_nextTime);
-            m_spikeRows[i].SetSpikeSection(openSpace, m_upTime);
+            yield return new WaitForSeconds(_nextTime);
+            _spikeRows[i].SetSpikeSection(openSpace, _upTime);
 
         }
-        yield return new WaitForSeconds(m_repeatTime);
+        yield return new WaitForSeconds(_repeatTime);
         Spike(0);
     }
 }

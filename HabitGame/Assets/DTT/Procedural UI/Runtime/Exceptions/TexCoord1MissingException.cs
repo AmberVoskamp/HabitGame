@@ -15,18 +15,18 @@ namespace DTT.UI.ProceduralUI.Exceptions
         /// </summary>
         public override string ErrorMessage
             => "The additional shader channel TexCoord1 is missing in your canvas settings.";
-        
+
         /// <summary>
         /// The canvas that has the missing shader channel.
         /// </summary>
-        private Canvas _canvas;
+        private readonly Canvas _canvas;
 
         /// <summary>
         /// The prefixed message in front of any
         /// <see cref="TexCoord1MissingException"/>
         /// </summary>
         private const string PREFIX = "- [Texcoord 1 missing in Canvas parent] - ";
-        
+
         /// <summary>
         /// Create a <see cref="TexCoord1MissingException"/> without a message.
         /// </summary>
@@ -38,7 +38,10 @@ namespace DTT.UI.ProceduralUI.Exceptions
         /// </summary>
         /// <param name="message">The message to show.</param>
         public TexCoord1MissingException(Canvas canvas, string message)
-            : base(Format(message, PREFIX)) => this._canvas = canvas;
+            : base(Format(message, PREFIX))
+        {
+            _canvas = canvas;
+        }
 
         /// <summary>
         /// Create a <see cref="TexCoord1MissingException"/> with the given message
@@ -47,11 +50,17 @@ namespace DTT.UI.ProceduralUI.Exceptions
         /// <param name="message">The message to show.</param>
         /// <param name="innerException">The inner exception thrown.</param>
         public TexCoord1MissingException(Canvas canvas, string message, Exception innerException)
-            : base(Format(message, PREFIX), innerException) => this._canvas = canvas;
-        
+            : base(Format(message, PREFIX), innerException)
+        {
+            _canvas = canvas;
+        }
+
         /// <summary>
         /// Applies the additional shader channel to the canvas.
         /// </summary>
-        public void Fix() => _canvas.additionalShaderChannels |= AdditionalCanvasShaderChannels.TexCoord1;
+        public void Fix()
+        {
+            _canvas.additionalShaderChannels |= AdditionalCanvasShaderChannels.TexCoord1;
+        }
     }
 }

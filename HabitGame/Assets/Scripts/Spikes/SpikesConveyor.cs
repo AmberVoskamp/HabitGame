@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using static SpikesConveyor;
 
 /// <summary>
 /// The spike converyor manages all the spikes
@@ -13,23 +12,23 @@ using static SpikesConveyor;
 [RequireComponent(typeof(BoxCollider2D))]
 public class SpikesConveyor : MonoBehaviour
 {
-    [SerializeField] private GameManager m_gameManager;
-    [SerializeField] private SpikeRow m_spikeRowPrefab;
+    [SerializeField] private GameManager _gameManager;
+    [SerializeField] private SpikeRow _spikeRowPrefab;
 
     [Header("Settings")]
-    [SerializeField] private int m_spikesInRow = 16;
-    [SerializeField] private int m_spawnRows;
-    [SerializeField] private float m_spawnRowsYDistance;
+    [SerializeField] private int _spikesInRow = 16;
+    [SerializeField] private int _spawnRows;
+    [SerializeField] private float _spawnRowsYDistance;
 
     [Space]
-    [SerializeField] private int m_openSpace = 5;
-    [SerializeField] private int m_spawnEveryRows;
-    [SerializeField] private float m_spikeMoveNextTime;
-    [SerializeField] private float m_spikesUpSeconds;
-    [SerializeField] private ConveyorSettings[] m_dificultySettings;
+    [SerializeField] private int _openSpace = 5;
+    [SerializeField] private int _spawnEveryRows;
+    [SerializeField] private float _spikeMoveNextTime;
+    [SerializeField] private float _spikesUpSeconds;
+    [SerializeField] private ConveyorSettings[] _dificultySettings;
 
     private SpikeRow[] _spikeRows;
-    private Coroutine _spikeCoroutine;
+    private readonly Coroutine _spikeCoroutine;
     private bool _isActive = false;
     private int _currentDificulty;
     private ConveyorSettings _conveyorSettings;
@@ -37,8 +36,8 @@ public class SpikesConveyor : MonoBehaviour
     [Serializable]
     public struct ConveyorSettings
     {
-        public int openSpace;
-        public int spawnEveryRows;
+        public int OpenSpace;
+        public int SpawnEveryRows;
     }
 
     private void Start()
@@ -48,10 +47,10 @@ public class SpikesConveyor : MonoBehaviour
         {
             _currentDificulty = ConfigManager.Instance.SpikeDificulty;
         }
-        _conveyorSettings = m_dificultySettings[_currentDificulty];
+        _conveyorSettings = _dificultySettings[_currentDificulty];
 
         Phase phase = GetComponentInParent<Phase>();
-        m_gameManager = phase.GameManager;
+        _gameManager = phase.GameManager;
 
         SpawnSpikeRows();
     }
@@ -69,19 +68,19 @@ public class SpikesConveyor : MonoBehaviour
             StopCoroutine(_spikeCoroutine);
         }
 
-        m_gameManager.SpikeSectionDone(playerHealth.CurrentHealth, m_dificultySettings.Length - 1);
+        _gameManager.SpikeSectionDone(playerHealth.GetCurrentHealth, _dificultySettings.Length - 1);
     }
 
     private void SpawnSpikeRows()
     {
-        _spikeRows = new SpikeRow[m_spawnRows];
+        _spikeRows = new SpikeRow[_spawnRows];
         float yOffset = 0;
-        for (int i = 0; i < m_spawnRows; i++)
+        for (int i = 0; i < _spawnRows; i++)
         {
-            var spikeRow = Instantiate(m_spikeRowPrefab, transform);
+            SpikeRow spikeRow = Instantiate(_spikeRowPrefab, transform);
             spikeRow.transform.localPosition = new Vector3(0, yOffset, 0);
-            yOffset += m_spawnRowsYDistance;
-            spikeRow.SpawnSpikes(m_spikesInRow);
+            yOffset += _spawnRowsYDistance;
+            spikeRow.SpawnSpikes(_spikesInRow);
             _spikeRows[i] = spikeRow;
         }
 
@@ -94,7 +93,7 @@ public class SpikesConveyor : MonoBehaviour
         while (index < _spikeRows.Length)
         {
             Spike(index);
-            index += _conveyorSettings.spawnEveryRows;
+            index += _conveyorSettings.SpawnEveryRows;
         }
     }
 
@@ -105,22 +104,22 @@ public class SpikesConveyor : MonoBehaviour
             return;
         }
 
-        int2 openSpace = new int2();
-        int maxStartIndex = m_spikesInRow - _conveyorSettings.openSpace;
+        int2 openSpace = new();
+        int maxStartIndex = _spikesInRow - _conveyorSettings.OpenSpace;
         openSpace.x = UnityEngine.Random.Range(0, maxStartIndex);
-        openSpace.y = openSpace.x + _conveyorSettings.openSpace;
+        openSpace.y = openSpace.x + _conveyorSettings.OpenSpace;
 
         StartCoroutine(WaitSpikeNext(openSpace, index));
     }
 
-    IEnumerator WaitSpikeNext(int2 openSpace, int startRow)
+    private IEnumerator WaitSpikeNext(int2 openSpace, int startRow)
     {
         for (int i = startRow; i < _spikeRows.Length; i++)
         {
-            yield return new WaitForSeconds(m_spikeMoveNextTime);
-            _spikeRows[i].SetSpikeSection(openSpace, m_spikesUpSeconds);
+            yield return new WaitForSeconds(_spikeMoveNextTime);
+            _spikeRows[i].SetSpikeSection(openSpace, _spikesUpSeconds);
 
-            if (i == _conveyorSettings.spawnEveryRows && startRow == 0)
+            if (i == _conveyorSettings.SpawnEveryRows && startRow == 0)
             {
                 Spike(0);
             }

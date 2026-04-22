@@ -17,7 +17,7 @@ namespace DTT.UI.ProceduralUI.Editor
         /// Whether this editor has been initialized.
         /// </summary>
         private bool _initialized = false;
-        
+
         /// <summary>
         /// Draws the DTT header on top of the shader settings.
         /// </summary>
@@ -26,13 +26,14 @@ namespace DTT.UI.ProceduralUI.Editor
         public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
         {
             if (!_initialized)
+            {
                 Initialize();
+            }
 
-            if (_header != null)
-                _header.OnGUI();
+            _header?.OnGUI();
             base.OnGUI(materialEditor, properties);
         }
-        
+
         /// <summary>
         /// Initializes the editor.
         /// </summary>
@@ -41,7 +42,9 @@ namespace DTT.UI.ProceduralUI.Editor
             _initialized = true;
             AssetJson assetJson = DTTEditorConfig.GetAssetJson("dtt.proceduralui");
             if (assetJson != null)
+            {
                 _header = new DTTHeaderGUI(assetJson);
+            }
         }
     }
 }

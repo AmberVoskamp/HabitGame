@@ -33,10 +33,14 @@ namespace DTT.PublishingTools
         public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
         {
             if (!_initialized)
+            {
                 Initialize();
+            }
 
             if (_canDisplay)
+            {
                 _dttHeader.OnGUI();
+            }
 
             base.OnGUI(materialEditor, properties);
         }

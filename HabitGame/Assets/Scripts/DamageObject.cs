@@ -8,16 +8,16 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class DamageObject : MonoBehaviour
 {
-    [SerializeField] private int m_damage;
-    [SerializeField] protected SpriteRenderer m_spriteRenderer;
-    [SerializeField] protected BoxCollider2D m_boxCollider2D;
+    [SerializeField] private int _damage;
+    [SerializeField] protected SpriteRenderer SpriteRenderer;
+    [SerializeField] protected BoxCollider2D BoxCollider2D;
 
-    void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
         InCollider(collider);
     }
 
-    void OnTriggerStay2D(Collider2D collider)
+    private void OnTriggerStay2D(Collider2D collider)
     {
         InCollider(collider);
     }
@@ -25,7 +25,7 @@ public class DamageObject : MonoBehaviour
     private void InCollider(Collider2D collider)
     {
         DamageType type = DamageType.Other;
-        if (gameObject.TryGetComponent<Spikes>(out Spikes spike))
+        if (gameObject.TryGetComponent<Spikes>(out _))
         {
             type = DamageType.Spike;
         }
@@ -39,13 +39,13 @@ public class DamageObject : MonoBehaviour
             return false;
         }
 
-        playerHealth.TakeDamage(m_damage, type);
+        playerHealth.TakeDamage(_damage, type);
         return true;
     }
 
     private void Reset()
     {
-        m_spriteRenderer = GetComponent<SpriteRenderer>();
-        m_boxCollider2D = GetComponent<BoxCollider2D>();
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+        BoxCollider2D = GetComponent<BoxCollider2D>();
     }
 }

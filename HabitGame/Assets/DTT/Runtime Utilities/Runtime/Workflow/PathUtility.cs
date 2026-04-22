@@ -21,13 +21,12 @@ namespace DTT.Utils.Workflow
         public static string GetPathElementAt(this string path, int index)
         {
             if (path == null)
+            {
                 throw new ArgumentNullException(nameof(path));
+            }
 
             string[] names = path.Split(Path.AltDirectorySeparatorChar);
-            if (names.HasIndex(index))
-                return names[index];
-            else
-                return string.Empty;
+            return names.HasIndex(index) ? names[index] : string.Empty;
         }
 
         /// <summary>
@@ -39,16 +38,22 @@ namespace DTT.Utils.Workflow
         public static bool ContainsDirectory(string path, string directoryName)
         {
             if (path == null)
+            {
                 throw new ArgumentNullException(nameof(path));
+            }
 
             if (directoryName == null)
+            {
                 throw new ArgumentNullException(nameof(directoryName));
+            }
 
             string[] directoriesInPath = path.Split(Path.AltDirectorySeparatorChar);
             for (int i = 0; i < directoriesInPath.Length; i++)
             {
                 if (directoriesInPath[i] == directoryName)
+                {
                     return true;
+                }
             }
 
             return false;
@@ -62,10 +67,14 @@ namespace DTT.Utils.Workflow
         public static void EnsureDirectoryExistence(string directoryPath)
         {
             if (string.IsNullOrEmpty(directoryPath))
+            {
                 throw new NullOrEmptyException(nameof(directoryPath));
+            }
 
             if (!Directory.Exists(directoryPath))
-                Directory.CreateDirectory(directoryPath);
+            {
+                _ = Directory.CreateDirectory(directoryPath);
+            }
         }
 
         /// <summary>
@@ -76,16 +85,18 @@ namespace DTT.Utils.Workflow
         public static string ToAssetPath(this string fullPathOfAsset)
         {
             if (string.IsNullOrEmpty(fullPathOfAsset))
+            {
                 throw new NullOrEmptyException(nameof(fullPathOfAsset));
+            }
 
             if (fullPathOfAsset.Contains("\\"))
+            {
                 fullPathOfAsset = fullPathOfAsset.Replace("\\", "/");
+            }
 
-            string path;
-            if (fullPathOfAsset.StartsWith(Application.dataPath))
-                path = "Assets" + fullPathOfAsset.Substring(Application.dataPath.Length);
-            else
-                path = fullPathOfAsset;
+            string path = fullPathOfAsset.StartsWith(Application.dataPath)
+                ? "Assets" + fullPathOfAsset[Application.dataPath.Length..]
+                : fullPathOfAsset;
 
             // Make sure the path is compatible with an asset path structure, otherwise Unity won't find it.
             return path.Replace("\\", "/");
@@ -98,10 +109,7 @@ namespace DTT.Utils.Workflow
         /// <returns>Whether the path corresponds with an asset inside the packages folder.</returns>
         public static bool IsPackagePath(this string assetPath)
         {
-            if (string.IsNullOrEmpty(assetPath))
-                throw new NullOrEmptyException(nameof(assetPath));
-
-            return assetPath.StartsWith("Packages/");
+            return string.IsNullOrEmpty(assetPath) ? throw new NullOrEmptyException(nameof(assetPath)) : assetPath.StartsWith("Packages/");
         }
     }
 

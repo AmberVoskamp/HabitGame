@@ -7,17 +7,17 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Projectle : DamageObject
 {
-    [SerializeField] private float m_liveTime;
-    [SerializeField] private float m_speed;
+    [SerializeField] private float _liveTime;
+    [SerializeField] private float _speed;
 
     private Rigidbody2D _rigidbody;
 
     private void Awake()
     {
-        _rigidbody = this.GetComponent<Rigidbody2D>();
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
         HitPlayer(collider);
     }
@@ -26,9 +26,9 @@ public class Projectle : DamageObject
     {
         Vector3 direction = (pos - transform.position).normalized;
 
-        _rigidbody.linearVelocity = direction * m_speed;
+        _rigidbody.linearVelocity = direction * _speed;
 
-        StartCoroutine(HelperWait.ActionAfterWait(m_liveTime, DestroyProjectile));
+        StartCoroutine(HelperWait.ActionAfterWait(_liveTime, DestroyProjectile));
     }
 
     protected override bool HitPlayer(Collider2D collider, DamageType type = DamageType.Other)

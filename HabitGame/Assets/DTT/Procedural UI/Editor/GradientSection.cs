@@ -1,5 +1,4 @@
 ﻿using UnityEditor;
-using UnityEngine;
 using UnityEngine.Events;
 
 namespace DTT.UI.ProceduralUI.Editor
@@ -14,42 +13,42 @@ namespace DTT.UI.ProceduralUI.Editor
         /// <inheritdoc/>
         /// </summary>
         public override string HeaderName => "Gradient";
-        
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         protected override bool OpenFoldoutOnEnter => true;
-        
+
         /// <summary>
         /// The batching property of <see cref="GradientEffect"/>.
         /// </summary>
-        private SerializedProperty _batching;
+        private readonly SerializedProperty _batching;
 
         /// <summary>
         /// The type property of <see cref="GradientEffect"/>.
         /// </summary>
-        private SerializedProperty _type;
+        private readonly SerializedProperty _type;
 
         /// <summary>
         /// The gradient property of <see cref="GradientEffect"/>.
         /// </summary>
-        private SerializedProperty _gradient;
+        private readonly SerializedProperty _gradient;
 
         /// <summary>
         /// The offset property of <see cref="GradientEffect"/>.
         /// </summary>
-        private SerializedProperty _offset;
+        private readonly SerializedProperty _offset;
 
         /// <summary>
         /// The rotation property of <see cref="GradientEffect"/>.
         /// </summary>
-        private SerializedProperty _rotation;
+        private readonly SerializedProperty _rotation;
 
         /// <summary>
         /// The scale property of <see cref="GradientEffect"/>.
         /// </summary>
-        private SerializedProperty _scale;
-        
+        private readonly SerializedProperty _scale;
+
         /// <summary>
         /// Creates a new gradient section.
         /// </summary>
@@ -80,25 +79,25 @@ namespace DTT.UI.ProceduralUI.Editor
             GradientEffectSerializedProperties properties
         ) : base(GradientEffect, repaint)
         {
-            this._type = properties.type;
-            this._gradient = properties.gradient;
-            this._offset = properties.offset;
-            this._rotation = properties.rotation;
-            this._scale = properties.scale;
-            this._batching = properties.batching;
+            _type = properties.type;
+            _gradient = properties.gradient;
+            _offset = properties.offset;
+            _rotation = properties.rotation;
+            _scale = properties.scale;
+            _batching = properties.batching;
         }
-        
+
         /// <summary>
         /// Draws the toolbar where the user can select their option, and draws the selected option.
         /// </summary>
         protected override void DrawSection()
         {
-            EditorGUILayout.PropertyField(_batching);
-            EditorGUILayout.PropertyField(_type);
-            EditorGUILayout.PropertyField(_gradient);
-            EditorGUILayout.PropertyField(_offset);
-            EditorGUILayout.PropertyField(_rotation);
-            EditorGUILayout.PropertyField(_scale);
+            _ = EditorGUILayout.PropertyField(_batching);
+            _ = EditorGUILayout.PropertyField(_type);
+            _ = EditorGUILayout.PropertyField(_gradient);
+            _ = EditorGUILayout.PropertyField(_offset);
+            _ = EditorGUILayout.PropertyField(_rotation);
+            _ = EditorGUILayout.PropertyField(_scale);
         }
     }
 }

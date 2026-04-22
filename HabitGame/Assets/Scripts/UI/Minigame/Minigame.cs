@@ -8,18 +8,18 @@ using UnityEngine.UI;
 
 public class Minigame : MonoBehaviour
 {
-    [SerializeField] private MinigamePopup m_minigamePopup;
+    [SerializeField] private MinigamePopup _minigamePopup;
 
     [Header("Spinning")]
-    [SerializeField] private Image m_spinningImage;
-    [SerializeField] private Slider m_slider;
-    [SerializeField] private Image m_landingImage;
-    [SerializeField] private float m_spinningSpeed;
-    [SerializeField] private float m_noTapTime;
+    [SerializeField] private Image _spinningImage;
+    [SerializeField] private Slider _slider;
+    [SerializeField] private Image _landingImage;
+    [SerializeField] private float _spinningSpeed;
+    [SerializeField] private float _noTapTime;
     [Header("Bar")]
-    [SerializeField] private RectTransform m_barRectTransform;
-    [SerializeField] private Point m_barPointPrefab;
-    [SerializeField] int m_barPoints;
+    [SerializeField] private RectTransform _barRectTransform;
+    [SerializeField] private Point _barPointPrefab;
+    [SerializeField] private int _barPoints;
 
     private Point[] _points;
     private int _currentPoints;
@@ -29,7 +29,7 @@ public class Minigame : MonoBehaviour
 
     private void Start()
     {
-        _rectSpinningImage = m_spinningImage.GetComponent<RectTransform>();
+        _rectSpinningImage = _spinningImage.GetComponent<RectTransform>();
         gameObject.SetActive(false);
     }
 
@@ -41,7 +41,7 @@ public class Minigame : MonoBehaviour
         }
 
         //Rotate the spinning image
-        _rectSpinningImage.Rotate(0, 0, m_spinningSpeed * Time.deltaTime);
+        _rectSpinningImage.Rotate(0, 0, _spinningSpeed * Time.deltaTime);
 
         if (_waitTime > 0f)
         {
@@ -61,11 +61,11 @@ public class Minigame : MonoBehaviour
                 Destroy(_points[i].gameObject);
             }
         }
-        _points = new Point[m_barPoints];
+        _points = new Point[_barPoints];
 
         for (int i = 0; i < _points.Length; i++)
         {
-            Point newPoint = Instantiate(m_barPointPrefab, m_barRectTransform);
+            Point newPoint = Instantiate(_barPointPrefab, _barRectTransform);
             _points[i] = newPoint;
         }
         #endregion
@@ -81,7 +81,7 @@ public class Minigame : MonoBehaviour
         }
 
         bool hit = IsAtArrow();
-        _waitTime = m_noTapTime;
+        _waitTime = _noTapTime;
         Point(hit);
     }
 
@@ -99,11 +99,11 @@ public class Minigame : MonoBehaviour
         {
             _points[_currentPoints].SetFill(true);
         }
-        else //completed end minigame
+        else 
         {
             //Todo: Show they succeeded somehow then close popup
             //Todo: give player the reward
-            m_minigamePopup.ShowPopup(false);
+            _minigamePopup.ShowPopup(false, true);
         }
     }
 
@@ -111,7 +111,7 @@ public class Minigame : MonoBehaviour
     {
         //Check if the spinning image is at the right rotation to be hit
         //The spinning Image has % size of the slider value. 
-        float size = m_slider.value; //Now 0.25 so 25% of the whole circle
+        float size = _slider.value; //Now 0.25 so 25% of the whole circle
         //A full circle is 360 degrees
         float degrees = 360 * size;
         float eulerAngleZ = _rectSpinningImage.rotation.eulerAngles.z;

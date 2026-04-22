@@ -1,16 +1,14 @@
 ﻿#if UNITY_EDITOR
 
+using DTT.PublishingTools.Utils;
 using DTT.Utils.Extensions;
-using DTT.Utils.Workflow;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using DTT.PublishingTools.Utils;
 using UnityEditor;
 using UnityEngine;
-
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace DTT.PublishingTools
@@ -62,7 +60,7 @@ namespace DTT.PublishingTools
                         string defaultPath = DEFAULT_DTT_PROJECT_FOLDER;
                         Debug.Log("No DTT folder was found in the project. Creating one at " + defaultPath);
 
-                        Directory.CreateDirectory(defaultPath);
+                        _ = Directory.CreateDirectory(defaultPath);
                         AssetDatabase.ImportAsset(defaultPath);
 
                         _dttProjectFolder = defaultPath;
@@ -95,16 +93,7 @@ namespace DTT.PublishingTools
         /// <summary>
         /// The folder this package is contained inside.
         /// </summary>
-        public static string PublishingToolsFolder
-        {
-            get
-            {
-                if (assetInfo == null)
-                    return PackagesFolder;
-                
-                return assetInfo.assetStoreRelease ? ProjectFolder : PackagesFolder;
-            }
-        }
+        public static string PublishingToolsFolder => assetInfo == null ? PackagesFolder : assetInfo.assetStoreRelease ? ProjectFolder : PackagesFolder;
 
         /// <summary>
         /// Holds paths towards dtt package directories.
@@ -167,13 +156,13 @@ namespace DTT.PublishingTools
         /// <summary>
         /// The lazy string array that holds paths towards dtt package directories.
         /// </summary>
-        private static Lazy<string[]> _dttPackageDirectories;
+        private static readonly Lazy<string[]> _dttPackageDirectories;
 
         /// <summary>
         /// A regular expression for testing a documentation web url.
         /// </summary>
         private static readonly Regex _webUrlRegex;
-        
+
         /// <summary>
         /// Creates a new static instance, setting up the settings for this package.
         /// </summary>
@@ -194,13 +183,12 @@ namespace DTT.PublishingTools
         public static AssetJson GetAssetJson(string fullPackageName)
         {
             if (fullPackageName == null)
+            {
                 throw new NullReferenceException("Full package name is null.");
+            }
 
             string assetPath = GetFullAssetJsonPathInPackages(fullPackageName);
-            if (File.Exists(assetPath))
-                return GetAssetJsonInPackages(assetPath);
-            
-            return GetAssetJsonInProject(fullPackageName);
+            return File.Exists(assetPath) ? GetAssetJsonInPackages(assetPath) : GetAssetJsonInProject(fullPackageName);
         }
 
         /// <summary>
@@ -212,7 +200,9 @@ namespace DTT.PublishingTools
         public static string GetPackageVersion(string fullPackageName)
         {
             if (fullPackageName == null)
+            {
                 throw new NullReferenceException("Full package name is null.");
+            }
 
             string fullPackagePath = GetFullAssetJsonPathInPackages(fullPackageName);
             if (File.Exists(fullPackagePath))
@@ -232,7 +222,7 @@ namespace DTT.PublishingTools
 
                 return package.version;
             }
-           
+
             // If the asset json doesn't exist in the package folder, it should be found in the project.
             AssetJson assetJson = GetAssetJsonInProject(fullPackageName);
             if (assetJson == null)
@@ -253,9 +243,13 @@ namespace DTT.PublishingTools
         {
             AssetJson assetJson = GetAssetJson(fullPackageName);
             if (assetJson != null)
-                DTTReadMeEditorWindow.Open(assetJson);
+            {
+                _ = DTTReadMeEditorWindow.Open(assetJson);
+            }
             else
+            {
                 Debug.LogWarning($"Failed opening ReadMe. No asset json could be found for package {fullPackageName}.");
+            }
         }
 
         /// <summary>
@@ -266,7 +260,9 @@ namespace DTT.PublishingTools
         public static string GetReadMeFocusKey(string packageDisplayName)
         {
             if (packageDisplayName == null)
+            {
                 throw new NullReferenceException("Package display name is null");
+            }
 
             string allcaps = packageDisplayName.FromReadableFormatToAllCaps();
             string focusKey = $"{allcaps}_{README_FOCUS_KEY_SUFFIX}";
@@ -280,7 +276,9 @@ namespace DTT.PublishingTools
         /// <param name="assetJson">The asset json of the package.</param>
         /// <returns>Whether the editor configuration can find the readme sections folder.</returns>
         public static bool HasReadMeSections(AssetJson assetJson)
-            => Directory.Exists(Path.Combine(GetFullContentFolderPath(assetJson), DTT_README_SECTIONS_FOLDER_RELATIVE));
+        {
+            return Directory.Exists(Path.Combine(GetFullContentFolderPath(assetJson), DTT_README_SECTIONS_FOLDER_RELATIVE));
+        }
 
         /// <summary>
         /// Returns the full path towards given package its folder.
@@ -290,10 +288,7 @@ namespace DTT.PublishingTools
         public static string GetFullContentFolderPath(AssetJson assetJson)
         {
             string fullPackagePath = Path.GetFullPath(Path.Combine("Packages", assetJson.packageName));
-            if (Directory.Exists(fullPackagePath))
-                return fullPackagePath;
-            
-            return Path.GetFullPath(Path.Combine(DTTProjectFolder, assetJson.displayName));
+            return Directory.Exists(fullPackagePath) ? fullPackagePath : Path.GetFullPath(Path.Combine(DTTProjectFolder, assetJson.displayName));
         }
 
         /// <summary>
@@ -304,9 +299,11 @@ namespace DTT.PublishingTools
         public static string GetContentFolderPath(AssetJson assetJson)
         {
             string packagePath = Path.Combine("Packages", assetJson.packageName);
-            if (!Directory.Exists(Path.GetFullPath(packagePath))) 
+            if (!Directory.Exists(Path.GetFullPath(packagePath)))
+            {
                 packagePath = Path.Combine(DTTProjectFolder, assetJson.displayName);
-            
+            }
+
             // Ensure the path is unity-asset-database compatible.
             packagePath = packagePath.Replace("\\", "/");
 
@@ -318,7 +315,10 @@ namespace DTT.PublishingTools
         /// <para>The documentation url can be a file path relative to the package its folder.</para>
         /// </summary>
         /// <param name="assetJson">The asset json of the package.</param>
-        public static void OpenPackageDocumentation(AssetJson assetJson) => OpenPackageLink(assetJson, assetJson.documentationUrl);
+        public static void OpenPackageDocumentation(AssetJson assetJson)
+        {
+            OpenPackageLink(assetJson, assetJson.documentationUrl);
+        }
 
         /// <summary>
         /// Opens a link for a package. This can be a url or a path relative to the package folder.
@@ -328,8 +328,10 @@ namespace DTT.PublishingTools
         public static void OpenPackageLink(AssetJson assetJson, string urlOrPath)
         {
             if (assetJson.packageName == null)
+            {
                 throw new NullReferenceException("Full package name is null, make sure " +
                     "it can be retrieved correctly from the DTTHeader.");
+            }
 
             if (_webUrlRegex.IsMatch(urlOrPath))
             {
@@ -361,21 +363,22 @@ namespace DTT.PublishingTools
         /// </summary>
         public static void RefreshAssetJsonInProject()
         {
-            if (_assetJsonInProject == null)
-                _assetJsonInProject = new List<AssetJson>();
+            _assetJsonInProject ??= new List<AssetJson>();
 
             _assetJsonInProject.Clear();
 
             // If the project folder doesn't exist, no refresh should be done.
             if (!Directory.Exists(DTTProjectFolder))
+            {
                 return;
+            }
 
             // Add asset.json files found in the DTT project folder to the containers.
             foreach (string file in Directory.EnumerateFiles(DTTProjectFolder, "*.json", SearchOption.AllDirectories))
             {
                 if (Path.GetFileNameWithoutExtension(file) == "asset")
                 {
-                    AssetJson container = new AssetJson();
+                    AssetJson container = new();
                     string json = File.ReadAllText(file);
                     JsonUtility.FromJsonOverwrite(json, container);
 
@@ -392,7 +395,7 @@ namespace DTT.PublishingTools
         {
             char separator = Path.AltDirectorySeparatorChar;
 
-            HashSet<string> names = new HashSet<string>();
+            HashSet<string> names = new();
             string[] guids = AssetDatabase.FindAssets("package t:textasset", new string[] { "Packages" });
             foreach (string guid in guids)
             {
@@ -403,7 +406,7 @@ namespace DTT.PublishingTools
                     int indexOfSecondSeperatorChar = path.IndexOf(separator, path.IndexOf(separator) + 1);
 
                     // Add only the 'Packages/<packagename>' part.
-                    names.Add(path.Remove(indexOfSecondSeperatorChar));
+                    _ = names.Add(path[..indexOfSecondSeperatorChar]);
                 }
             }
 
@@ -417,7 +420,9 @@ namespace DTT.PublishingTools
         /// <param name="fullPackageName">The full package name of the package (e.g. dtt.publishingtools).</param>
         /// <returns>The full path towards the asset.json file.</returns>
         private static string GetFullAssetJsonPathInPackages(string fullPackageName)
-            => Path.GetFullPath(Path.Combine("Packages", fullPackageName, "asset.json"));
+        {
+            return Path.GetFullPath(Path.Combine("Packages", fullPackageName, "asset.json"));
+        }
 
         /// <summary>
         /// Retrieves asset json from the project (In the <see cref="DTTProjectFolder"/>).
@@ -427,8 +432,12 @@ namespace DTT.PublishingTools
         private static AssetJson GetAssetJsonInProject(string fullPackageName)
         {
             foreach (AssetJson assetJson in _assetJsonInProject)
+            {
                 if (assetJson.packageName == fullPackageName)
+                {
                     return assetJson;
+                }
+            }
 
             Debug.LogWarning($"Failed retrieving asset json of {fullPackageName} in the project.");
             return null;
@@ -443,12 +452,12 @@ namespace DTT.PublishingTools
         {
             if (File.Exists(assetPath))
             {
-                AssetJson assetJson = new AssetJson();
+                AssetJson assetJson = new();
                 string json = File.ReadAllText(assetPath);
                 JsonUtility.FromJsonOverwrite(json, assetJson);
                 return assetJson;
             }
-            
+
             Debug.LogWarning($"Failed retrieving asset json at {assetPath}");
             return null;
         }

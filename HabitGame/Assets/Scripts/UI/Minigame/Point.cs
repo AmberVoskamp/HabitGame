@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Point : MonoBehaviour
 {
-    [SerializeField] private Image m_fillImage;
+    [SerializeField] private Image _fillImage;
 
     private void Start()
     {
@@ -16,6 +16,6 @@ public class Point : MonoBehaviour
 
     public void SetFill(bool active)
     {
-        m_fillImage.gameObject.SetActive(active);
+        _fillImage.gameObject.SetActive(active);
     }
 }

@@ -26,7 +26,7 @@ namespace DTT.Utils.EditorUtilities
         /// <summary>
         /// The stored properties, accessable by name.
         /// </summary>
-        private Dictionary<string, SerializedProperty> _properties = new Dictionary<string, SerializedProperty>();
+        private readonly Dictionary<string, SerializedProperty> _properties = new();
 
         /// <summary>
         /// The prefix used for private variables.
@@ -43,10 +43,7 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="serializedObject">The object of which to store the properties.</param>
         public SerializedPropertyCache(SerializedObject serializedObject)
         {
-            if (serializedObject == null)
-                throw new LazyDictionaryException("Serialized object can't be null");
-
-            p_serializedObject = serializedObject;
+            p_serializedObject = serializedObject ?? throw new LazyDictionaryException("Serialized object can't be null");
         }
         #endregion
 
@@ -56,13 +53,19 @@ namespace DTT.Utils.EditorUtilities
         /// Updates the serialized object representation. Call this before drawing
         /// your properties and eventuall changes.
         /// </summary>
-        public void UpdateRepresentation() => p_serializedObject.Update();
+        public void UpdateRepresentation()
+        {
+            p_serializedObject.Update();
+        }
 
         /// <summary>
         /// Applies modified changes of properties to the serialized object.
         /// Call this after a <see cref="EditorGUI.EndChangeCheck"/> has returned true.
         /// </summary>
-        public void ApplyChanges() => p_serializedObject.ApplyModifiedProperties();
+        public void ApplyChanges()
+        {
+            _ = p_serializedObject.ApplyModifiedProperties();
+        }
         #endregion
         #region Protected
         /// <summary>
@@ -74,7 +77,9 @@ namespace DTT.Utils.EditorUtilities
         {
             // Null or empty property names aren't allowed.
             if (string.IsNullOrEmpty(nameOfProperty))
+            {
                 throw new NullReferenceException($"Property name is null or empty.");
+            }
 
             if (!_properties.ContainsKey(nameOfProperty))
             {
@@ -86,7 +91,9 @@ namespace DTT.Utils.EditorUtilities
                     string privatePrefixed = PRIVATE_PREFIX + nameOfProperty;
                     property = p_serializedObject.FindProperty(privatePrefixed);
                     if (property == null)
+                    {
                         throw new InvalidOperationException($"{nameOfProperty} and {privatePrefixed} don't match a property.");
+                    }
                 }
 
                 _properties.Add(nameOfProperty, property);

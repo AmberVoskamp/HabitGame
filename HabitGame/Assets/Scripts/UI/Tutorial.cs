@@ -7,9 +7,9 @@ using UnityEngine;
 
 public class Tutorial : MonoBehaviour
 {
-    [SerializeField] private MinigamePopup m_minigamePopup;
-    [SerializeField] private TMP_Text m_text;
-    [SerializeField] private bool m_doTutorial;
+    [SerializeField] private MinigamePopup _minigamePopup;
+    [SerializeField] private TMP_Text _text;
+    [SerializeField] private bool _doTutorial;
 
     private bool _tutorialShowing = false;
     private ConfigManager _configManager;
@@ -19,27 +19,25 @@ public class Tutorial : MonoBehaviour
         _configManager = ConfigManager.Instance;
         if (_configManager != null)
         {
-            m_doTutorial = !_configManager.config.tutorialFinished;
+            _doTutorial = !_configManager.Config.TutorialFinished;
         }
 
-        m_minigamePopup.ShowTutorial(m_doTutorial);
+        _minigamePopup.ShowTutorial(_doTutorial);
         if (!_tutorialShowing)
         {
-            Debug.Log("Tutorial set active false");
             gameObject.SetActive(false);
         }
     }
 
     public void ShowTutorial(string tutorialText)
     {
-        if (!m_doTutorial)
+        if (!_doTutorial)
         {
             return;
         }
 
         _tutorialShowing = true;
-        m_text.text = tutorialText;
-        Debug.Log("Tutorial ShowTutorial set active true");
+        _text.text = tutorialText;
         gameObject.SetActive(true);
         Time.timeScale = 0;
     }

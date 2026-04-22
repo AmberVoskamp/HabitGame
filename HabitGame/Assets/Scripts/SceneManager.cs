@@ -9,10 +9,10 @@ using UnityEngine.SceneManagement;
 public class SceneSwitchManager : MonoBehaviour
 {
     public static SceneSwitchManager Instance;
-    [SerializeField] private int m_homeSceneIndex;
-    [SerializeField] private int m_GameSceneIndex;
+    [SerializeField] private int _homeSceneIndex;
+    [SerializeField] private int _gameSceneIndex;
 
-    void Start()
+    private void Start()
     {
         Instance = this;
         SwitchScene(Scenes.HomeScene);
@@ -22,12 +22,12 @@ public class SceneSwitchManager : MonoBehaviour
     {
         int sceneIndex = scene switch
         {
-            Scenes.HomeScene => m_homeSceneIndex,
-            Scenes.GameScene => m_GameSceneIndex,
+            Scenes.HomeScene => _homeSceneIndex,
+            Scenes.GameScene => _gameSceneIndex,
             _ => 0,
         };
 
-        DOTween.KillAll();
+        _ = DOTween.KillAll();
         SceneManager.LoadScene(sceneIndex);
     }
 }

@@ -10,7 +10,7 @@ public class SettingsScriptableObject : ScriptableObject
 
         public int value;
     }
-    
+
     [SerializeField]
     private string _setting;
 
@@ -23,5 +23,8 @@ public class SettingsScriptableObject : ScriptableObject
     [SerializeField]
     private SubSetting _subSetting;
 
-    public void UpdateSetting(string newSetting) => _setting = newSetting;
+    public void UpdateSetting(string newSetting)
+    {
+        _setting = newSetting;
+    }
 }

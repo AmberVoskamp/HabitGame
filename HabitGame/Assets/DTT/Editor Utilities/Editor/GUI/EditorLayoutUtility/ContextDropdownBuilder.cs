@@ -15,7 +15,7 @@ namespace DTT.Utils.EditorUtilities
         /// The amount of items added to the dropdown.
         /// </summary>
         public int ItemCount => _dropdown.ItemCount;
-        
+
         /// <summary>
         /// The context dropdown instance used for showing the dropdown.
         /// </summary>
@@ -26,13 +26,16 @@ namespace DTT.Utils.EditorUtilities
         /// menu items.
         /// </summary>
         private string _indentTextPath = string.Empty;
-        
+
         /// <summary>
         /// Creates the builder using the position at which the 
         /// dropdown should be shown.
         /// </summary>
         /// <param name="position">The position at which to show the dropdown.</param>
-        public ContextDropdownBuilder(Rect? position = null) => _dropdown = new ContextDropdown(position);
+        public ContextDropdownBuilder(Rect? position = null)
+        {
+            _dropdown = new ContextDropdown(position);
+        }
 
         /// <summary>
         /// Starts a new indent using given path. If there already is an indent, this one will be 
@@ -63,7 +66,10 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="name">The name of the item. This can be written as a path (e.g. Fruit/Apple).</param>
         /// <param name="clicked">The method to call when this item is clicked.</param>
         /// <returns>The builder.</returns>
-        public ContextDropdownBuilder AddItem(string name, Action clicked = null) => AddItem(name, false, false, null, clicked);
+        public ContextDropdownBuilder AddItem(string name, Action clicked = null)
+        {
+            return AddItem(name, false, false, null, clicked);
+        }
 
         /// <summary>
         /// Adds a new item to the dropdown.
@@ -73,7 +79,9 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="clicked">The method to call when this item is clicked.</param>
         /// <returns>The builder.</returns>
         public ContextDropdownBuilder AddItem(string name, bool disabled, Action clicked = null)
-            => AddItem(name, disabled, false, null, clicked);
+        {
+            return AddItem(name, disabled, false, null, clicked);
+        }
 
         /// <summary>
         /// Adds a new item to the dropdown.
@@ -84,7 +92,9 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="clicked">The method to call when this item is clicked.</param>
         /// <returns>The builder.</returns>
         public ContextDropdownBuilder AddItem(string name, bool disabled, bool activated, Action clicked = null)
-            => AddItem(name, disabled, activated, null, clicked);
+        {
+            return AddItem(name, disabled, activated, null, clicked);
+        }
 
         /// <summary>
         /// Adds a new item to the dropdown.
@@ -95,7 +105,9 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="clicked">The method to call when this item is clicked.</param>
         /// <returns>The builder.</returns>
         public ContextDropdownBuilder AddItem(string name, bool activated, string tooltip, Action clicked = null)
-            => AddItem(name, false, activated, tooltip, clicked);
+        {
+            return AddItem(name, false, activated, tooltip, clicked);
+        }
 
         /// <summary>
         /// Adds a new item to the dropdown.
@@ -138,7 +150,9 @@ namespace DTT.Utils.EditorUtilities
         public ContextDropdownBuilder AddItems(IEnumerable<ContextDropdownItem> items)
         {
             foreach (ContextDropdownItem item in items)
+            {
                 _dropdown.AddItem(item);
+            }
 
             return this;
         }
@@ -181,13 +195,19 @@ namespace DTT.Utils.EditorUtilities
         /// Returns the result of the dropdown build.
         /// </summary>
         /// <returns>The context dropdown instance.</returns>
-        public ContextDropdown GetResult() => _dropdown;
+        public ContextDropdown GetResult()
+        {
+            return _dropdown;
+        }
 
         /// <summary>
         /// Converts the dropdown builder to the dropdown instance using the <see cref="GetResult"/> method.
         /// </summary>
         /// <param name="builder">The builder to convert.</param>
-        public static implicit operator ContextDropdown(ContextDropdownBuilder builder) => builder.GetResult();
+        public static implicit operator ContextDropdown(ContextDropdownBuilder builder)
+        {
+            return builder.GetResult();
+        }
     }
 }
 

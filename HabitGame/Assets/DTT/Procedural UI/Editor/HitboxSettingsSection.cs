@@ -80,65 +80,73 @@ namespace DTT.UI.ProceduralUI.Editor
                 Add(nameof(OutsideHitBoxDetection), () => new GUIContent("Use Outside Hitbox"));
                 Add(nameof(FullRectangleAreaSetting), () =>
                 {
-                    GUIContent content = new GUIContent("Full rectangle area");
-                    content.tooltip = "Will ignore rounding.";
+                    GUIContent content = new("Full rectangle area")
+                    {
+                        tooltip = "Will ignore rounding."
+                    };
                     return content;
                 });
 
                 Add(nameof(AccountForRounding), () =>
                 {
-                    GUIContent content = new GUIContent("Account for rounding");
-                    content.tooltip = "Will account for rounding amount of borders.";
+                    GUIContent content = new("Account for rounding")
+                    {
+                        tooltip = "Will account for rounding amount of borders."
+                    };
                     return content;
                 });
 
                 Add(nameof(InsideHitBoxDetection), () => new GUIContent("Use Inside Hitbox"));
                 Add(nameof(NoInsideHitBox), () =>
                 {
-                    GUIContent content = new GUIContent("No inside hitbox");
-                    content.tooltip = "Will ignore border fill.";
+                    GUIContent content = new("No inside hitbox")
+                    {
+                        tooltip = "Will ignore border fill."
+                    };
                     return content;
                 });
 
                 Add(nameof(AccountForBorderFill), () =>
                 {
-                    GUIContent content = new GUIContent("Account for fill");
-                    content.tooltip = "Will account for fill amount of borders.";
+                    GUIContent content = new("Account for fill")
+                    {
+                        tooltip = "Will account for fill amount of borders."
+                    };
                     return content;
                 });
             }
         }
-        
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public override string HeaderName => "Hitbox Settings";
-        
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         protected override bool OpenFoldoutOnEnter => true;
-        
+
         /// <summary>
         /// The use of outside hitbox property of <see cref="RoundedImage"/>.
         /// </summary>
-        private SerializedProperty _useHitboxOutside;
+        private readonly SerializedProperty _useHitboxOutside;
 
         /// <summary>
         /// The use of inside hitbox property of <see cref="RoundedImage"/>.
         /// </summary>
-        private SerializedProperty _useHitboxInside;
+        private readonly SerializedProperty _useHitboxInside;
 
         /// <summary>
         /// Whether to be able to fire raycasts on this graphic.
         /// </summary>
-        private SerializedProperty _raycastTarget;
+        private readonly SerializedProperty _raycastTarget;
 
         /// <summary>
         /// The GUIContent for <see cref="HitboxSettingsSection"/>.
         /// </summary>
-        private HitboxSettingsContent _content;
-        
+        private readonly HitboxSettingsContent _content;
+
         /// <summary>
         /// Creates a new hitbox settings section.
         /// </summary>
@@ -162,13 +170,13 @@ namespace DTT.UI.ProceduralUI.Editor
             SerializedProperty raycastTarget
         ) : base(roundedImage, repaint)
         {
-            this._useHitboxOutside = useHitboxOutside;
-            this._useHitboxInside = useHitboxInside;
-            this._raycastTarget = raycastTarget;
+            _useHitboxOutside = useHitboxOutside;
+            _useHitboxInside = useHitboxInside;
+            _raycastTarget = raycastTarget;
 
             _content = new HitboxSettingsContent();
         }
-        
+
         /// <summary>
         /// Draws the toggles to set hitbox settings.
         /// </summary>
@@ -176,14 +184,18 @@ namespace DTT.UI.ProceduralUI.Editor
         {
             _raycastTarget.boolValue = EditorGUILayout.ToggleLeft(_content.HitboxEnabledOption, _raycastTarget.boolValue);
             if (!_raycastTarget.boolValue)
+            {
                 return;
+            }
 
             DrawOutsideHitboxSettings();
             DrawInsideHitboxSettings();
 
             // Shows a warning when using filled image type.
             if (_roundedImage.type == Image.Type.Filled && _raycastTarget.boolValue)
+            {
                 EditorGUILayout.HelpBox(_content.FillTypeWarning);
+            }
         }
 
         /// <summary>
@@ -202,12 +214,14 @@ namespace DTT.UI.ProceduralUI.Editor
             selectedIndex = EditorGUILayout.Popup(_content.OutsideHitBoxDetection, selectedIndex, displayOptions);
 
             // Update the boolean value based on the selected index.
-            _useHitboxOutside.boolValue = selectedIndex == 1 ? true : false;
+            _useHitboxOutside.boolValue = selectedIndex == 1;
 
             // If the Outer Hitbox setting has been turned off
             // this makes sure the Inner Hitbox setting is also turned off.
             if (!_useHitboxOutside.boolValue)
+            {
                 _useHitboxInside.boolValue = false;
+            }
         }
 
         /// <summary>
@@ -229,7 +243,7 @@ namespace DTT.UI.ProceduralUI.Editor
                 selectedIndex = EditorGUILayout.Popup(_content.InsideHitBoxDetection, selectedIndex, displayOptions);
 
                 // Update the boolean value based on the selected index.
-                _useHitboxInside.boolValue = selectedIndex == 1 ? true : false;
+                _useHitboxInside.boolValue = selectedIndex == 1;
 
                 EditorGUI.EndDisabledGroup();
             }

@@ -64,8 +64,8 @@ namespace DTT.PublishingTools
             string customIconPath)
         {
             this.fullPackageName = fullPackageName;
-            this.displayName = customDisplayName;
-            this.documentationUrl = customDocumentationUrl;
+            displayName = customDisplayName;
+            documentationUrl = customDocumentationUrl;
             this.customIconPath = customIconPath;
         }
         #endregion

@@ -21,7 +21,9 @@ namespace DTT.Utils.EditorUtilities
         public static PackageInfo GetPackageInfo(this Object asset)
         {
             if (asset == null)
+            {
                 throw new ArgumentNullException(nameof(asset));
+            }
 
             string assetPath = AssetDatabase.GetAssetPath(asset);
             if (string.IsNullOrEmpty(assetPath))
@@ -32,7 +34,9 @@ namespace DTT.Utils.EditorUtilities
 
             PackageInfo info = PackageInfo.FindForAssetPath(assetPath);
             if (info == null)
+            {
                 Debug.LogWarning($"No package info was found for asset {asset.name}. Make sure it is inside a package folder.");
+            }
 
             return info;
         }

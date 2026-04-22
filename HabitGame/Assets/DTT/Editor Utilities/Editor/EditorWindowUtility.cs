@@ -11,25 +11,26 @@ namespace DTT.Utils.EditorUtilities
     public static class EditorWindowUtility
     {
         /// <summary>
-        /// The inspector window type used for opening the inspector window.
-        /// </summary>
-        private static readonly Type _inspectorType = typeof(Editor).Assembly.GetType("UnityEditor.InspectorWindow");
-
-        /// <summary>
         /// The type of the unity inspector.
         /// </summary>
-        public static Type InspectorType => _inspectorType;
+        public static Type InspectorType { get; } = typeof(Editor).Assembly.GetType("UnityEditor.InspectorWindow");
 
         /// <summary>
         /// Opens and focusses the Unity Inspector Window.
         /// </summary>
-        public static void OpenInspectorWindow() => EditorWindow.GetWindow(_inspectorType).Focus();
+        public static void OpenInspectorWindow()
+        {
+            EditorWindow.GetWindow(InspectorType).Focus();
+        }
 
         /// <summary>
         /// Get a window that will be docked next to the Unity Inspector Window.
         /// </summary>
         /// <typeparam name="T">The type of editor window to get.</typeparam>
-        public static T GetInspectorWindow<T>() where T : EditorWindow => EditorWindow.GetWindow<T>(_inspectorType);
+        public static T GetInspectorWindow<T>() where T : EditorWindow
+        {
+            return EditorWindow.GetWindow<T>(InspectorType);
+        }
 
         /// <summary>
         /// Docks a window to the Unity Inspector Window.
@@ -38,7 +39,10 @@ namespace DTT.Utils.EditorUtilities
         /// <typeparam name="T">The type of window to dock.</typeparam>
         /// <param name="window">The window to dock.</param>
         /// <returns>Whether the docking succeeded.</returns>
-        public static bool DockToInspector<T>(this T window) where T : EditorWindow => Dock(window, _inspectorType);
+        public static bool DockToInspector<T>(this T window) where T : EditorWindow
+        {
+            return Dock(window, InspectorType);
+        }
 
         /// <summary>
         /// Docks a window to another. Many prefered windows may be given.

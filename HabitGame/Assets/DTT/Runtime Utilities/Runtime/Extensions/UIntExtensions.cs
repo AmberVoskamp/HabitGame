@@ -15,10 +15,10 @@ namespace DTT.Utils.Extensions
         public static Color ToColor(this uint hex)
         {
             Color color;
-            color.r = ((hex & 0xff000000) >> 24)  / 255f;
+            color.r = ((hex & 0xff000000) >> 24) / 255f;
             color.g = ((hex & 0x00ff0000) >> 16) / 255f;
             color.b = ((hex & 0x0000ff00) >> 8) / 255f;
-            color.a = ( hex & 0x000000ff)      / 255f;
+            color.a = (hex & 0x000000ff) / 255f;
             return color;
         }
     }

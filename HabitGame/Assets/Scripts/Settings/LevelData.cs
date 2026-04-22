@@ -8,39 +8,39 @@ using System.Collections.Generic;
 [Serializable]
 public class LevelData
 {
-    public int index;
-    public float levelTime;
+    public int Index;
+    public float LevelTime;
 
-    public List<PhaseTimeData> phaseTimes;
+    public List<PhaseTimeData> PhaseTimes;
 
     #region Phase1
-    public int spikeDificulty;
-    public float endSpikeTime;
-    public float spikesDamageTaken;
+    public int SpikeDificulty;
+    public float EndSpikeTime;
+    public float SpikesDamageTaken;
     #endregion
 
     #region Phase2
-    public float timeLeftWhenDoorOpens;
-    public float timeLeftWhenInChestRange;
-    public bool opendMinigame;
-    public bool finishedMinigame;
-    public WalkData.Data[] walkData;
+    public float TimeLeftWhenDoorOpens;
+    public float TimeLeftWhenInChestRange;
+    public bool OpendMinigame;
+    public bool FinishedMinigame;
+    public WalkData.Data[] WalkData;
     #endregion
 
     #region Phase3
-    public int currentBoss;
-    public bool enteredBossRoom;
-    public bool killedTheBoss;
-    public float bossDamageTaken;
-    public float bossDamageDone;
-    public float bossHealthLeft;
-    public float timeLeft;
+    public int CurrentBoss;
+    public bool EnteredBossRoom;
+    public bool KilledTheBoss;
+    public float BossDamageTaken;
+    public float BossDamageDone;
+    public float BossHealthLeft;
+    public float TimeLeft;
     #endregion
 }
 
 [Serializable]
 public struct PhaseTimeData
 {
-    public Phases phase;
-    public float exitPhaseTime;
+    public Phases Phase;
+    public float ExitPhaseTime;
 }

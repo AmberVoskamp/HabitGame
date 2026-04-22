@@ -14,7 +14,10 @@ namespace DTT.Utils.Extensions
         /// </summary>
         /// <param name="value">The value to inverse.</param>
         /// <returns>The inversed value.</returns>
-        public static int Inverse(this int value) => value * -1;
+        public static int Inverse(this int value)
+        {
+            return value * -1;
+        }
 
         /// <summary>
         /// Returns the inversed value. This means a positive value
@@ -23,7 +26,10 @@ namespace DTT.Utils.Extensions
         /// </summary>
         /// <param name="value">The value to inverse.</param>
         /// <returns>The inversed value.</returns>
-        public static double Inverse(this double value) => value *= -1d;
+        public static double Inverse(this double value)
+        {
+            return value *= -1d;
+        }
 
         /// <summary>
         /// Returns the inversed value so a positive value
@@ -31,7 +37,10 @@ namespace DTT.Utils.Extensions
         /// </summary>
         /// <param name="value">The value to inverse.</param>
         /// <returns>The inversed value.</returns>
-        public static float Inverse(this float value) => value * -1f;
+        public static float Inverse(this float value)
+        {
+            return value * -1f;
+        }
 
         /// <summary>
         /// Returns the complement of the value so (1 - 'value').
@@ -40,10 +49,9 @@ namespace DTT.Utils.Extensions
         /// <returns>The complement.</returns>
         public static float Complement(this float value)
         {
-            if (value < 0.0f || value > 1.0f)
-                throw new ArgumentOutOfRangeException(nameof(value), "Expects value between in range 0 to 1.");
-
-            return 1.0f - value;
+            return value is < 0.0f or > 1.0f
+                ? throw new ArgumentOutOfRangeException(nameof(value), "Expects value between in range 0 to 1.")
+                : 1.0f - value;
         }
 
         /// <summary>
@@ -53,10 +61,9 @@ namespace DTT.Utils.Extensions
         /// <returns>The complement.</returns>
         public static double Complement(this double value)
         {
-            if (value < 0.0d || value > 1.0d)
-                throw new ArgumentOutOfRangeException(nameof(value), "Expects value between in range 0 to 1.");
-
-            return 1.0d - value;
+            return value is < 0.0d or > 1.0d
+                ? throw new ArgumentOutOfRangeException(nameof(value), "Expects value between in range 0 to 1.")
+                : 1.0d - value;
         }
 
         /// <summary>
@@ -67,7 +74,10 @@ namespace DTT.Utils.Extensions
         /// <param name="min">The minimal value.</param>
         /// <param name="max">The maximum value.</param>
         /// <returns>Whether the value is in the range.</returns>
-        public static bool InRange(this int value, int min, int max) => value >= min && value <= max;
+        public static bool InRange(this int value, int min, int max)
+        {
+            return value >= min && value <= max;
+        }
 
         /// <summary>
         /// Returns the normalized (between 0 and 1) value.
@@ -76,7 +86,10 @@ namespace DTT.Utils.Extensions
         /// <param name="min">The minimum value to use.</param>
         /// <param name="max">The maximum value to use.</param>
         /// <returns>The normalized value.</returns>
-        public static float Normalize(this float value, float min, float max) => (value - min) / (max - min);
+        public static float Normalize(this float value, float min, float max)
+        {
+            return (value - min) / (max - min);
+        }
 
         /// <summary>
         /// Returns the value mapped to a new scale.
@@ -88,6 +101,8 @@ namespace DTT.Utils.Extensions
         /// <param name="targetMax">The new maximum range.</param>
         /// <returns>The mapped value.</returns>
         public static float Map(this float value, float min, float max, float targetMin, float targetMax)
-                        => (value - min) * ((targetMax - targetMin) / (max - min)) + targetMin;
+        {
+            return ((value - min) * ((targetMax - targetMin) / (max - min))) + targetMin;
+        }
     }
 }

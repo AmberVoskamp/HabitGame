@@ -75,6 +75,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  <RoundingUnit>k__BackingField: 0
   _roundingMode: 0
   _roundingAmount:
   - 1
@@ -85,7 +86,6 @@ MonoBehaviour:
   _useHitboxOutside: 0
   _useHitboxInside: 0
   _distanceFalloff: 0.1
-  _selectedUnit: 0
   _cornerMode: 0
   _side: 0
 --- !u!1 &6906225898431520232
@@ -165,6 +165,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  <RoundingUnit>k__BackingField: 0
   _roundingMode: 1
   _roundingAmount:
   - 1
@@ -175,7 +176,6 @@ MonoBehaviour:
   _useHitboxOutside: 0
   _useHitboxInside: 0
   _distanceFalloff: 0.1
-  _selectedUnit: 0
   _cornerMode: 0
   _side: 0
 --- !u!114 &8200610057467091803
@@ -190,4 +190,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d8c953f4c6482d459b6417bfeeb5974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fillImage: {fileID: 2631762018047985954}
+  _fillImage: {fileID: 2631762018047985954}

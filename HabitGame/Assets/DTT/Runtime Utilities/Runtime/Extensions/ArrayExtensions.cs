@@ -12,6 +12,9 @@
         /// <param name="array">The array to check the bounds of.</param>
         /// <param name="index">The index to check.</param>
         /// <returns>Whether the index is inside the bounds.</returns>
-        public static bool HasIndex<T>(this T[] array, int index) => index.InRange(0, array.Length - 1);
+        public static bool HasIndex<T>(this T[] array, int index)
+        {
+            return index.InRange(0, array.Length - 1);
+        }
     }
 }

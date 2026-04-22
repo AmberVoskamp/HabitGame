@@ -36,7 +36,9 @@ namespace DTT.Utils.Workflow
         protected virtual void OnValueAccess()
         {
             if (!IsValueCreated)
+            {
                 throw new InvalidOperationException("Value was not created.");
+            }
         }
 
         /// <summary>
@@ -46,7 +48,9 @@ namespace DTT.Utils.Workflow
         public Unguaranteed(Func<T> constructor)
         {
             if (constructor == null)
+            {
                 throw new ArgumentNullException(nameof(constructor));
+            }
 
             _value = constructor();
         }

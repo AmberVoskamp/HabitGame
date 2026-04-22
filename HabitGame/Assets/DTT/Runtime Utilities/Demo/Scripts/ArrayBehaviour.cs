@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace DTT.Utils.Extensions.Demo
 {
@@ -16,12 +15,12 @@ namespace DTT.Utils.Extensions.Demo
         /// </summary>
         [SerializeField]
         private int _index;
-    
+
         private void Awake()
         {
             // Check whether an array has an index or not.
             bool condition = _array.HasIndex(_index);
-        
+
             Debug.Log($"Has index {_index}: {condition}");
         }
     }

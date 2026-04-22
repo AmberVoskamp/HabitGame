@@ -40,7 +40,7 @@ namespace DTT.PublishingTools
         /// <summary>
         /// The minimum size of this window.
         /// </summary>
-        private readonly Vector2 _minSize = new Vector2(500, 450);
+        private readonly Vector2 _minSize = new(500, 450);
 
         /// <summary>
         /// The current scroll position off the readme.
@@ -50,7 +50,7 @@ namespace DTT.PublishingTools
         /// <summary>
         /// The regular expression used for matching content in readme sections.
         /// </summary>
-        private readonly Regex _contentMatcher = new Regex(@"\[(.*?)\]");
+        private readonly Regex _contentMatcher = new(@"\[(.*?)\]");
 
         /// <summary>
         /// The character used to identify a link in readme content.
@@ -67,12 +67,12 @@ namespace DTT.PublishingTools
         /// </summary>
         private const string MISSING_TEXT_MESSAGE = "<color=red>The readme section did not have any paragraphs. " +
                                                     "Make sure to surround your text with square brackets.</color>";
-        
+
         /// <summary>
         /// The formatted missing property message.
         /// </summary>
         private const string MISSING_PROPERTY_MESSAGE = "<color=red>Missing required {0} property</color>";
-        
+
         /// <summary>
         /// Opens the window to show the readme of given asset json, 
         /// docking it onto the inspector window if possible.
@@ -97,7 +97,9 @@ namespace DTT.PublishingTools
         private void OnEnable()
         {
             if (_assetJson != null)
+            {
                 _readMe.Initialize(_assetJson);
+            }
 
             _styles = new DTTReadMeStyles();
 
@@ -139,19 +141,15 @@ namespace DTT.PublishingTools
         /// </summary>
         private void DrawDTTHeaderContent()
         {
-            Texture icon;
+            Texture icon = _customIcon != null ? _customIcon : EditorGUIUtility.isProSkin ? DTTTextures.dark.Logo : DTTTextures.light.Logo;
 
             // Use the custom icon if it isn't null. Otherwise use the DTT logo based on theme.
             // Can't use null coalescing (??) operator because Unity will throw a missing reference
             // exception because of it.
-            if (_customIcon != null)
-                icon = _customIcon;
-            else
-                icon = EditorGUIUtility.isProSkin ? DTTTextures.dark.Logo : DTTTextures.light.Logo;
 
-            Vector2 size = new Vector2(icon.width * 0.5f, icon.height * 0.5f);
+            Vector2 size = new(icon.width * 0.5f, icon.height * 0.5f);
 
-            EditorGUILayout.BeginHorizontal(GUILayout.Width(size.x));
+            _ = EditorGUILayout.BeginHorizontal(GUILayout.Width(size.x));
             DrawIcon(icon, size);
             EditorGUILayout.EndHorizontal();
         }
@@ -188,10 +186,10 @@ namespace DTT.PublishingTools
             string contentTitle = string.IsNullOrEmpty(section.content.title)
                 ? string.Format(MISSING_PROPERTY_MESSAGE, nameof(section.content.title))
                 : section.content.title;
-            
+
             EditorGUILayout.Space();
             GUILayout.Label(contentTitle, _styles.ContentTitle);
-            RectOffset margin = new RectOffset(2, 2, 0, 0);
+            RectOffset margin = new(2, 2, 0, 0);
             GUIDrawTools.Separator(EditorGUIUtility.isProSkin ? DTTColors.light.line : GUIColors.light.unityInspector, margin);
         }
 
@@ -206,17 +204,17 @@ namespace DTT.PublishingTools
                 GUILayout.Label(string.Format(MISSING_PROPERTY_MESSAGE, nameof(section.content.text)), _styles.Content);
                 return;
             }
-            
+
             MatchCollection matches = _contentMatcher.Matches(section.content.text);
             if (matches.Count == 0)
             {
                 GUILayout.Label(MISSING_TEXT_MESSAGE, _styles.Content);
                 return;
             }
-            
+
             int linkCount = 0;
             int imageCount = 0;
-            
+
             foreach (Match match in matches)
             {
                 string content = match.Groups[1].Value;
@@ -230,7 +228,10 @@ namespace DTT.PublishingTools
                     case IMAGE_CHARACTER:
                         Texture image = section.GetImage(imageCount++, _readMe.SectionsFolder);
                         if (image != null)
+                        {
                             DrawImage(image);
+                        }
+
                         break;
 
                     default:
@@ -248,7 +249,7 @@ namespace DTT.PublishingTools
         {
             if (link != null)
             {
-                EditorGUILayout.BeginHorizontal();
+                _ = EditorGUILayout.BeginHorizontal();
                 {
                     DrawPrefix(link.prefix);
                     DrawLink(link);
@@ -269,7 +270,9 @@ namespace DTT.PublishingTools
         private void DrawPrefix(string prefix)
         {
             if (!string.IsNullOrEmpty(prefix))
+            {
                 GUILayout.Label(prefix, _styles.Content);
+            }
         }
 
         /// <summary>
@@ -292,9 +295,13 @@ namespace DTT.PublishingTools
             if (GUIDrawTools.LinkLabel(link.text, style))
             {
                 if (link.url.StartsWith("mailto:"))
+                {
                     Application.OpenURL(link.url);
+                }
                 else
+                {
                     DTTEditorConfig.OpenPackageLink(_assetJson, link.url);
+                }
             }
         }
     }

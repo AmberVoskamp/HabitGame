@@ -1,0 +1,6 @@
+/* Visual Studio Settings File */
+{
+  "languages.csharp.general.wordWrap": false,
+  "languages.csharp.tabs.tabSize": 4,
+  "languages.csharp.scrollbars.verticalScrollBarMode": "bar"
+}

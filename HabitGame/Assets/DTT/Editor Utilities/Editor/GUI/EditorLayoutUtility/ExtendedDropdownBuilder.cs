@@ -35,7 +35,9 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="position">The position of the dropdown.</param>
         /// <param name="state">The dropdown state (This can be serialized).</param>
         public ExtendedDropdownBuilder(string name, Rect position, AdvancedDropdownState state)
-            => _dropdown = new ExtendedDropdown(name, position, state);
+        {
+            _dropdown = new ExtendedDropdown(name, position, state);
+        }
 
         /// <summary>
         /// Starts a new indent using given path. If there alread is an indent, this one will be 
@@ -66,7 +68,10 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="name">The name of the item. This can be written as a path (e.g. Fruit/Apple).</param>
         /// <param name="clicked">The method to call when this item is clicked.</param>
         /// <returns>The builder.</returns>
-        public ExtendedDropdownBuilder AddItem(string name, Action clicked = null) => AddItem(name, false, null, clicked);
+        public ExtendedDropdownBuilder AddItem(string name, Action clicked = null)
+        {
+            return AddItem(name, false, null, clicked);
+        }
 
         /// <summary>
         /// Adds a new item to the dropdown.
@@ -76,7 +81,9 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="clicked">The method to call when this item is clicked.</param>
         /// <returns>The builder.</returns>
         public ExtendedDropdownBuilder AddItem(string name, bool disabled, Action clicked = null)
-            => AddItem(name, disabled, null, clicked);
+        {
+            return AddItem(name, disabled, null, clicked);
+        }
 
 
         /// <summary>
@@ -107,7 +114,9 @@ namespace DTT.Utils.EditorUtilities
         public ExtendedDropdownBuilder AddItem(ExtendedDropdownItem item)
         {
             if (!string.IsNullOrEmpty(_indentTextPath))
+            {
                 item.name = _indentTextPath + "/" + item.name;
+            }
 
             _dropdown.AddItem(item);
             return this;
@@ -121,7 +130,9 @@ namespace DTT.Utils.EditorUtilities
         public ExtendedDropdownBuilder AddItems(IEnumerable<ExtendedDropdownItem> items)
         {
             foreach (ExtendedDropdownItem item in items)
-                AddItem(item);
+            {
+                _ = AddItem(item);
+            }
 
             return this;
         }
@@ -141,13 +152,19 @@ namespace DTT.Utils.EditorUtilities
         /// Returns the result of the dropdown build.
         /// </summary>
         /// <returns>The extended dropdown instance.</returns>
-        public ExtendedDropdown GetResult() => _dropdown;
+        public ExtendedDropdown GetResult()
+        {
+            return _dropdown;
+        }
 
         /// <summary>
         /// Converts the dropdown builder to the dropdown instance using the <see cref="GetResult"/> method.
         /// </summary>
         /// <param name="builder">The builder to convert.</param>
-        public static implicit operator ExtendedDropdown(ExtendedDropdownBuilder builder) => builder.GetResult();
+        public static implicit operator ExtendedDropdown(ExtendedDropdownBuilder builder)
+        {
+            return builder.GetResult();
+        }
     }
 }
 

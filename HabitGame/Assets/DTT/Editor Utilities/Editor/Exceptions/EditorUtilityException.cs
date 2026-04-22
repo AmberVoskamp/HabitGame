@@ -43,7 +43,10 @@ namespace DTT.Utils.EditorUtilities.Exceptions
         /// </summary>
         /// <param name="message">The message to be formatted.</param>
         /// <returns>The formatted message</returns>
-        private static string Format(string message) => message.Insert(0, PREFIX);
+        private static string Format(string message)
+        {
+            return message.Insert(0, PREFIX);
+        }
         #endregion
         #endregion
     }

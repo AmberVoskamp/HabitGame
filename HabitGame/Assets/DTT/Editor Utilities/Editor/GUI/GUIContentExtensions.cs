@@ -20,12 +20,11 @@ namespace DTT.Utils.EditorUtilities
         /// <returns>The size in the GUI.</returns>
         public static Vector2 GetGUISize(this string content, GUIStyle style)
         {
-            if (style == null)
-                throw new ArgumentNullException($"The style value to calculate {content}  was null.");
-            if (content == null)
-                throw new ArgumentNullException("The content was null when calculating size.");
-
-            return style.CalcSize(new GUIContent(content));
+            return style == null
+                ? throw new ArgumentNullException($"The style value to calculate {content}  was null.")
+                : content == null
+                ? throw new ArgumentNullException("The content was null when calculating size.")
+                : style.CalcSize(new GUIContent(content));
         }
 
         /// <summary>
@@ -36,12 +35,9 @@ namespace DTT.Utils.EditorUtilities
         /// <returns>The size in the GUI.</returns>
         public static Vector2 GetGUISize(this GUIContent content, GUIStyle style)
         {
-            if (style == null)
-                throw new ArgumentNullException($"The style value to calculate {content}  was null.");
-            if (content == null)
-                throw new ArgumentNullException("The content was null when calculating size.");
-
-            return style.CalcSize(content);
+            return style == null
+                ? throw new ArgumentNullException($"The style value to calculate {content}  was null.")
+                : content == null ? throw new ArgumentNullException("The content was null when calculating size.") : style.CalcSize(content);
         }
         #endregion
         #endregion

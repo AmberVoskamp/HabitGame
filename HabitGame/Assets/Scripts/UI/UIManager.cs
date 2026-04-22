@@ -20,6 +20,10 @@ public class UIManager : MonoBehaviour
 
     public void MinigameTap()
     {
+        if (!_minigamePopup.isActiveAndEnabled)
+        {
+            return;
+        }
         _minigamePopup.Minigame.Tap();
     }
 
@@ -30,7 +34,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowTutorial(string tutorialText)
     {
-       // _tutorial.gameObject.SetActive(true);
+        // _tutorial.gameObject.SetActive(true);
         _tutorial.ShowTutorial(tutorialText);
     }
 }

@@ -8,13 +8,13 @@ using UnityEngine;
 
 public class Spikes : DamageObject
 {
-    [SerializeField] private Animator m_animator;
+    [SerializeField] private Animator _animator;
 
     private bool _spikes;
 
-    void Start()
+    private void Start()
     {
-        m_boxCollider2D.enabled = false;
+        BoxCollider2D.enabled = false;
     }
 
     public void SpikeUp(bool up)
@@ -26,21 +26,21 @@ public class Spikes : DamageObject
 
         _spikes = up;
         string animation = up ? "Open" : "Close";
-        m_animator.SetTrigger(animation);
+        _animator.SetTrigger(animation);
 
         if (up)
         {
-            float animationTime = m_animator.GetCurrentAnimatorStateInfo(0).length;
-            StartCoroutine(WaitForAnimation(animationTime, up));
+            float animationTime = _animator.GetCurrentAnimatorStateInfo(0).length;
+            _ = StartCoroutine(WaitForAnimation(animationTime, up));
             return;
         }
 
-        m_boxCollider2D.enabled = up;
+        BoxCollider2D.enabled = up;
     }
 
-    IEnumerator WaitForAnimation(float animationTime, bool colliderActive)
+    private IEnumerator WaitForAnimation(float animationTime, bool colliderActive)
     {
         yield return new WaitForSeconds(animationTime);
-        m_boxCollider2D.enabled = colliderActive;
+        BoxCollider2D.enabled = colliderActive;
     }
 }

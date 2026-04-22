@@ -39,26 +39,32 @@ namespace DTT.PublishingTools
         {
             Add(nameof(Label), () =>
             {
-                GUIStyle style = new GUIStyle(DTTGUI.Skin.label);
-                style.fontSize = 11;
+                GUIStyle style = new(DTTGUI.Skin.label)
+                {
+                    fontSize = 11
+                };
                 style.normal.textColor = EditorGUIUtility.isProSkin ? GUIColors.light.unityInspector : Color.black;
                 return style;
             });
 
             Add(nameof(TitleLabel), () =>
             {
-                GUIStyle style = new GUIStyle(DTTGUI.Skin.label);
-                style.fontSize = 13;
-                style.font = DTTGUI.TitleFont;
+                GUIStyle style = new(DTTGUI.Skin.label)
+                {
+                    fontSize = 13,
+                    font = DTTGUI.TitleFont
+                };
                 style.normal.textColor = EditorGUIUtility.isProSkin ? Color.white : DTTColors.dark.inspector;
                 return style;
             });
 
             Add(nameof(Link), () =>
             {
-                GUIStyle style = new GUIStyle(GUIDrawTools.styles.MiniLinkLabel);
-                style.fontSize = 10;
-                style.fontStyle = FontStyle.Bold;
+                GUIStyle style = new(GUIDrawTools.styles.MiniLinkLabel)
+                {
+                    fontSize = 10,
+                    fontStyle = FontStyle.Bold
+                };
                 style.normal.textColor = DTTColors.DTTRed;
                 style.active.textColor = DTTColors.DTTRed;
                 style.hover.textColor = DTTColors.DTTRed;

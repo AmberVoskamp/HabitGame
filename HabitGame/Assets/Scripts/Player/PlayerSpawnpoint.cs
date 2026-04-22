@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerSpawnpoint : MonoBehaviour
 {
-    [SerializeField] private PlayerHealth m_playerPrefab;
+    [SerializeField] private PlayerHealth _playerPrefab;
 
     private CameraFollow _cameraFollow;
 
@@ -13,7 +13,7 @@ public class PlayerSpawnpoint : MonoBehaviour
 
     public PlayerHealth SpawnPlayer()
     {
-        PlayerHealth player = Instantiate(m_playerPrefab, transform.position, Quaternion.identity);
+        PlayerHealth player = Instantiate(_playerPrefab, transform.position, Quaternion.identity);
 
         if (_cameraFollow != null)
         {

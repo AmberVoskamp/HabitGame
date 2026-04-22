@@ -39,7 +39,7 @@ namespace DTT.PublishingTools.Attributes
             this.fullPackageName = fullPackageName;
             this.isResource = isResource;
         }
-        
+
         /// <summary>
         /// Creates a new instance of the attribute.
         /// </summary>
@@ -51,7 +51,7 @@ namespace DTT.PublishingTools.Attributes
             this.fullPackageName = fullPackageName;
             this.assetName = assetName;
             this.isResource = isResource;
-        } 
+        }
 
         /// <summary>
         /// Creates a new instance of the attribute.

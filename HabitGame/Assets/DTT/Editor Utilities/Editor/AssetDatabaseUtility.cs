@@ -1,9 +1,9 @@
 ﻿#if UNITY_EDITOR
 
 using DTT.Utils.EditorUtilities.Exceptions;
+using DTT.Utils.Exceptions;
 using System;
 using System.IO;
-using DTT.Utils.Exceptions;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -92,7 +92,9 @@ namespace DTT.Utils.EditorUtilities
         public static T LoadAsset<T>(string filter) where T : UnityEngine.Object
         {
             if (filter == null)
+            {
                 throw new AssetDatabaseException("Filter is null.");
+            }
 
             T[] assets = LoadAssets<T>(filter);
 
@@ -122,8 +124,8 @@ namespace DTT.Utils.EditorUtilities
         public static void SaveAndRefreshAssetsDelayed()
         {
             EditorApplication.delayCall += SaveAndRefresh;
-            
-            void SaveAndRefresh()
+
+            static void SaveAndRefresh()
             {
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
@@ -142,16 +144,20 @@ namespace DTT.Utils.EditorUtilities
         public static T GetComponentInPrefab<T>(string prefabPath) where T : Component
         {
             if (string.IsNullOrEmpty(prefabPath))
+            {
                 throw new NullOrEmptyException(nameof(prefabPath));
-            
+            }
+
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
             if (prefab == null)
             {
-                if(File.Exists(prefabPath))
+                if (File.Exists(prefabPath))
+                {
                     throw new AssetDatabaseException($"Failed to load asset even though it exists at path {prefabPath}. " +
                              "This can happen when changes outside of Unity have been made to your asset and you load it " +
                              "during project startup with attributes like [DidReloadScripts] and [InitializeOnLoad].");
-                
+                }
+
                 throw new AssetDatabaseException($"Prefab can't be loaded at path {prefabPath}");
             }
 
@@ -171,21 +177,16 @@ namespace DTT.Utils.EditorUtilities
             if (File.Exists(path))
             {
                 T asset = AssetDatabase.LoadAssetAtPath<T>(path);
-                if (asset == null)
-                {
-                    throw new AssetDatabaseException($"Failed to load asset even though it exists at path {path}. " +
+                return asset ?? throw new AssetDatabaseException($"Failed to load asset even though it exists at path {path}. " +
                         "This can happen when changes outside of Unity have been made to your asset and you load it " +
                         "during project startup with attributes like [DidReloadScripts] and [InitializeOnLoad].");
-                }
-
-                return asset;
             }
-            
+
             T instance = ScriptableObject.CreateInstance<T>();
             AssetDatabase.CreateAsset(instance, path);
             return instance;
         }
-        
+
         /// <summary>
         /// Tries returning a loaded scriptable object asset at given path but creates it if
         /// it didn't exist.
@@ -201,14 +202,9 @@ namespace DTT.Utils.EditorUtilities
             if (File.Exists(path))
             {
                 T asset = AssetDatabase.LoadAssetAtPath<T>(path);
-                if (asset == null)
-                {
-                    throw new AssetDatabaseException($"Failed to load asset even though it exists at path {path}. " +
+                return asset ?? throw new AssetDatabaseException($"Failed to load asset even though it exists at path {path}. " +
                                                      "This can happen when changes outside of Unity have been made to your asset and you load it " +
                                                      "during project startup with attributes like [DidReloadScripts] and [InitializeOnLoad].");
-                }
-
-                return asset;
             }
 
             wasCreated = true;
@@ -233,14 +229,18 @@ namespace DTT.Utils.EditorUtilities
         {
             try
             {
-                var prefab = PrefabUtility.SaveAsPrefabAsset(instanceRoot, path, out bool succes);
+                GameObject prefab = PrefabUtility.SaveAsPrefabAsset(instanceRoot, path, out bool succes);
                 if (succes)
                 {
                     Debug.Log($"Creating prefab at path: {path}");
                     if (prefab != null)
+                    {
                         Debug.Log($"{prefab} has been instantly created.");
+                    }
                     else
+                    {
                         Debug.Log("The prefab will be created after imports have finished.");
+                    }
                 }
                 else
                 {
@@ -261,7 +261,10 @@ namespace DTT.Utils.EditorUtilities
         /// Opens a script asset.
         /// </summary>
         /// <param name="scriptAsset">The script asset to open.</param>
-        public static void OpenScript(TextAsset scriptAsset) => OpenScript(AssetDatabase.GetAssetPath(scriptAsset), 0, 0);
+        public static void OpenScript(TextAsset scriptAsset)
+        {
+            _ = OpenScript(AssetDatabase.GetAssetPath(scriptAsset), 0, 0);
+        }
 
         /// <summary>
         /// Opens a script at given path.
@@ -269,10 +272,9 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="scriptAssetPath">The script asset path.</param>
         public static bool OpenScript(string scriptAssetPath, int line = 0, int column = 0)
         {
-            if (scriptAssetPath == null)
-                throw new ArgumentNullException(nameof(scriptAssetPath));
-
-            return InternalEditorUtility.OpenFileAtLineExternal(scriptAssetPath, line, column);
+            return scriptAssetPath == null
+                ? throw new ArgumentNullException(nameof(scriptAssetPath))
+                : InternalEditorUtility.OpenFileAtLineExternal(scriptAssetPath, line, column);
         }
 
         /// <summary>
@@ -281,10 +283,7 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="prefabAsset">The prefab to open in prefab mode.</param>
         public static bool OpenPrefab(GameObject prefabAsset)
         {
-            if (prefabAsset == null)
-                throw new ArgumentNullException(nameof(prefabAsset));
-            
-            return AssetDatabase.OpenAsset(prefabAsset);
+            return prefabAsset == null ? throw new ArgumentNullException(nameof(prefabAsset)) : AssetDatabase.OpenAsset(prefabAsset);
         }
     }
 }

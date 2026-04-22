@@ -45,11 +45,11 @@ namespace DTT.Utils.Extensions
                 pivot = new Vector2(xPivot, yPivot);
             }
         }
-        
+
         /// <summary>
         /// Holds the preset values used for each anchor setting.
         /// </summary>
-        private static readonly Dictionary<RectAnchor, RectSetting> _anchorPresets = new Dictionary<RectAnchor, RectSetting>
+        private static readonly Dictionary<RectAnchor, RectSetting> _anchorPresets = new()
         {
             { RectAnchor.TOP_LEFT, new RectSetting( 0f, 0f, 1f,1f, 0f,1f )},
             { RectAnchor.TOP_CENTER, new RectSetting( 0.5f, 0.5f, 1f,1f,0.5f,1f )},
@@ -80,8 +80,10 @@ namespace DTT.Utils.Extensions
         public static void SetAnchor(this RectTransform transform, float xMin, float xMax, float yMin, float yMax)
         {
             if (transform == null)
+            {
                 throw new ArgumentNullException(nameof(transform));
-            
+            }
+
             transform.anchorMin = new Vector2(xMin, yMin);
             transform.anchorMax = new Vector2(xMax, yMax);
         }
@@ -94,24 +96,30 @@ namespace DTT.Utils.Extensions
         /// <param name="setPivot">Whether the pivot should also be set based on the new setting.</param>
         /// <param name="setPosition">Whether to set the position after the setting has been applied.</param>
         public static void SetAnchor(
-            this RectTransform transform, 
-            RectAnchor anchor, 
-            bool setPivot = false, 
+            this RectTransform transform,
+            RectAnchor anchor,
+            bool setPivot = false,
             bool setPosition = false)
         {
             if (transform == null)
+            {
                 throw new ArgumentNullException(nameof(transform));
-            
+            }
+
             RectSetting setting = _anchorPresets[anchor];
-            SetAnchor(transform, setting.anchorMin.x, setting.anchorMax.x, setting.anchorMin.y,setting.anchorMax.y);
+            SetAnchor(transform, setting.anchorMin.x, setting.anchorMax.x, setting.anchorMin.y, setting.anchorMax.y);
 
             if (setPivot)
+            {
                 transform.pivot = setting.pivot;
+            }
 
             if (setPosition)
+            {
                 transform.anchoredPosition = Vector2.zero;
+            }
         }
-        
+
         /// <summary>
         /// Returns the world rectangle of a rectangle transform.
         /// </summary>
@@ -120,20 +128,22 @@ namespace DTT.Utils.Extensions
         public static Rect GetWorldRect(this RectTransform transform)
         {
             if (transform == null)
+            {
                 throw new ArgumentNullException(nameof(transform));
-            
+            }
+
             Vector3[] corners = new Vector3[4];
             transform.GetWorldCorners(corners);
-            
+
             Vector3 bottomLeft = corners[0];
-     
-            Vector2 size = new Vector2(
+
+            Vector2 size = new(
                 transform.lossyScale.x * transform.rect.size.x,
                 transform.lossyScale.y * transform.rect.size.y);
 
             return new Rect(bottomLeft, size);
         }
-        
+
         /// <summary>
         /// Returns the rectangle transform. Will return null if a normal transform is used.
         /// </summary>
@@ -141,10 +151,7 @@ namespace DTT.Utils.Extensions
         /// <returns>The rectangle transform instance.</returns>
         public static RectTransform GetRectTransform(this Component component)
         {
-            if (component == null)
-                throw new ArgumentNullException(nameof(component));
-            
-            return component.transform as RectTransform;
+            return component == null ? throw new ArgumentNullException(nameof(component)) : component.transform as RectTransform;
         }
 
         /// <summary>
@@ -154,10 +161,7 @@ namespace DTT.Utils.Extensions
         /// <returns>The rectangle transform instance.</returns>
         public static RectTransform GetRectTransform(this GameObject gameObject)
         {
-            if (gameObject == null)
-                throw new ArgumentNullException(nameof(gameObject));
-            
-            return gameObject.transform as RectTransform;
+            return gameObject == null ? throw new ArgumentNullException(nameof(gameObject)) : gameObject.transform as RectTransform;
         }
     }
 }

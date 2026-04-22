@@ -22,11 +22,11 @@ namespace DTT.Utils.EditorUtilities
         /// The amount of items added to the dropdown.
         /// </summary>
         public int ItemCount => _menu.GetItemCount();
-        
+
         /// <summary>
         /// The wrapped generic menu instance.
         /// </summary>
-        private GenericMenu _menu;
+        private readonly GenericMenu _menu;
 
         /// <summary>
         /// The position at which to dropdown the display. This value is nullable
@@ -51,7 +51,7 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="item">The item to add.</param>
         public void AddItem(ContextDropdownItem item)
         {
-            GUIContent content = new GUIContent(item.name);
+            GUIContent content = new(item.name);
             bool activated = item.activated;
             int numberOfItem = _menu.GetItemCount();
 
@@ -76,7 +76,9 @@ namespace DTT.Utils.EditorUtilities
         public void AddSeparator(string path)
         {
             if (path == null)
+            {
                 throw new ArgumentNullException(nameof(path));
+            }
 
             _menu.AddSeparator(path);
         }
@@ -84,7 +86,10 @@ namespace DTT.Utils.EditorUtilities
         /// <summary>
         /// Allows the generic menu to have duplicate names in the items list.
         /// </summary>
-        public void AllowDuplicateNames() => _menu.allowDuplicateNames = true;
+        public void AllowDuplicateNames()
+        {
+            _menu.allowDuplicateNames = true;
+        }
 
         /// <summary>
         /// Shows the dropdown display using the position if it has a value.
@@ -92,9 +97,13 @@ namespace DTT.Utils.EditorUtilities
         public void Show()
         {
             if (_position.HasValue)
+            {
                 _menu.DropDown(_position.Value);
+            }
             else
+            {
                 _menu.ShowAsContext();
+            }
         }
 
         /// <summary>
@@ -102,7 +111,10 @@ namespace DTT.Utils.EditorUtilities
         /// number of the item in the list to fire the OnClick event.
         /// </summary>
         /// <param name="numberOfItem">The number of the item in the list of items.</param>
-        private void OnMenuItemClick(int numberOfItem) => OnClick?.Invoke(numberOfItem);
+        private void OnMenuItemClick(int numberOfItem)
+        {
+            OnClick?.Invoke(numberOfItem);
+        }
     }
 }
 

@@ -52,20 +52,20 @@ namespace DTT.Utils.EditorUtilities
         /// <summary>
         /// A default root tree view item.
         /// </summary>
-        public static TreeViewItem DefaultRoot => new TreeViewItem
+        public static TreeViewItem DefaultRoot => new()
         {
-            id = DEFAULT_ROOT_ID, 
-            depth = DEFAULT_ROOT_DEPTH, 
+            id = DEFAULT_ROOT_ID,
+            depth = DEFAULT_ROOT_DEPTH,
             displayName = DEFAULT_ROOT_NAME
         };
 
         /// <summary>
         /// An empty tree view item.
         /// </summary>
-        public static TreeViewItem EmptyItem => new TreeViewItem
+        public static TreeViewItem EmptyItem => new()
         {
-            id = EMPTY_ID, 
-            depth = EMPTY_DEPTH, 
+            id = EMPTY_ID,
+            depth = EMPTY_DEPTH,
             displayName = EMPTY_NAME
         };
 
@@ -78,7 +78,7 @@ namespace DTT.Utils.EditorUtilities
         /// would result in an error as styles can only be retrieved in OnGUI methods.
         /// </remarks>
         /// </summary>
-        private static string _labelStyleName = "TV line";
+        private static readonly string _labelStyleName = "TV line";
 
         /// <summary>
         /// Enables rich text for tree view labels in Unity.
@@ -96,8 +96,10 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="treeViewItem">The tree view item to get the corresponding unity object for.</param>
         /// <returns>The unity object for the tree view item</returns>
         public static Object ToUnityObject(this TreeViewItem treeViewItem)
-            => EditorUtility.InstanceIDToObject(treeViewItem.id);
-        
+        {
+            return EditorUtility.InstanceIDToObject(treeViewItem.id);
+        }
+
         /// <summary>
         /// Returns the unity object for a tree view item assuming the instance id has
         /// been used to set the id of the tree view item.
@@ -106,8 +108,10 @@ namespace DTT.Utils.EditorUtilities
         /// <param name="treeViewItem">The tree view item to get the corresponding unity object for.</param>
         /// <returns>The unity object for the tree view item</returns>
         public static T ToUnityObject<T>(this TreeViewItem treeViewItem) where T : Object
-            => (T)EditorUtility.InstanceIDToObject(treeViewItem.id);
-        
+        {
+            return (T)EditorUtility.InstanceIDToObject(treeViewItem.id);
+        }
+
         /// <summary>
         /// Converts a tree of tree view items to a list.
         /// </summary>
@@ -118,9 +122,11 @@ namespace DTT.Utils.EditorUtilities
             result.Clear();
 
             // Create a stack of tree view items and add top level items to it.
-            Stack<TreeViewItem> stack = new Stack<TreeViewItem>();
+            Stack<TreeViewItem> stack = new();
             for (int i = rootItem.children.Count - 1; i >= 0; i--)
+            {
                 stack.Push(rootItem.children[i]);
+            }
 
             // While the stack is not empty, pop items and add them to the result.
             // If an item has children push them onto the stack.
