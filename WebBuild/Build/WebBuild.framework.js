@@ -1274,10 +1274,10 @@ function dbg(text) {
 // === Body ===
 
 var ASM_CONSTS = {
-  8419248: () => { Module['emscripten_get_now_backup'] = performance.now; },  
- 8419303: ($0) => { performance.now = function() { return $0; }; },  
- 8419351: ($0) => { performance.now = function() { return $0; }; },  
- 8419399: () => { performance.now = Module['emscripten_get_now_backup']; }
+  8419632: () => { Module['emscripten_get_now_backup'] = performance.now; },  
+ 8419687: ($0) => { performance.now = function() { return $0; }; },  
+ 8419735: ($0) => { performance.now = function() { return $0; }; },  
+ 8419783: () => { performance.now = Module['emscripten_get_now_backup']; }
 };
 
 
@@ -16917,6 +16917,7 @@ var wasmImports = {
   "invoke_vii": invoke_vii,
   "invoke_viidi": invoke_viidi,
   "invoke_viidiji": invoke_viidiji,
+  "invoke_viif": invoke_viif,
   "invoke_viiff": invoke_viiff,
   "invoke_viifffffi": invoke_viifffffi,
   "invoke_viiffi": invoke_viiffi,
@@ -18370,6 +18371,17 @@ function invoke_diii(index,a1,a2,a3) {
   var sp = stackSave();
   try {
     return dynCall_diii(index,a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (!(e instanceof EmscriptenEH)) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viif(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    dynCall_viif(index,a1,a2,a3);
   } catch(e) {
     stackRestore(sp);
     if (!(e instanceof EmscriptenEH)) throw e;
