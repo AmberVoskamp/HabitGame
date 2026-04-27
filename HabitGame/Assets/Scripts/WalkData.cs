@@ -25,12 +25,11 @@ public class WalkData : MonoBehaviour
 
         if (record)
         {
-            _walkData = new List<Data>();
+            _walkData ??= new List<Data>();
             _player = player;
         }
-        else
+        else if (ConfigManager.Instance != null)
         {
-            //Send data to config
             ConfigManager.Instance?.SafeWalkData(_walkData.ToArray());
         }
     }

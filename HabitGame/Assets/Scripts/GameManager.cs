@@ -27,7 +27,13 @@ public class GameManager : MonoBehaviour
     private int _currentPhase;
     private List<PhaseData> _levelPhases;
     private PlayerHealth _playerHealth;
+    private Phase _phase;
     private bool _isLastBoss;
+
+    public Phase CurrentPhase
+    {
+        set { _phase = value; }
+    }
 
     private void Start()
     {
@@ -121,7 +127,7 @@ public class GameManager : MonoBehaviour
 
     public void EndGame(bool killedBoss = false, float timeLeft = 0f)
     {
-        _fadeToBlack.Fade();
+        _phase.EndPhase();
 
         if (!TrySetConfig(out ConfigManager config))
         {
@@ -129,6 +135,7 @@ public class GameManager : MonoBehaviour
         }
 
         config.BossFightEnd(killedBoss, _isLastBoss, timeLeft);
+        _fadeToBlack.Fade();
     }
 
     private bool TrySetConfig(out ConfigManager config)
