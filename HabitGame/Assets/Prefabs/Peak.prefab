@@ -101,10 +101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9077f91e0f3f543814f885ecfda61f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 2
+  _damage: 5
   SpriteRenderer: {fileID: 8724496914007311904}
   BoxCollider2D: {fileID: 355176541879713971}
-  _animator: {fileID: 0}
   _spriteRenderer: {fileID: 8724496914007311904}
   _spriteDown: {fileID: -2998837615283745097, guid: 233283acf2faf9347bc45743adfb887c, type: 3}
   _spriteUp: {fileID: -7314021976184856259, guid: 2c5250cc9c5af5c4b9a1588c13aff30a, type: 3}
