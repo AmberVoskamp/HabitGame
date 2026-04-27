@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -8,7 +7,9 @@ using UnityEngine;
 
 public class Spikes : DamageObject
 {
-    [SerializeField] private Animator _animator;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] Sprite _spriteDown;
+    [SerializeField] Sprite _spriteUp;
 
     private bool _spikes;
 
@@ -25,22 +26,8 @@ public class Spikes : DamageObject
         }
 
         _spikes = up;
-        string animation = up ? "Open" : "Close";
-        _animator.SetTrigger(animation);
-
-        if (up)
-        {
-            float animationTime = _animator.GetCurrentAnimatorStateInfo(0).length;
-            _ = StartCoroutine(WaitForAnimation(animationTime, up));
-            return;
-        }
+        _spriteRenderer.sprite = up ? _spriteUp : _spriteDown;
 
         BoxCollider2D.enabled = up;
-    }
-
-    private IEnumerator WaitForAnimation(float animationTime, bool colliderActive)
-    {
-        yield return new WaitForSeconds(animationTime);
-        BoxCollider2D.enabled = colliderActive;
     }
 }
