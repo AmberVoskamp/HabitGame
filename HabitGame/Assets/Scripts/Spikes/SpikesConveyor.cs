@@ -21,7 +21,6 @@ public class SpikesConveyor : MonoBehaviour
     [SerializeField] private float _spawnRowsYDistance;
 
     [Space]
-    [SerializeField] private int _openSpace = 5;
     [SerializeField] private int _spawnEveryRows;
     [SerializeField] private float _spikeMoveNextTime;
     [SerializeField] private float _spikesUpSeconds;

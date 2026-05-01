@@ -52,6 +52,10 @@ public class Minigame : MonoBehaviour
     public void StartGame()
     {
         gameObject.SetActive(true);
+        if (_isPlaying)
+        {
+            return;
+        }
 
         #region SetPoints
         if (!_points.IsNullOrEmpty())
@@ -70,12 +74,13 @@ public class Minigame : MonoBehaviour
         }
         #endregion
         _currentPoints = -1;
+        _waitTime = _noTapTime;
         _isPlaying = true;
     }
 
     public void Tap()
     {
-        if (!_isPlaying || _waitTime > 0)
+        if (!_isPlaying || _waitTime > 0 || _rectSpinningImage == null)
         {
             return;
         }
