@@ -44,14 +44,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (callbackContext.canceled)
         {
-            _animator.SetBool("isWalking", false);
             _animator.SetFloat("LastInputX", _moveInput.x);
             _animator.SetFloat("LastInputY", _moveInput.y);
+            _animator.SetBool("isWalking", false);
         }
 
         _moveInput = callbackContext.ReadValue<Vector2>();
         _animator.SetFloat("InputX", _moveInput.x);
         _animator.SetFloat("InputY", _moveInput.y);
+
 
         Vector3 newRotation = Vector3.zero;
         if (_moveInput.x < 0)
