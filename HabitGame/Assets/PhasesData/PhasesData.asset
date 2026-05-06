@@ -19,7 +19,7 @@ MonoBehaviour:
     PhaseTime: 30
   PhasesTwo:
     Phase: {fileID: 2254876843409693039, guid: 56aa9a3bacfebfe4c83cd638a41ddd65, type: 3}
-    PhaseTime: 15
+    PhaseTime: 150
   PhasesThree:
   - Phase: {fileID: 3561860285486744107, guid: 974dd5c5ee8b9be40bb175269fad526d, type: 3}
     PhaseTime: 25

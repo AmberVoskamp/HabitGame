@@ -57,7 +57,7 @@ public class PlayerHealth : Health
         }
 
         Vector3 screenPosition = _mainCamera.WorldToScreenPoint(transform.position);
-        _countdown.LoseTime(DamageTime, screenPosition, action);
+        _countdown.LoseTime(damage, screenPosition, action);
     }
 
     //If we have started, the timer will go down
