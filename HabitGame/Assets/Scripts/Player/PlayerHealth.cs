@@ -16,6 +16,11 @@ public class PlayerHealth : Health
     private Camera _mainCamera;
     private bool _isPlaying;
 
+    public Vector2 PlayerAttackUpgrade
+    {
+        get { return _playerAttack.UpgradeDamage; }
+    }
+
     protected override void Start()
     {
         base.Start();

@@ -16,6 +16,11 @@ public class Attack : MonoBehaviour
     private BossHealth _bossHealth;
     private float _doDamage;
 
+    public Vector2 UpgradeDamage
+    {
+        get { return new Vector2(_normalDamage, _upgradeDamage); }
+    }
+
     private void Start()
     {
         _doDamage = _normalDamage;

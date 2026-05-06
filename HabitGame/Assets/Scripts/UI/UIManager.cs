@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
         {
             return;
         }
-        _minigamePopup.Minigame.Tap();
+        _minigamePopup.TapInput();
     }
 
     public void TutorialClick()
