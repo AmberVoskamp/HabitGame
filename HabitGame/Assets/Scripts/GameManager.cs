@@ -40,8 +40,11 @@ public class GameManager : MonoBehaviour
         if (ConfigManager.Instance != null)
         {
             _configManager = ConfigManager.Instance;
+            _configManager.Config.MaxBossIndex = _phases.PhasesThree.Length - 1;
             _configManager.StartLevelData();
         }
+
+        FindFirstObjectByType<RoundCounterUI>()?.UpdateUI();
 
         _levelPhases = GetPhases(out float time);
         Phase currentPhase = Instantiate(_levelPhases[_currentPhase].Phase);
@@ -61,6 +64,7 @@ public class GameManager : MonoBehaviour
     public void ShowTutorial(string text)
     {
         _uiManager.ShowTutorial(text);
+        Debug.Log(Screen.currentResolution);
     }
 
     public void SpikeSectionDone(float spikeFinishTimeLeft, int maxDificulty)
@@ -134,7 +138,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        config.BossFightEnd(killedBoss, _isLastBoss, timeLeft);
+        config.BossFightEnd(killedBoss, timeLeft);
         _fadeToBlack.Fade();
     }
 
@@ -156,10 +160,15 @@ public class GameManager : MonoBehaviour
 
     private List<PhaseData> GetPhases(out float phasesTime)
     {
+        bool isTestLevel = _configManager != null && _configManager.Config.IsInTestPhase;
+        GetShuffledPhaseTwo(out PhaseData phase2First, out PhaseData phase2Second, isTestLevel);
+
         List<PhaseData> phases = new()
         {
             GetRandomFirstPhase(),
-            _phases.PhasesTwo,
+            phase2First,
+            GetRandomFourthPhase(),
+            phase2Second,
             GetBossPhase()
         };
 
@@ -190,6 +199,21 @@ public class GameManager : MonoBehaviour
         return _phases.PhasesOne[randomPhaseOneIndex];
     }
 
+    private PhaseData GetRandomFourthPhase()
+    {
+        int phaseFourCount = _phases.PhasesFour.Length;
+        int randomPhaseFourIndex = UnityEngine.Random.Range(0, phaseFourCount);
+        return _phases.PhasesFour[randomPhaseFourIndex];
+    }
+
+    private void GetShuffledPhaseTwo(out PhaseData first, out PhaseData second, bool isTestLevel)
+    {
+        PhaseData[] pool = isTestLevel ? _phases.PhasesTwoTest : _phases.PhasesTwo;
+        bool aFirst = UnityEngine.Random.value > 0.5f;
+        first  = aFirst ? pool[0] : pool[1];
+        second = aFirst ? pool[1] : pool[0];
+    }
+
     private PhaseData GetBossPhase()
     {
         int currentBossIndex = 0;
@@ -199,7 +223,6 @@ public class GameManager : MonoBehaviour
         }
 
         int phaseThreeCount = _phases.PhasesThree.Length;
-        _isLastBoss = currentBossIndex >= phaseThreeCount - 1;
         if (currentBossIndex >= phaseThreeCount)
         {
             currentBossIndex = phaseThreeCount - 1;
@@ -218,5 +241,14 @@ public class GameManager : MonoBehaviour
 
         float time = _playerHealth.GetCurrentHealth;
         _configManager.AddPhaseTime(phases, time);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Config.Save(new Config());
+            Debug.Log("Save reset!");
+        }
     }
 }

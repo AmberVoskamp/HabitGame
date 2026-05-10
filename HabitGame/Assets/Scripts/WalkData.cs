@@ -12,6 +12,8 @@ public class WalkData : MonoBehaviour
     private List<Data> _walkData;
     private Vector2 _offset;
 
+    [SerializeField] private Phases _phase;
+
     [Serializable]
     public struct Data
     {
@@ -30,7 +32,7 @@ public class WalkData : MonoBehaviour
         }
         else if (ConfigManager.Instance != null)
         {
-            ConfigManager.Instance?.SafeWalkData(_walkData.ToArray());
+            ConfigManager.Instance?.SafeWalkData(_walkData.ToArray(), _phase);
         }
     }
 

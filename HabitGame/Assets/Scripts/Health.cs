@@ -65,5 +65,6 @@ public enum DamageType
     Spike,
     Boss,
     Player,
-    Other
+    Other,
+    Passage
 }

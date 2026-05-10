@@ -28,10 +28,10 @@ public class Doors : MonoBehaviour
             _isInRange = true;
             OpenDoor();
 
-            if (ConfigManager.Instance != null)
-            {
-                ConfigManager.Instance.TimeLeftDoorOpens(playerHealth.GetCurrentHealth);
-            }
+            //if (ConfigManager.Instance != null)
+            //{
+            //    ConfigManager.Instance.TimeLeftDoorOpens(playerHealth.GetCurrentHealth);
+            //}
         }
     }
 

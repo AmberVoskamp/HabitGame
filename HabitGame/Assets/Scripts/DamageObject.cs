@@ -29,6 +29,10 @@ public class DamageObject : MonoBehaviour
         {
             type = DamageType.Spike;
         }
+        else if (gameObject.TryGetComponent<Passage>(out _))
+        {
+            type = DamageType.Passage;
+        }
         HitPlayer(collider, type);
     }
 

@@ -23,6 +23,15 @@ public class Config
     public int CurrentSpikeDificulty;
     public List<LevelData> LevelsData;
 
+    public int TotalLevelsPlayed;
+    public int TotalBossesKilled;
+    public int MaxBossIndex;
+    public bool IsInTestPhase;
+
+    // Number of levels
+    public int TrainingLevelCount = 3;
+    public int TestLevelCount = 2;
+
     private static string SaveFilenName()
     {
         string saveFile = Path.Combine(Application.persistentDataPath, "save.json");

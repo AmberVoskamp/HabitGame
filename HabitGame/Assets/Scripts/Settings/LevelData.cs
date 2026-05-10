@@ -10,6 +10,7 @@ public class LevelData
 {
     public int Index;
     public float LevelTime;
+    public bool IsTestLevel;
 
     public List<PhaseTimeData> PhaseTimes;
 
@@ -19,12 +20,26 @@ public class LevelData
     public float SpikesDamageTaken;
     #endregion
 
-    #region Phase2
-    public float TimeLeftWhenDoorOpens;
-    public float TimeLeftWhenInChestRange;
+    //#region Phase2
+    //public float TimeLeftWhenDoorOpens;
+    //public float TimeLeftWhenInChestRange;
+    //public bool OpendMinigame;
+    //public bool FinishedMinigame;
+    //public WalkData.Data[] WalkData;
+    //public float PassageDamageTaken;
+    //#endregion
+
+    #region Phase2 - Minigame
+    //public float TimeLeftWhenDoorOpens;
+    //public float TimeLeftWhenInChestRange;
     public bool OpendMinigame;
     public bool FinishedMinigame;
     public WalkData.Data[] WalkData;
+    #endregion
+
+    #region Phase2 - Passage
+    public float PassageDamageTaken;
+    public WalkData.Data[] WalkDataPassage;
     #endregion
 
     #region Phase3

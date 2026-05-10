@@ -18,10 +18,15 @@ MonoBehaviour:
   - Phase: {fileID: 296823060232562143, guid: d35f5c9bfb1f8dd4f9ddab640f67ef13, type: 3}
     PhaseTime: 30
   PhasesTwo:
-    Phase: {fileID: 2254876843409693039, guid: 56aa9a3bacfebfe4c83cd638a41ddd65, type: 3}
-    PhaseTime: 150
+  - Phase: {fileID: 2254876843409693039, guid: 6327698f653796e99aa0a447241edd79, type: 3}
+    PhaseTime: 0
+  - Phase: {fileID: 2254876843409693039, guid: 5498b890abdfcc53fa317e9ea078b724, type: 3}
+    PhaseTime: 0
   PhasesThree:
   - Phase: {fileID: 3561860285486744107, guid: 974dd5c5ee8b9be40bb175269fad526d, type: 3}
     PhaseTime: 25
   - Phase: {fileID: 3561860285486744107, guid: 7f4bd2e4ec0c73d44abff99c179ab682, type: 3}
     PhaseTime: 10
+  PhasesFour:
+  - Phase: {fileID: 665508996373918562, guid: a7f248c20811754769cd328e1004a473, type: 3}
+    PhaseTime: 0

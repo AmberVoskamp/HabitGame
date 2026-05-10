@@ -11,12 +11,16 @@ public class ConfigManager : MonoBehaviour
     public static ConfigManager Instance;
     public Config Config;
 
+    public int TrainingLevelCount = 3;
+    public int TestLevelCount = 3;
+
     public int SpikeDificulty => Config.CurrentSpikeDificulty;
 
     private void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        Config = new Config(); //Temporary
         Config = Config.Load();
     }
 
@@ -42,13 +46,17 @@ public class ConfigManager : MonoBehaviour
             bossIndex = lastLevel.CurrentBoss;
             if (lastLevel.KilledTheBoss)
             {
-                bossIndex++;
+                bossIndex = math.min(bossIndex + 1, GetMaxBossIndex());
+                bossHealth = 0;
                 if (!Config.TutorialFinished)
                 {
                     TutorialDone(true);
                 }
             }
-            bossHealth = lastLevel.BossHealthLeft;
+            else
+            {
+                bossHealth = lastLevel.BossHealthLeft;
+            }
         }
 
         LevelData newLevelData = new()
@@ -58,10 +66,16 @@ public class ConfigManager : MonoBehaviour
             SpikeDificulty = Config.CurrentSpikeDificulty,
             CurrentBoss = bossIndex,
             BossHealthLeft = bossHealth,
+            IsTestLevel = Config.IsInTestPhase,
         };
 
         Config.LevelsData.Add(newLevelData);
         Config.Save(Config);
+    }
+
+    private int GetMaxBossIndex()
+    {
+        return Config.MaxBossIndex;
     }
 
     public void SetTotalTime(float levelTime)
@@ -100,7 +114,10 @@ public class ConfigManager : MonoBehaviour
                 Config.LevelsData[currentIndex].BossDamageDone += damage;
                 break;
             case DamageType.Other:
-            default:
+                default:
+                break;
+            case DamageType.Passage:
+                Config.LevelsData[currentIndex].PassageDamageTaken += damage;
                 break;
         }
     }
@@ -114,23 +131,26 @@ public class ConfigManager : MonoBehaviour
         Config.Save(Config);
     }
 
-    public void SafeWalkData(WalkData.Data[] walkData)
+    public void SafeWalkData(WalkData.Data[] walkData, Phases phase)
     {
         int currentIndex = GetCurrentLevelIndex();
-        Config.LevelsData[currentIndex].WalkData = walkData;
+        if (phase == Phases.Phase2A)
+            Config.LevelsData[currentIndex].WalkData = walkData;
+        else
+            Config.LevelsData[currentIndex].WalkDataPassage = walkData;
     }
 
-    public void TimeLeftInRangeOfChest(float timeLeft)
-    {
-        int currentIndex = GetCurrentLevelIndex();
-        Config.LevelsData[currentIndex].TimeLeftWhenInChestRange = timeLeft;
-    }
+    //public void TimeLeftInRangeOfChest(float timeLeft)
+    //{
+    //    int currentIndex = GetCurrentLevelIndex();
+    //    Config.LevelsData[currentIndex].TimeLeftWhenInChestRange = timeLeft;
+    //}
 
-    public void TimeLeftDoorOpens(float timeLeft)
-    {
-        int currentIndex = GetCurrentLevelIndex();
-        Config.LevelsData[currentIndex].TimeLeftWhenDoorOpens = timeLeft;
-    }
+    //public void TimeLeftDoorOpens(float timeLeft)
+    //{
+    //    int currentIndex = GetCurrentLevelIndex();
+    //    Config.LevelsData[currentIndex].TimeLeftWhenDoorOpens = timeLeft;
+    //}
 
     public void MinigameData(bool hasOpend, bool hasFinished)
     {
@@ -151,16 +171,30 @@ public class ConfigManager : MonoBehaviour
         Config.Save(Config);
     }
 
-    public void BossFightEnd(bool killedBoss, bool isLastBoss, float timeLeft)
+    public void BossFightEnd(bool killedBoss, float timeLeft)
     {
         int currentIndex = GetCurrentLevelIndex();
-        Config.FinishedAllBosses = killedBoss && isLastBoss;
         Config.LevelsData[currentIndex].KilledTheBoss = killedBoss;
         Config.LevelsData[currentIndex].TimeLeft = timeLeft;
 
         LevelData levelData = Config.LevelsData[currentIndex];
         float bossHealthLeft = levelData.BossHealthLeft - levelData.BossDamageDone;
         Config.LevelsData[currentIndex].BossHealthLeft = math.max(0, bossHealthLeft);
+
+        if (killedBoss)
+        {
+            Config.TotalBossesKilled++;
+        }
+
+        Config.TotalLevelsPlayed++;
+
+        if (Config.TotalLevelsPlayed == Config.TrainingLevelCount)
+        {
+            Config.IsInTestPhase = true;
+            Config.MaxBossIndex = 0;
+        }
+
+        Config.FinishedAllBosses = Config.TotalLevelsPlayed >= Config.TrainingLevelCount + Config.TestLevelCount;
         Config.Save(Config);
     }
 

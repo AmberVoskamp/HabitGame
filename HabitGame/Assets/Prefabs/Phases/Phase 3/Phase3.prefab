@@ -7042,7 +7042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2a9481579cf0e4b92500fafe9e82e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _phase: 2
+  _phase: 4
   _walkData: {fileID: 0}
   _boss: {fileID: 8843980241480280217}
   GameManager: {fileID: 0}

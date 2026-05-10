@@ -14,6 +14,9 @@ public class MinigamePopup : MonoBehaviour
     [Space]
     [SerializeField] private float _noTapTime;
 
+    [SerializeField] private TMP_Text _upgradeText;
+    [SerializeField] private GameObject _swordImage;
+
     private bool _minigameDone;
     private float _waitTime;
     private bool _minigameActive;
@@ -62,17 +65,29 @@ public class MinigamePopup : MonoBehaviour
     public void CompletedMinigame()
     {
         _gameManager.MiniGameData(true, _minigameDone);
-
         _minigameScreen.gameObject.SetActive(false);
         _turotial.gameObject.SetActive(false);
 
-        _upgradeWeaponUI.gameObject.SetActive(true);
-        if (PlayerHealth.Instance != null)
+        bool isTestLevel = ConfigManager.Instance != null && ConfigManager.Instance.Config.IsInTestPhase;
+
+        if (isTestLevel)
         {
-            Vector2 upgradeDamage = PlayerHealth.Instance.PlayerAttackUpgrade;
-            _upgradeWeaponUI.SetState(upgradeDamage); //Test values
+            _upgradeText.text = "No upgrade available";
+            _swordImage.SetActive(false);
+        }
+        else
+        {
+            _upgradeText.text = "Your weapon has been upgraded!";
+            _swordImage.SetActive(true);
+            if (PlayerHealth.Instance != null)
+            {
+                Vector2 upgradeDamage = PlayerHealth.Instance.PlayerAttackUpgrade;
+                _upgradeWeaponUI.SetState(upgradeDamage);
+                PlayerHealth.Instance.UpgradeAttack(); // only upgrade in training
+            }
         }
 
+        _upgradeWeaponUI.gameObject.SetActive(true);
         ShowPopup(true);
         _minigameDone = true;
     }
