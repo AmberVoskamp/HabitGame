@@ -34,7 +34,7 @@ public class RoundCounterUI : MonoBehaviour
         string phaseLabel = isTestPhase ? "Test" : "Training";
 
         if (_roundText != null)
-            _roundText.text = $"{phaseLabel} Round: {displayRound}/{totalRounds}";
+            _roundText.text = $"Round: {displayRound}/{totalRounds}";
 
         if (_bossKillText != null)
             _bossKillText.text = $"Boss Kills: {bossKills}";

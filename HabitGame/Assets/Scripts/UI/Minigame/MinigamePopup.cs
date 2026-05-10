@@ -64,12 +64,14 @@ public class MinigamePopup : MonoBehaviour
 
     public void CompletedMinigame()
     {
+        _minigameDone = true;
         _gameManager.MiniGameData(true, _minigameDone);
         _minigameScreen.gameObject.SetActive(false);
         _turotial.gameObject.SetActive(false);
 
-        bool isTestLevel = ConfigManager.Instance != null && ConfigManager.Instance.Config.IsInTestPhase;
+        Debug.Log($"upgradeText: {_upgradeText}, swordImage: {_swordImage}, upgradeWeaponUI: {_upgradeWeaponUI}");
 
+        bool isTestLevel = ConfigManager.Instance != null && ConfigManager.Instance.Config.IsInTestPhase;
         if (isTestLevel)
         {
             _upgradeText.text = "No upgrade available";
@@ -83,16 +85,14 @@ public class MinigamePopup : MonoBehaviour
             {
                 Vector2 upgradeDamage = PlayerHealth.Instance.PlayerAttackUpgrade;
                 _upgradeWeaponUI.SetState(upgradeDamage);
-                PlayerHealth.Instance.UpgradeAttack(); // only upgrade in training
+                PlayerHealth.Instance.UpgradeAttack();
             }
         }
 
         _upgradeWeaponUI.gameObject.SetActive(true);
         ShowPopup(true);
-        _minigameDone = true;
     }
-
-    public void TapInput()
+        public void TapInput()
     {
         if (_waitTime > 0)
         {
