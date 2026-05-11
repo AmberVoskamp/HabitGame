@@ -22,6 +22,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Tutorial Text")]
     [SerializeField] private string _walkTutorialText;
+    [SerializeField] private string _phase2ATutorialText;
+    [SerializeField] private string _phase2BTutorialText;
+    [SerializeField] private string _phase2ATestTutorialText;
+    [SerializeField] private string _phase2BTestTutorialText;
+
 
     private ConfigManager _configManager;
     private int _currentPhase;
@@ -49,6 +54,7 @@ public class GameManager : MonoBehaviour
         _levelPhases = GetPhases(out float time);
         Phase currentPhase = Instantiate(_levelPhases[_currentPhase].Phase);
         currentPhase.GameManager = this;
+        currentPhase.OnPhaseStarted();
 
         _playerHealth = currentPhase.Spawnpoint.SpawnPlayer();
         _playerHealth.SetData(time, _countDown);
@@ -58,6 +64,7 @@ public class GameManager : MonoBehaviour
             _configManager.SetTotalTime(time);
         }
 
+        ShowLongTutorialIfNeeded(); //first training and first testing round
         ShowTutorial(_walkTutorialText);
     }
 
@@ -250,5 +257,39 @@ public class GameManager : MonoBehaviour
             Config.Save(new Config());
             Debug.Log("Save reset!");
         }
+    }
+
+    public void ShowPhaseTutorial(Phases phase)
+    {
+        Config config = ConfigManager.Instance?.Config;
+
+        bool isFirstTraining = config == null || (!config.IsInTestPhase && config.TotalLevelsPlayed == 0);
+        bool isFirstTest = config != null && config.IsInTestPhase &&
+                            config.TotalLevelsPlayed == config.TrainingLevelCount;
+
+        if (!isFirstTraining && !isFirstTest) return;
+
+        switch (phase)
+        {
+            case Phases.Phase2A:
+                ShowTutorial(isFirstTest ? _phase2ATestTutorialText : _phase2ATutorialText);
+                break;
+            case Phases.Phase2B:
+                ShowTutorial(isFirstTest ? _phase2BTestTutorialText : _phase2BTutorialText);
+                break;
+        }
+    }
+
+    private void ShowLongTutorialIfNeeded()
+    {
+        Config config = ConfigManager.Instance?.Config;
+        bool isFirstTraining = config == null || (!config.IsInTestPhase && config.TotalLevelsPlayed == 0);
+        bool isFirstTest = config != null && config.IsInTestPhase && 
+                            config.TotalLevelsPlayed == config.TrainingLevelCount;
+
+        if (isFirstTraining)
+            _uiManager.ShowLongTutorial(false);
+        else if (isFirstTest)
+            _uiManager.ShowLongTutorial(true);
     }
 }

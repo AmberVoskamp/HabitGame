@@ -789,6 +789,10 @@ MonoBehaviour:
   _phases: {fileID: 11400000, guid: 074fbb97585d9824aaa1bb9126fdd9e2, type: 2}
   _timeLeftAfterSpikes: {x: 0, y: 0}
   _walkTutorialText: Use <sprite=1><sprite=2><sprite=3><sprite=0>\nto move around
+  _phase2ATutorialText: Go right for weapon upgrade
+  _phase2BTutorialText: Purple passage gives damage
+  _phase2ATestTutorialText: 'Change: No weapon upgrade available'
+  _phase2BTestTutorialText: 'Change: Orange passage gives damage'
 --- !u!4 &380437866
 Transform:
   m_ObjectHideFlags: 0

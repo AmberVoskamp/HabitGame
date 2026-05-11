@@ -102,6 +102,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         _uiManager.TutorialClick();
+        _uiManager.LongTutorialNextPage();
     }
 
     #endregion
