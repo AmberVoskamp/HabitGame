@@ -89,8 +89,10 @@ public class MinigamePopup : MonoBehaviour
 
         _upgradeWeaponUI.gameObject.SetActive(true);
         gameObject.SetActive(true); // directly show instead of ShowPopup(true)
+        transform.SetAsLastSibling();
     }
-        public void TapInput()
+    
+    public void TapInput()
     {
         if (_waitTime > 0)
         {

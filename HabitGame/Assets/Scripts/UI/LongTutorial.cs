@@ -29,11 +29,13 @@ public class LongTutorial : MonoBehaviour
 
     private void Show(string[] pages)
     {
-        IsShowing = true;
         if (pages == null || pages.Length == 0) return;
+        
         _currentPages = pages;
         _currentPage = 0;
         _isShowing = true;
+        IsShowing = true;
+        _lastInputTime = Time.unscaledTime; // prevent immediate skip
         gameObject.SetActive(true);
         Time.timeScale = 0;
         UpdatePage();
@@ -74,6 +76,13 @@ public class LongTutorial : MonoBehaviour
         IsShowing = false;
         _isShowing = false;
         gameObject.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    private void OnDestroy()
+    {
+        // Reset static when object is destroyed on scene reload
+        IsShowing = false;
         Time.timeScale = 1;
     }
 }
