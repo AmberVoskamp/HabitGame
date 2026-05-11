@@ -29,4 +29,9 @@ MonoBehaviour:
     PhaseTime: 10
   PhasesFour:
   - Phase: {fileID: 665508996373918562, guid: a7f248c20811754769cd328e1004a473, type: 3}
+    PhaseTime: 20
+  PhasesTwoTest:
+  - Phase: {fileID: 2254876843409693039, guid: 6327698f653796e99aa0a447241edd79, type: 3}
+    PhaseTime: 0
+  - Phase: {fileID: 2254876843409693039, guid: 5498b890abdfcc53fa317e9ea078b724, type: 3}
     PhaseTime: 0

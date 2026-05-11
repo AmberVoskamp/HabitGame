@@ -69,8 +69,6 @@ public class MinigamePopup : MonoBehaviour
         _minigameScreen.gameObject.SetActive(false);
         _turotial.gameObject.SetActive(false);
 
-        Debug.Log($"upgradeText: {_upgradeText}, swordImage: {_swordImage}, upgradeWeaponUI: {_upgradeWeaponUI}");
-
         bool isTestLevel = ConfigManager.Instance != null && ConfigManager.Instance.Config.IsInTestPhase;
         if (isTestLevel)
         {
@@ -90,7 +88,7 @@ public class MinigamePopup : MonoBehaviour
         }
 
         _upgradeWeaponUI.gameObject.SetActive(true);
-        ShowPopup(true);
+        gameObject.SetActive(true); // directly show instead of ShowPopup(true)
     }
         public void TapInput()
     {
