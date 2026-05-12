@@ -20,6 +20,7 @@ public class MinigamePopup : MonoBehaviour
     private bool _minigameDone;
     private float _waitTime;
     private bool _minigameActive;
+    private bool _upgradeShown;
 
     private void Start()
     {
@@ -65,6 +66,7 @@ public class MinigamePopup : MonoBehaviour
     public void CompletedMinigame()
     {
         _minigameDone = true;
+        _upgradeShown = true;
         _gameManager.MiniGameData(true, _minigameDone);
         _minigameScreen.gameObject.SetActive(false);
         _turotial.gameObject.SetActive(false);
@@ -88,24 +90,24 @@ public class MinigamePopup : MonoBehaviour
         }
 
         _upgradeWeaponUI.gameObject.SetActive(true);
-        gameObject.SetActive(true); // directly show instead of ShowPopup(true)
+        gameObject.SetActive(true);
         transform.SetAsLastSibling();
     }
     
     public void TapInput()
     {
-        if (_waitTime > 0)
-        {
-            return;
-        }
-
+        if (_waitTime > 0) return;
         _waitTime = _noTapTime;
 
         if (!_minigameDone)
         {
             _minigameScreen.Tap();
-
             return;
+        }
+
+        if (!_upgradeShown)
+        {
+            return; // wait until upgrade screen is shown
         }
 
         ShowPopup(false);
