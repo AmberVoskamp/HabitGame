@@ -24,10 +24,9 @@ public class WalkData : MonoBehaviour
     public void Record(bool record, PlayerHealth player = null)
     {
         _recording = record;
-
         if (record)
         {
-            _walkData ??= new List<Data>();
+            _walkData = new List<Data>(); // always reset, not ??=
             _player = player;
         }
         else if (ConfigManager.Instance != null)

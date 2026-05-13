@@ -133,11 +133,19 @@ public class ConfigManager : MonoBehaviour
 
     public void SafeWalkData(WalkData.Data[] walkData, Phases phase)
     {
+        Debug.Log($"SafeWalkData called: phase={phase}, data length={walkData?.Length}");
         int currentIndex = GetCurrentLevelIndex();
         if (phase == Phases.Phase2A)
+        {
+            Debug.Log("WalkData Minigame");
             Config.LevelsData[currentIndex].WalkData = walkData;
+        }
         else
+        {
+            Debug.Log("WalkData Passage");
             Config.LevelsData[currentIndex].WalkDataPassage = walkData;
+        }
+            
     }
 
     //public void TimeLeftInRangeOfChest(float timeLeft)

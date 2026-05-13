@@ -28,7 +28,7 @@ public class Attack : MonoBehaviour
 
     public void UpgradeAttack()
     {
-        _doDamage = _upgradeDamage;
+        _doDamage = _upgradeDamage * 1.5f;
     }
 
     //Gets triggerd on input
