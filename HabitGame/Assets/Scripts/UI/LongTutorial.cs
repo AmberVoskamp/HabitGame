@@ -12,7 +12,7 @@ public class LongTutorial : MonoBehaviour
     private int _currentPage;
     private bool _isShowing;
 
-    private float _inputCooldown = 0.2f;
+    private float _inputCooldown = 0.6f;
     private float _lastInputTime;
 
     public static bool IsShowing { get; private set; }

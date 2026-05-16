@@ -39,7 +39,6 @@ public class ConfigManager : MonoBehaviour
     public void StartLevelData()
     {
         int bossIndex = 0;
-        float bossHealth = 0;
         if (!Config.LevelsData.IsNullOrEmpty())
         {
             LevelData lastLevel = Config.LevelsData[GetCurrentLevelIndex()];
@@ -47,15 +46,10 @@ public class ConfigManager : MonoBehaviour
             if (lastLevel.KilledTheBoss)
             {
                 bossIndex = math.min(bossIndex + 1, GetMaxBossIndex());
-                bossHealth = 0;
                 if (!Config.TutorialFinished)
                 {
                     TutorialDone(true);
                 }
-            }
-            else
-            {
-                bossHealth = lastLevel.BossHealthLeft;
             }
         }
 
@@ -65,7 +59,7 @@ public class ConfigManager : MonoBehaviour
             PhaseTimes = new System.Collections.Generic.List<PhaseTimeData>(),
             SpikeDificulty = Config.CurrentSpikeDificulty,
             CurrentBoss = bossIndex,
-            BossHealthLeft = bossHealth,
+            BossHealthLeft = 0,
             IsTestLevel = Config.IsInTestPhase,
         };
 

@@ -1094,42 +1094,41 @@ MonoBehaviour:
   _text: {fileID: 1751919021}
   _pageIndicator: {fileID: 728587998}
   _trainingPages:
-  - '<size=150%><b>Levels:   </b></size>This game consists of levels. Every level
-    will be the same, though the boss at the end will vary.'
-  - "<size=150%><b>Time:   </b></size>Time will be depicted at the very top of the
-    screen. In that time you will have to complete the first movement part as fast
-    as possible. Afterward you will face the boss and you will have to damage it
-    as much as you can with the remaining time. The boss can die and in that case
-    a new boss will show up with more health. Health flows over into the new level.
-    So when the time runs out and you haven\u2019t defeated the boss yet, a new round
-    will start and you will face the same boss with its remaining health."
-  - '<size=150%><b>Damage:   </b></size>You can lose time by touching spikes (3 seconds),
-    by passing through a purple damaging passage (20 seconds), or by taking damage
-    in the boss-fight phase of the game (5-10 seconds). '
-  - '<size=150%><b>Passages:   </b></size>There will be 2 passages you can choose
-    from. You will have to walk through a passage. There will be a purple and a orange
-    passage. Purple one gives you damage (-20 seconds) while the orange one does
-    nothing.'
-  - '<size=150%><b>Doors and minigame:   </b></size>There will be a room with two
-    doors, door on the left does nothing, it is safe to pass. If you pass through
-    the door on the right you will play a minigame to upgrade your sword. You upgrade
-    your sword only for the current round.'
-  - '<size=150%><b>Minigame:   </b></size>The minigame will have a wheel where a
-    small bar will be spinning. You will have to time pressing the spacebar with
-    the bar being aligned with an arrow. You will have to do this four times and
-    after this is done, you will gain a bit more damage.'
-  - '<size=150%><b>Boss fight:   </b></size>In the boss fight you will have to avoid
-    objects shot by the boss, and avoid his sword. If you get hit you will take damage.
-    The boss will have a limited health pool and when this health pool runs out you
-    will face a new boss.'
-  - <size=200%><b>Have fun!</b></size>
+  - '<b><size=130%>ROUNDS & PROGRESS</size></b>\n  The game consists of multiple
+    rounds. After each round, press Play to start the next one. Your progress is
+    automatically saved between rounds. '
+  - <b><size=130%>TIME & HEALTH</size></b>\n  Your time is your health. Each round
+    starts with a set amount of time on the clock. Taking damage reduces your remaining
+    time. If it hits zero, the round ends. Time resets each round, though the amount
+    may vary.
+  - <b><size=130%>DAMAGE</size></b>\n  Certain objects in the game deal damage, subtracting
+    seconds from your remaining time. Stay alert and choose your path carefully.
+  - '<b><size=130%>ROOM WITH PASSAGES</size></b>\n  One room contains two passages.
+    The purple passage deals -20 seconds of damage. The orange passage is safe and
+    costs nothing. '
+  - <b><size=130%>ROOM WITH DOORS</size></b>\n  One room contains two doors. The
+    right door triggers a minigame that upgrades your weapon, but costs time. The
+    left door is a free pass with no cost and no reward.
+  - <b><size=130%>MINIGAME</size></b> \n  The minigame shows a spinning wheel. Press
+    SPACE when the arrow is in the green section to score a hit. Fill all the slots
+    to complete the minigame and upgrade your weapon.
+  - <b><size=130%>BOSS FIGHT</size></b> \n The final room of each round contains
+    a boss. Defeat it before your time runs out. Each hit from the boss costs -10
+    seconds. The boss resets to full health each round. Your boss kill count is shown
+    in the top right corner.
+  - <size=200%><b>GOOD LUCK!</b></size>
   _testPages:
   - <size=200%><b>Change of some rules!</b></size>
-  - '<size=150%><b>Minigame:   </b></size>The minigame will not upgrade your sword
-    anymore. It is not necessary to pass through the right door anymore.'
-  - '<size=150%><b>Passages:   </b></size>The passages are switched. Now the purple
-    one is safe and the orange one gives damage (-20 seconds)'
-  - <size=200%><b>Have fun!</b></size>
+  - <b><size=130%>MINIGAME CHANGE</size></b>\n The minigame no longer provides a
+    weapon upgrade. However, choosing to play it still costs you time. The left door
+    remains a free pass.
+  - <b><size=130%>PASSAGES CHANGE</size></b>\n The passages have switched. The orange
+    passage now deals -20 seconds of damage. The purple passage is now safe to pass
+    through. Stay alert, the colors are swapped!
+  - All other rules remain the same. Time is still your health, the boss resets each
+    round, and your progress is saved automatically. Press Play after each round
+    to continue.
+  - <size=200%><b>GOOD LUCK!</b></size>
 --- !u!114 &411501434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3393,16 +3392,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Time will be depicted at the very top of the screen. You will have 1 minute
-    per level. In that time you will have to complete the first movement part as
-    fast as possible. Afterward you will face the boss and you will have to damage
-    it as much as you can with the remaining time. The boss can die and in that case
-    a new boss will show up with more health. Health flows over into the new level.\nSo
-    when the time runs out and you haven\u2019t defeated the boss yet, a new round
-    will start and you will face the same boss with its remaining health."
+  m_text: <b><size=130%>TIME & HEALTH</size></b>\n Your time is your health. Each
+    round starts with a set amount of time on the clock. Taking damage reduces your
+    remaining time. If it hits zero, the round ends. Time resets each round, though
+    the amount may vary.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7745da94b5ba65a40a447612b428a9d2, type: 2}
-  m_sharedMaterial: {fileID: -5140608886590299101, guid: 7745da94b5ba65a40a447612b428a9d2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b0681e0ee882acfa1ae21e6e9309525e, type: 2}
+  m_sharedMaterial: {fileID: 2083270021353747827, guid: b0681e0ee882acfa1ae21e6e9309525e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3426,8 +3422,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
