@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -6,6 +8,8 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer _attackCircle;
+
     [SerializeField] private Animator _attackAnimator;
     [SerializeField] private float _normalDamage;
     [SerializeField] private float _upgradeDamage;
@@ -16,6 +20,10 @@ public class Attack : MonoBehaviour
     private BossHealth _bossHealth;
     private float _doDamage;
 
+    private Color _attackCircleColor;
+    private float _attackCircleAlpha;
+    private Vector3 _attackCircleScale;
+
     public Vector2 UpgradeDamage
     {
         get { return new Vector2(_normalDamage, _upgradeDamage); }
@@ -23,6 +31,14 @@ public class Attack : MonoBehaviour
 
     private void Start()
     {
+        _attackCircleColor = _attackCircle.color;
+        _attackCircleAlpha = _attackCircleColor.a;
+        _attackCircleScale = _attackCircle.transform.localScale;
+
+        _attackCircleColor.a = 0f;
+        _attackCircle.color = _attackCircleColor;
+        _attackCircle.transform.localScale = Vector3.zero;
+
         _doDamage = _normalDamage;
     }
 
@@ -32,20 +48,16 @@ public class Attack : MonoBehaviour
     }
 
     //Gets triggerd on input
-    public void DoAttack()
+    public bool DoAttack(Vector2 moveInput)
     {
         if (!_isInBossRoom)
         {
-            return;
+            return false;
         }
 
-        _attackAnimator.SetTrigger("Attack");
+        StartCoroutine(AttackRoutine(moveInput));
 
-        if (_bossInRange && _bossHealth != null)
-        {
-            //Damage boss
-            _bossHealth.TakeDamage(_doDamage, DamageType.Player);
-        }
+        return true;
     }
 
     //Gets triggerd when you enter the boss room
@@ -73,5 +85,32 @@ public class Attack : MonoBehaviour
         {
             _bossInRange = false;
         }
+    }
+
+    IEnumerator AttackRoutine(Vector2 moveInput)
+    {
+        _attackAnimator.SetFloat("AttackX", moveInput.x);
+        _attackAnimator.SetFloat("AttackY", moveInput.y);
+        _attackAnimator.SetTrigger("Attack");
+
+        yield return new WaitForEndOfFrame();
+
+       /* _attackCircleColor.a = _attackCircleAlpha;
+        _attackCircle.color = _attackCircleColor;*/
+
+        float duration = _attackAnimator.GetCurrentAnimatorStateInfo(0).length;
+
+        _attackCircle.DOFade(_attackCircleAlpha, duration);
+        _attackCircle.transform.DOScale(_attackCircleScale, duration).SetEase(Ease.OutElastic);
+
+        yield return new WaitForSeconds(duration);
+
+        if (_bossInRange && _bossHealth != null)
+        {
+            _bossHealth.TakeDamage(_doDamage, DamageType.Player);
+        }
+
+        _attackCircleColor.a = 0f;
+        _attackCircle.color = _attackCircleColor;
     }
 }

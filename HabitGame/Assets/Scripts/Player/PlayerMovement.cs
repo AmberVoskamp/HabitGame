@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _movementSpeed = 5f;
+    [SerializeField] private Attack _attack;
 
     private UIManager _uiManager;
     private Rigidbody2D _rigidbody;
@@ -15,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private bool _isInMinigameRange;
     private CameraFollow _cameraFollow;
     private Animator _animator;
+
+    private bool _isAttacking;
 
     public bool IsInMinigameRange
     {
@@ -33,6 +37,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_isAttacking)
+        {
+            _rigidbody.linearVelocity = Vector3.zero;
+            return;
+        }
+
         _rigidbody.linearVelocity = _moveInput * _movementSpeed;
     }
 
@@ -60,6 +70,16 @@ public class PlayerMovement : MonoBehaviour
             newRotation.y = 180;
         }
         _animator.transform.rotation = Quaternion.Euler(newRotation);
+    }
+
+    public void Attack()
+    {
+        if (_isAttacking || !_attack.DoAttack(_moveInput))
+        {
+            return;
+        }
+
+        StartCoroutine(AttackRoutine());
     }
 
     //Todo Move player to next entrance and make them move X amount forward
@@ -105,4 +125,25 @@ public class PlayerMovement : MonoBehaviour
     }
 
     #endregion
+
+    IEnumerator AttackRoutine()
+    {
+        _isAttacking = true;
+
+        // Set your parameters and trigger
+        _animator.SetFloat("AttackX", _moveInput.x);
+        _animator.SetFloat("AttackY", _moveInput.y);
+        _animator.SetTrigger("Attack");
+
+        // Wait for a tiny bit of time for the animator to transition
+        yield return new WaitForEndOfFrame();
+
+        // Get the actual length of the animation
+        float duration = _animator.GetCurrentAnimatorStateInfo(0).length;
+
+        // Wait for the animation to finish
+        yield return new WaitForSeconds(duration);
+
+        _isAttacking = false;
+    }
 }
