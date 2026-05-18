@@ -13,6 +13,9 @@ public class Doors : MonoBehaviour
     [SerializeField] private Sprite _rightDoorOpen;
     [SerializeField] private BoxCollider2D _doorCollider;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _doorAudio;
+
     private bool _isInRange;
     private bool _doorOpen;
 
@@ -37,6 +40,7 @@ public class Doors : MonoBehaviour
 
     public void OpenDoor()
     {
+        _doorAudio.Play();
         _doorOpen = true;
         _leftDoor.sprite = _leftDoorOpen;
         _rightDoor.sprite = _rightDoorOpen;

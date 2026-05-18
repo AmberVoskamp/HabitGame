@@ -14,6 +14,11 @@ public class MinigamePopup : MonoBehaviour
     [Space]
     [SerializeField] private float _noTapTime;
 
+    [Header("Audio")]
+    [SerializeField] AudioSource _chestOpenAudio;
+    [SerializeField] AudioSource _chestCloseAudio;
+
+
     private bool _minigameDone;
     private float _waitTime;
     private bool _minigameActive;
@@ -36,6 +41,18 @@ public class MinigamePopup : MonoBehaviour
         _turotial.gameObject.SetActive(show);
     }
 
+    private void PlayChestAudio(bool open)
+    {
+        if (open)
+        {
+            _chestOpenAudio.Play();
+        }
+        else
+        {
+            _chestCloseAudio.Play();
+        }
+    }
+
     public void ShowPopup(bool show)
     {
         if (show && _minigameDone)
@@ -43,6 +60,7 @@ public class MinigamePopup : MonoBehaviour
             return;
         }
 
+        PlayChestAudio(show);
         gameObject.SetActive(show);
 
         if (!show)

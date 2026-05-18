@@ -15,6 +15,9 @@ public class Attack : MonoBehaviour
     [SerializeField] private float _upgradeDamage;
     [SerializeField] private float _timeBetweenAttack;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _attackAudio;
+
     private bool _isInBossRoom;
     private bool _bossInRange;
     private BossHealth _bossHealth;
@@ -92,6 +95,7 @@ public class Attack : MonoBehaviour
         _attackAnimator.SetFloat("AttackX", moveInput.x);
         _attackAnimator.SetFloat("AttackY", moveInput.y);
         _attackAnimator.SetTrigger("Attack");
+        _attackAudio.Play();
 
         yield return new WaitForEndOfFrame();
 

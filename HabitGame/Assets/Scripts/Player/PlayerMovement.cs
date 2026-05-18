@@ -11,6 +11,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _movementSpeed = 5f;
     [SerializeField] private Attack _attack;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _walkingAudio;
+
     private UIManager _uiManager;
     private Rigidbody2D _rigidbody;
     private Vector2 _moveInput;
@@ -50,26 +53,28 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext callbackContext)
     {
-        _animator.SetBool("isWalking", true);
-
-        if (callbackContext.canceled)
-        {
-            _animator.SetFloat("LastInputX", _moveInput.x);
-            _animator.SetFloat("LastInputY", _moveInput.y);
-            _animator.SetBool("isWalking", false);
-        }
 
         _moveInput = callbackContext.ReadValue<Vector2>();
-        _animator.SetFloat("InputX", _moveInput.x);
-        _animator.SetFloat("InputY", _moveInput.y);
-
-
         Vector3 newRotation = Vector3.zero;
         if (_moveInput.x < 0)
         {
             newRotation.y = 180;
         }
         _animator.transform.rotation = Quaternion.Euler(newRotation);
+
+        if (callbackContext.canceled)
+        {
+            _walkingAudio.Stop();
+            _animator.SetFloat("LastInputX", _moveInput.x);
+            _animator.SetFloat("LastInputY", _moveInput.y);
+            _animator.SetBool("isWalking", false);
+            return;
+        }
+
+        _walkingAudio.Play();
+        _animator.SetFloat("InputX", _moveInput.x);
+        _animator.SetFloat("InputY", _moveInput.y);
+        _animator.SetBool("isWalking", true);
     }
 
     public void Attack()
@@ -100,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (_isInMinigameRange)
         {
+            //OpenChest
             _uiManager.ShowMinigame(true);
         }
     }

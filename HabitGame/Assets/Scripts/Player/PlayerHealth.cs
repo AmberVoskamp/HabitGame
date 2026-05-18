@@ -11,6 +11,9 @@ public class PlayerHealth : Health
 
     [SerializeField] private Attack _playerAttack;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _damageAudio;
+
     private CountDown _countdown;
 
     private Camera _mainCamera;
@@ -57,6 +60,7 @@ public class PlayerHealth : Health
         void action()
         {
             base.TakeDamage(damage, type);
+            _damageAudio.Play();
             //Update current counter
             _countdown.UpdateTimer(CurrentHealth);
         }
