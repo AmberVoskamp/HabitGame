@@ -32,6 +32,11 @@ public class Phase : MonoBehaviour
     public void ExitPhase()
     {
         GameManager.ExitPhase(_phase);
+        EndPhase();
+    }
+
+    public void EndPhase()
+    {
         _walkData?.Record(false);
     }
 

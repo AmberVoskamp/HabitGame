@@ -42,7 +42,7 @@ public class CountDown : MonoBehaviour
     {
         //Spawn the time you lose at the player position on the canvas
         TMP_Text timeLost = Instantiate(_timeLostPrefab, transform);
-        timeLost.text = $"-{lostTime:F0}s";
+        timeLost.text = $"-{lostTime:F0}";
         timeLost.transform.position = screenPosition;
 
         #region 

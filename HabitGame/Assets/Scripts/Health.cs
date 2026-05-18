@@ -15,6 +15,7 @@ public class Health : MonoBehaviour
     [SerializeField] private Color _takeDamageColor;
 
     private Color _basicColor;
+    private float _maxHealth;
     protected bool IsTakingDamage;
     protected float CurrentHealth;
     protected ConfigManager ConfigManager;
@@ -34,19 +35,19 @@ public class Health : MonoBehaviour
 
     public void SetHealth(float health)
     {
-        CurrentHealth = health;
+        CurrentHealth = _maxHealth = health;
     }
 
     public virtual void TakeDamage(float damage, DamageType type)
     {
         CurrentHealth -= damage;
-        CurrentHealth = math.clamp(CurrentHealth, 0, HealthAmount);
+        CurrentHealth = math.clamp(CurrentHealth, 0, _maxHealth);
         ConfigManager?.Hit(damage, type);
     }
 
     public bool CanTakeDamage()
     {
-        return !IsTakingDamage && HealthAmount > 0;
+        return !IsTakingDamage && _maxHealth > 0;
     }
 
     protected IEnumerator Damage()

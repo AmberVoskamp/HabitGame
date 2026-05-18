@@ -15,7 +15,7 @@ public class Minigame : MonoBehaviour
     [SerializeField] private Slider _slider;
     [SerializeField] private Image _landingImage;
     [SerializeField] private float _spinningSpeed;
-    [SerializeField] private float _noTapTime;
+
     [Header("Bar")]
     [SerializeField] private RectTransform _barRectTransform;
     [SerializeField] private Point _barPointPrefab;
@@ -25,12 +25,10 @@ public class Minigame : MonoBehaviour
     private int _currentPoints;
     private RectTransform _rectSpinningImage;
     private bool _isPlaying = false;
-    private float _waitTime;
 
     private void Start()
     {
         _rectSpinningImage = _spinningImage.GetComponent<RectTransform>();
-        gameObject.SetActive(false);
     }
 
     private void Update()
@@ -42,16 +40,14 @@ public class Minigame : MonoBehaviour
 
         //Rotate the spinning image
         _rectSpinningImage.Rotate(0, 0, _spinningSpeed * Time.deltaTime);
-
-        if (_waitTime > 0f)
-        {
-            _waitTime = Mathf.Max(0f, _waitTime - Time.deltaTime);
-        }
     }
 
     public void StartGame()
     {
-        gameObject.SetActive(true);
+        if (_isPlaying)
+        {
+            return;
+        }
 
         #region SetPoints
         if (!_points.IsNullOrEmpty())
@@ -75,13 +71,12 @@ public class Minigame : MonoBehaviour
 
     public void Tap()
     {
-        if (!_isPlaying || _waitTime > 0)
+        if (!_isPlaying || _rectSpinningImage == null)
         {
             return;
         }
 
         bool hit = IsAtArrow();
-        _waitTime = _noTapTime;
         Point(hit);
     }
 
@@ -99,11 +94,9 @@ public class Minigame : MonoBehaviour
         {
             _points[_currentPoints].SetFill(true);
         }
-        else 
+        else
         {
-            //Todo: Show they succeeded somehow then close popup
-            //Todo: give player the reward
-            _minigamePopup.ShowPopup(false, true);
+            _minigamePopup.CompletedMinigame();
         }
     }
 
