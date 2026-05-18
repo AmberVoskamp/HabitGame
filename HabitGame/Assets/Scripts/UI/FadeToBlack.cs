@@ -29,4 +29,10 @@ public class FadeToBlack : MonoBehaviour
                 SceneSwitchManager.Instance.SwitchScene(Scenes.HomeScene);
             });
     }
+
+    public void FadeWithCallback(System.Action onComplete)
+    {
+        _image.DOFade(1f, _fadeTime)
+            .OnComplete(() => onComplete?.Invoke());
+    }
 }

@@ -29,8 +29,11 @@ public class Config
     public bool IsInTestPhase;
 
     // Number of levels
-    public int TrainingLevelCount = 3;
-    public int TestLevelCount = 2;
+    public int TrainingLevelCount = 1;
+    public int TestLevelCount = 1;
+
+    // Questionnaire
+    public QuestionnaireData TrainingQuestionnaire;
 
     private static string SaveFilenName()
     {
@@ -80,4 +83,10 @@ public class Config
         Debug.Log("Download triggered. Content: " + json);
 #endif
     }
+}
+
+[Serializable]
+public class QuestionnaireData
+{
+    public int Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8;
 }

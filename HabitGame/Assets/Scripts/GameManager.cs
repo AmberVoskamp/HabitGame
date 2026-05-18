@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string _phase2ATestTutorialText;
     [SerializeField] private string _phase2BTestTutorialText;
 
+    [SerializeField] private QuestionnaireUI _questionnaireUI;
+
 
     private ConfigManager _configManager;
     private int _currentPhase;
@@ -146,7 +148,22 @@ public class GameManager : MonoBehaviour
         }
 
         config.BossFightEnd(killedBoss, timeLeft);
-        _fadeToBlack.Fade();
+
+        // Check if questionnaire should show (just finished round 3 = TrainingLevelCount)
+        if (config.Config.TotalLevelsPlayed == config.Config.TrainingLevelCount)
+        {
+            _fadeToBlack.FadeWithCallback(() =>
+            {
+                _questionnaireUI.Show(() =>
+                {
+                    SceneSwitchManager.Instance.SwitchScene(Scenes.HomeScene);
+                });
+            });
+        }
+        else
+        {
+            _fadeToBlack.Fade();
+        }
     }
 
     private bool TrySetConfig(out ConfigManager config)

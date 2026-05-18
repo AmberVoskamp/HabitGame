@@ -221,4 +221,10 @@ public class ConfigManager : MonoBehaviour
     {
         return Config.LevelsData.Count - 1;
     }
+
+    public void SaveQuestionnaire(QuestionnaireData data)
+    {
+        Config.TrainingQuestionnaire = data;
+        Config.Save(Config);
+    }
 }
