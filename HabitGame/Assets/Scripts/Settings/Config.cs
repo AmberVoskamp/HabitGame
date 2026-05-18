@@ -29,11 +29,13 @@ public class Config
     public bool IsInTestPhase;
 
     // Number of levels
-    public int TrainingLevelCount = 1;
-    public int TestLevelCount = 1;
+    public int TrainingLevelCount = 3;
+    public int TestLevelCount = 2;
 
     // Questionnaire
     public QuestionnaireData TrainingQuestionnaire;
+    public int CurrentRunLevelCount; //huh???
+    public bool QuestionnaireShownThisRun;
 
     private static string SaveFilenName()
     {

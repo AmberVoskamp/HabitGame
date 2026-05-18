@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     private PlayerHealth _playerHealth;
     private Phase _phase;
     private bool _isLastBoss;
+    private bool _isGameEnding = false;
 
     public Phase CurrentPhase
     {
@@ -140,6 +141,10 @@ public class GameManager : MonoBehaviour
 
     public void EndGame(bool killedBoss = false, float timeLeft = 0f)
     {
+        // If we already started ending the game, ignore any duplicate calls
+        if (_isGameEnding) return; 
+        _isGameEnding = true;
+
         _phase.EndPhase();
 
         if (!TrySetConfig(out ConfigManager config))
@@ -150,12 +155,16 @@ public class GameManager : MonoBehaviour
         config.BossFightEnd(killedBoss, timeLeft);
 
         // Check if questionnaire should show (just finished round 3 = TrainingLevelCount)
-        if (config.Config.TotalLevelsPlayed == config.Config.TrainingLevelCount)
+        if (config.Config.CurrentRunLevelCount == config.Config.TrainingLevelCount && !config.Config.QuestionnaireShownThisRun)
         {
             _fadeToBlack.FadeWithCallback(() =>
             {
                 _questionnaireUI.Show(() =>
                 {
+                    // Mark as completed for this run before returning to HomeScene
+                    config.Config.QuestionnaireShownThisRun = true;
+                    Config.Save(config.Config);
+                    
                     SceneSwitchManager.Instance.SwitchScene(Scenes.HomeScene);
                 });
             });

@@ -189,8 +189,9 @@ public class ConfigManager : MonoBehaviour
         }
 
         Config.TotalLevelsPlayed++;
+        Config.CurrentRunLevelCount++;
 
-        if (Config.TotalLevelsPlayed == Config.TrainingLevelCount)
+        if (Config.CurrentRunLevelCount == Config.TrainingLevelCount)
         {
             Config.IsInTestPhase = true;
             Config.MaxBossIndex = 0;
