@@ -69,15 +69,17 @@ public class Minigame : MonoBehaviour
         _isPlaying = true;
     }
 
-    public void Tap()
+    public bool Tap(out bool hit)
     {
         if (!_isPlaying || _rectSpinningImage == null)
         {
-            return;
+            hit = false;
+            return false;
         }
 
-        bool hit = IsAtArrow();
+        hit = IsAtArrow();
         Point(hit);
+        return true;
     }
 
     //If hit is true the player gets an extra point 

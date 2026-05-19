@@ -17,7 +17,9 @@ public class MinigamePopup : MonoBehaviour
     [Header("Audio")]
     [SerializeField] AudioSource _chestOpenAudio;
     [SerializeField] AudioSource _chestCloseAudio;
-
+    [SerializeField] AudioSource _tapHit;
+    [SerializeField] AudioSource _tapMiss;
+    [SerializeField] AudioSource _gameCompleteAudio;
 
     private bool _minigameDone;
     private float _waitTime;
@@ -60,8 +62,18 @@ public class MinigamePopup : MonoBehaviour
             return;
         }
 
-        PlayChestAudio(show);
-        gameObject.SetActive(show);
+        if (show != gameObject.activeSelf)
+        {
+            if (!show)
+            {
+                PlayChestAudio(show);
+            }
+            gameObject.SetActive(show);
+            if (show)
+            {
+                PlayChestAudio(show);
+            }
+        }
 
         if (!show)
         {
@@ -85,6 +97,7 @@ public class MinigamePopup : MonoBehaviour
         _turotial.gameObject.SetActive(false);
 
         _upgradeWeaponUI.gameObject.SetActive(true);
+        _gameCompleteAudio?.Play();
         if (PlayerHealth.Instance != null)
         {
             Vector2 upgradeDamage = PlayerHealth.Instance.PlayerAttackUpgrade;
@@ -106,7 +119,17 @@ public class MinigamePopup : MonoBehaviour
 
         if (!_minigameDone)
         {
-            _minigameScreen.Tap();
+            if (_minigameScreen.Tap(out bool hit))
+            {
+                if (hit)
+                {
+                    _tapHit?.Play();
+                }
+                else
+                {
+                    _tapMiss?.Play();
+                }
+            }
 
             return;
         }

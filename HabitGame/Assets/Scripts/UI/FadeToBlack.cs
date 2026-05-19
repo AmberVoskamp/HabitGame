@@ -9,6 +9,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class FadeToBlack : MonoBehaviour
 {
+    [SerializeField] private GameManager _gameManager;
     [SerializeField] private float _fadeTime;
     private Image _image;
 
@@ -23,6 +24,8 @@ public class FadeToBlack : MonoBehaviour
 
     public void Fade()
     {
+        _gameManager.FadeAudio(_fadeTime);
+
         _image.DOFade(1f, _fadeTime)
             .OnComplete(() =>
             {

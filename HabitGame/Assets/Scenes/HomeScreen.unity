@@ -11867,7 +11867,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 300
+  m_fontSize: 176.2
   m_fontSizeBase: 81.59
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -13317,6 +13317,7 @@ MonoBehaviour:
   _playButton: {fileID: 1701350995}
   _downloadButton: {fileID: 184910437}
   _donwPlaying: {fileID: 1011366621}
+  _homeScreenAudio: {fileID: 1250137174}
 --- !u!1001 &1961742969
 PrefabInstance:
   m_ObjectHideFlags: 0

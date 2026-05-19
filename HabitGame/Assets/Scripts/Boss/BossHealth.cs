@@ -14,6 +14,10 @@ public class BossHealth : Health
     [SerializeField] private Animator _animator;
     [SerializeField] private Slider _healthSlider;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _bossHitAudio;
+    [SerializeField] private AudioSource _bossDeathAudio;
+
     private PlayerHealth _playerHealth;
     private BossAttackController _attack;
 
@@ -63,6 +67,7 @@ public class BossHealth : Health
         }
 
         _ = StartCoroutine(Damage());
+        _bossHitAudio.Play();
         base.TakeDamage(damage, type);
 
         SetHealthSlider();
@@ -73,6 +78,7 @@ public class BossHealth : Health
             //Boss dies you win
             _attack?.StopAttacks();
             _animator.SetTrigger("Dead");
+            _bossDeathAudio.Play();
             float animationLenght = _animator.GetCurrentAnimatorStateInfo(0).length;
             StartCoroutine(HelperWait.ActionAfterWait(animationLenght, EndGame));
             return;

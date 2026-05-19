@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -23,12 +24,17 @@ public class GameManager : MonoBehaviour
     [Header("Tutorial Text")]
     [SerializeField] private string _walkTutorialText;
 
+    [Header("Background Audio")]
+    [SerializeField] private AudioSource _backgroundAudio;
+    [SerializeField] private AudioSource _backgroundBattleAudio;
+
     private ConfigManager _configManager;
     private int _currentPhase;
     private List<PhaseData> _levelPhases;
     private PlayerHealth _playerHealth;
     private Phase _phase;
     private bool _isLastBoss;
+    private AudioSource _currentAudio;
 
     public Phase CurrentPhase
     {
@@ -56,6 +62,36 @@ public class GameManager : MonoBehaviour
         }
 
         ShowTutorial(_walkTutorialText);
+        SetAudio(_backgroundAudio);
+    }
+
+    private void SetAudio(AudioSource newAudio)
+    {
+        if (newAudio == _currentAudio)
+        {
+            return;
+        }
+
+        if (_currentAudio != null)
+        {
+            _currentAudio.Stop();
+        }
+
+        _currentAudio = newAudio;
+        if (_currentAudio != null)
+        {
+            _currentAudio.Play();
+        }   
+    }
+
+    public void FadeAudio(float fadeTime)
+    {
+        if (_currentAudio == null)
+        {
+            return;
+        }
+
+        _currentAudio.DOFade(0f, fadeTime);
     }
 
     public void ShowTutorial(string text)
@@ -117,6 +153,7 @@ public class GameManager : MonoBehaviour
 
     public void EnterBossRoom(float bossHealth)
     {
+        SetAudio(_backgroundBattleAudio);
         if (ConfigManager.Instance == null)
         {
             return;

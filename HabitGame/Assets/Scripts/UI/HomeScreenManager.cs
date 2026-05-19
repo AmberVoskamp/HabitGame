@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 /// <summary>
 /// The home screen manager handels the home screen UI inputs
@@ -10,6 +11,8 @@ public class HomeScreenManager : MonoBehaviour
     [SerializeField] private Button _playButton;
     [SerializeField] private Button _downloadButton;
     [SerializeField] private Image _donwPlaying;
+
+    [SerializeField] private AudioSource _homeScreenAudio;
 
     private ConfigManager _configManager;
 
@@ -48,6 +51,10 @@ public class HomeScreenManager : MonoBehaviour
 
     private void GameScene()
     {
-        SceneSwitchManager.Instance.SwitchScene(Scenes.GameScene);
+        _homeScreenAudio.DOFade(0f, 1f).OnComplete(() =>
+        {
+            _homeScreenAudio.Stop();
+            SceneSwitchManager.Instance.SwitchScene(Scenes.GameScene);
+        });
     }
 }
