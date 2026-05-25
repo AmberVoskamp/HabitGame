@@ -99,9 +99,6 @@ public class Attack : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
-       /* _attackCircleColor.a = _attackCircleAlpha;
-        _attackCircle.color = _attackCircleColor;*/
-
         float duration = _attackAnimator.GetCurrentAnimatorStateInfo(0).length;
 
         _attackCircle.DOFade(_attackCircleAlpha, duration);
