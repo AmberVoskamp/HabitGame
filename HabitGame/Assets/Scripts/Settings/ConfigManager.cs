@@ -154,7 +154,7 @@ public class ConfigManager : MonoBehaviour
     public void BossFightEnd(bool killedBoss, bool isLastBoss, float timeLeft)
     {
         int currentIndex = GetCurrentLevelIndex();
-        Config.FinishedAllBosses = killedBoss && isLastBoss;
+        Config.FinishedAllBosses = isLastBoss;
         Config.LevelsData[currentIndex].KilledTheBoss = killedBoss;
         Config.LevelsData[currentIndex].TimeLeft = timeLeft;
 

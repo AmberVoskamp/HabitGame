@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
     private bool _isLastBoss;
     private AudioSource _currentAudio;
 
+    private const int TotalRoundCount = 3;
+    public int CurrentRound => _configManager != null ? _configManager.Config.LevelsData.Count : 1;
+
     public Phase CurrentPhase
     {
         set { _phase = value; }
@@ -236,14 +239,11 @@ public class GameManager : MonoBehaviour
         }
 
         int phaseThreeCount = _phases.PhasesThree.Length;
-        _isLastBoss = currentBossIndex >= phaseThreeCount - 1;
-        if (currentBossIndex >= phaseThreeCount)
-        {
-            currentBossIndex = phaseThreeCount - 1;
-            Debug.LogWarning($"Boss index is higher than should be possible");
-        }
+        int bossPhaseIndex = math.min(currentBossIndex, phaseThreeCount - 1);
 
-        return _phases.PhasesThree[currentBossIndex];
+        _isLastBoss = CurrentRound >= TotalRoundCount;
+
+        return _phases.PhasesThree[bossPhaseIndex];
     }
 
     public void ExitPhase(Phases phases)
