@@ -29,7 +29,6 @@ public class SwitchPhase : MonoBehaviour
         {
             return;
         }
-        
         Phase nextPhase = Instantiate(next);
         nextPhase.GameManager = _phase.GameManager;
         _phase.GameManager.CurrentPhase = nextPhase;

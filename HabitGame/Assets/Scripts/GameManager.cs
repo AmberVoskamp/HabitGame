@@ -36,9 +36,6 @@ public class GameManager : MonoBehaviour
     private bool _isLastBoss;
     private AudioSource _currentAudio;
 
-    private const int TotalRoundCount = 3;
-    public int CurrentRound => _configManager != null ? _configManager.Config.LevelsData.Count : 1;
-
     public Phase CurrentPhase
     {
         set { _phase = value; }
@@ -239,12 +236,12 @@ public class GameManager : MonoBehaviour
         }
 
         int phaseThreeCount = _phases.PhasesThree.Length;
-
-        // Game ends based on round count, not boss array length
-        _isLastBoss = CurrentRound >= TotalRoundCount;
-
-        // Once we run out of unique bosses, keep repeating the last one
-        int bossPhaseIndex = Mathf.Min(currentBossIndex, phaseThreeCount - 1);
+        _isLastBoss = currentBossIndex >= phaseThreeCount - 1;
+        if (currentBossIndex >= phaseThreeCount)
+        {
+            currentBossIndex = phaseThreeCount - 1;
+            Debug.LogWarning($"Boss index is higher than should be possible");
+        }
 
         return _phases.PhasesThree[currentBossIndex];
     }
