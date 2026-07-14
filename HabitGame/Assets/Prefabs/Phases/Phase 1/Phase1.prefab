@@ -5462,7 +5462,6 @@ MonoBehaviour:
   _spikesInRow: 15
   _spawnRows: 25
   _spawnRowsYDistance: -0.16
-  _spawnEveryRows: 5
   _spikeMoveNextTime: 1
   _spikesUpSeconds: 1.1
   _dificultySettings:
