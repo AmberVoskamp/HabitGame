@@ -91,7 +91,7 @@ public class MinigamePopup : MonoBehaviour
 
     public void CompletedMinigame()
     {
-        _gameManager.MiniGameData(true, _minigameDone);
+        _gameManager.MiniGameData(true, true);
 
         _minigameScreen.gameObject.SetActive(false);
         _turotial.gameObject.SetActive(false);

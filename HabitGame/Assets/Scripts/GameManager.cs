@@ -146,6 +146,7 @@ public class GameManager : MonoBehaviour
 
     public void MiniGameData(bool hasOpend, bool hasFinished)
     {
+        Debug.Log($"MiniGameData called: hasFinished={hasFinished}, IsTestLevel={IsTestLevel}");
         if (!TrySetConfig(out ConfigManager config))
         {
             return;
@@ -153,7 +154,7 @@ public class GameManager : MonoBehaviour
 
         config.MinigameData(hasOpend, hasFinished);
 
-        if (hasFinished)
+        if (hasFinished && !IsTestLevel)
         {
             _playerHealth.UpgradeAttack();
         }
