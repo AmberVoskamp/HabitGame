@@ -36,8 +36,12 @@ public class GameManager : MonoBehaviour
     private bool _isLastBoss;
     private AudioSource _currentAudio;
 
-    private const int TotalRoundCount = 3;
+    private const int TrainingRoundCount = 3;
+    private const int TestRoundCount = 2;
+    private const int TotalRoundCount = TrainingRoundCount + TestRoundCount;
+
     public int CurrentRound => _configManager != null ? _configManager.Config.LevelsData.Count : 1;
+    public bool IsTestLevel => CurrentRound > TrainingRoundCount;
 
     public Phase CurrentPhase
     {
@@ -49,7 +53,8 @@ public class GameManager : MonoBehaviour
         if (ConfigManager.Instance != null)
         {
             _configManager = ConfigManager.Instance;
-            _configManager.StartLevelData();
+            bool isTest = (_configManager.Config.LevelsData.Count + 1) > TrainingRoundCount;
+            _configManager.StartLevelData(isTest);
         }
 
         _levelPhases = GetPhases(out float time);

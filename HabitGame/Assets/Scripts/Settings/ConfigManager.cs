@@ -32,10 +32,11 @@ public class ConfigManager : MonoBehaviour
         Config.Save(Config);
     }
 
-    public void StartLevelData()
+    public void StartLevelData(bool isTest)
     {
         int bossIndex = 0;
         float bossHealth = 0;
+        bool isFirstTestLevel = isTest;
         if (!Config.LevelsData.IsNullOrEmpty())
         {
             LevelData lastLevel = Config.LevelsData[GetCurrentLevelIndex()];
@@ -49,6 +50,14 @@ public class ConfigManager : MonoBehaviour
                 }
             }
             bossHealth = lastLevel.BossHealthLeft;
+             // Reset when test levels start
+            isFirstTestLevel = isTest && !lastLevel.IsTest;
+        }
+
+        if (isFirstTestLevel)
+        {
+            bossIndex = 0;
+            bossHealth = 0;
         }
 
         LevelData newLevelData = new()
@@ -58,6 +67,7 @@ public class ConfigManager : MonoBehaviour
             SpikeDificulty = Config.CurrentSpikeDificulty,
             CurrentBoss = bossIndex,
             BossHealthLeft = bossHealth,
+            IsTest = isTest,
         };
 
         Config.LevelsData.Add(newLevelData);

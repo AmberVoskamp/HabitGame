@@ -10,6 +10,7 @@ public class LevelData
 {
     public int Index;
     public float LevelTime;
+    public bool IsTest;
 
     public List<PhaseTimeData> PhaseTimes;
 
