@@ -6320,7 +6320,7 @@ GameObject:
   - component: {fileID: 1229343033440957445}
   - component: {fileID: 2254876843409693039}
   m_Layer: 0
-  m_Name: Phase2 Flipped
+  m_Name: Phase2A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

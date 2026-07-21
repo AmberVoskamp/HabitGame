@@ -98,10 +98,19 @@ public class MinigamePopup : MonoBehaviour
 
         _upgradeWeaponUI.gameObject.SetActive(true);
         _gameCompleteAudio?.Play();
+
         if (PlayerHealth.Instance != null)
         {
             Vector2 upgradeDamage = PlayerHealth.Instance.PlayerAttackUpgrade;
-            _upgradeWeaponUI.SetState(upgradeDamage); //Test values
+            
+            if (_gameManager.IsTestLevel)
+            {
+                _upgradeWeaponUI.SetNoUpgradeState(upgradeDamage.x);
+            }
+            else
+            {
+                _upgradeWeaponUI.SetState(upgradeDamage);
+            }
         }
 
         ShowPopup(true);

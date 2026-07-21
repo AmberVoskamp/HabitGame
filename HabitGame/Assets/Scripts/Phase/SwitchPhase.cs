@@ -21,7 +21,6 @@ public class SwitchPhase : MonoBehaviour
             return;
         }
         _isEntering = true;
-        //TODO Screen go black (can do later)
 
         //Load in next phase
         Phase next = _phase.NextPhase;
