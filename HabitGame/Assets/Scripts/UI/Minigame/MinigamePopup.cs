@@ -93,6 +93,11 @@ public class MinigamePopup : MonoBehaviour
     {
         _gameManager.MiniGameData(true, true);
 
+        if (PlayerHealth.Instance != null)
+        {
+            _gameManager.MinigameFinished(PlayerHealth.Instance.GetCurrentHealth);
+        }
+
         _minigameScreen.gameObject.SetActive(false);
         _turotial.gameObject.SetActive(false);
 
@@ -158,5 +163,10 @@ public class MinigamePopup : MonoBehaviour
         _minigameScreen.gameObject.SetActive(true);
         _waitTime = _noTapTime;
         _minigameScreen.StartGame();
+
+        if (PlayerHealth.Instance != null)
+        {
+            _gameManager.MinigameStarted(PlayerHealth.Instance.GetCurrentHealth);
+        }
     }
 }

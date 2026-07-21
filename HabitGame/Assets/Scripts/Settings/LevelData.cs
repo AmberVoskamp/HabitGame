@@ -25,6 +25,10 @@ public class LevelData
     public float TimeLeftWhenInChestRange;
     public bool OpendMinigame;
     public bool FinishedMinigame;
+    public float StartTimeMinigame;
+    public float EndTimeMinigame;
+    public float Phase2EnterTime;
+    public float Phase2ExitTime;
     public WalkData.Data[] WalkData;
     #endregion
 

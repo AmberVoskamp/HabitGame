@@ -21,6 +21,11 @@ public class Phase : MonoBehaviour
     private void OnEnable()
     {
         _walkData?.Record(true, PlayerHealth.Instance);
+
+        if (_phase == Phases.Phase2 && GameManager != null && PlayerHealth.Instance != null)
+        {
+            GameManager.Phase2Entered(PlayerHealth.Instance.GetCurrentHealth);
+        }
     }
 
     public bool BossRoom(out BossHealth boss)

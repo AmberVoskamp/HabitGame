@@ -150,6 +150,30 @@ public class ConfigManager : MonoBehaviour
         Config.Save(Config);
     }
 
+    public void SetMinigameStartTime(float timeLeft)
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        Config.LevelsData[currentIndex].StartTimeMinigame = timeLeft;
+    }
+
+    public void SetMinigameEndTime(float timeLeft)
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        Config.LevelsData[currentIndex].EndTimeMinigame = timeLeft;
+    }
+
+    public void SetPhase2EnterTime(float timeLeft)
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        Config.LevelsData[currentIndex].Phase2EnterTime = timeLeft;
+    }
+
+    public void SetPhase2ExitTime(float timeLeft)
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        Config.LevelsData[currentIndex].Phase2ExitTime = timeLeft;
+    }
+
     public void BossRoom(float bossHealth)
     {
         int currentIndex = GetCurrentLevelIndex();

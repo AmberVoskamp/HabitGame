@@ -261,5 +261,39 @@ public class GameManager : MonoBehaviour
 
         float time = _playerHealth.GetCurrentHealth;
         _configManager.AddPhaseTime(phases, time);
+
+        if (phases == Phases.Phase2)
+        {
+            _configManager.SetPhase2ExitTime(time);
+        }
+    }
+
+
+
+    public void MinigameStarted(float timeLeft)
+    {
+        if (!TrySetConfig(out ConfigManager config))
+        {
+            return;
+        }
+        config.SetMinigameStartTime(timeLeft);
+    }
+
+    public void MinigameFinished(float timeLeft)
+    {
+        if (!TrySetConfig(out ConfigManager config))
+        {
+            return;
+        }
+        config.SetMinigameEndTime(timeLeft);
+    }
+
+    public void Phase2Entered(float timeLeft)
+    {
+        if (!TrySetConfig(out ConfigManager config))
+        {
+            return;
+        }
+        config.SetPhase2EnterTime(timeLeft);
     }
 }
