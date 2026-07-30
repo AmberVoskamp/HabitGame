@@ -5,7 +5,8 @@ using UnityEngine;
 public class PhasesData : ScriptableObject
 {
     public PhaseData[] PhasesOne; //The optional phase ones
-    public PhaseData PhasesTwo;
+    public PhaseData[] PhasesTwoTutorial; //Phase2 variants with no chest
+    public PhaseData[] PhasesTwoRegular;  //Phase2 variants with the chest
     public PhaseData[] PhasesThree; //The order off the boss fights
 
     [Serializable]

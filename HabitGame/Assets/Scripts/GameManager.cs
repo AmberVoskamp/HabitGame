@@ -36,12 +36,28 @@ public class GameManager : MonoBehaviour
     private bool _isLastBoss;
     private AudioSource _currentAudio;
 
+    private const int TutorialRoundCount = 2;
     private const int TrainingRoundCount = 2;
     private const int TestRoundCount = 2;
-    private const int TotalRoundCount = TrainingRoundCount + TestRoundCount;
+    private const int TotalRoundCount = TutorialRoundCount + TrainingRoundCount + TestRoundCount;
 
     public int CurrentRound => _configManager != null ? _configManager.Config.LevelsData.Count : 1;
-    public bool IsTestLevel => CurrentRound > TrainingRoundCount;
+    public LevelType CurrentLevelType => GetLevelType(CurrentRound);
+    public bool IsTutorialLevel => CurrentLevelType == LevelType.Tutorial;
+    public bool IsTestLevel => CurrentLevelType == LevelType.Test;
+
+    private LevelType GetLevelType(int round)
+    {
+        if (round <= TutorialRoundCount)
+        {
+            return LevelType.Tutorial;
+        }
+        if (round <= TutorialRoundCount + TrainingRoundCount)
+        {
+            return LevelType.Training;
+        }
+        return LevelType.Test;
+    }
 
     public Phase CurrentPhase
     {
@@ -53,8 +69,9 @@ public class GameManager : MonoBehaviour
         if (ConfigManager.Instance != null)
         {
             _configManager = ConfigManager.Instance;
-            bool isTest = (_configManager.Config.LevelsData.Count + 1) > TrainingRoundCount;
-            _configManager.StartLevelData(isTest);
+            int upcomingRound = _configManager.Config.LevelsData.Count + 1;
+            LevelType levelType = GetLevelType(upcomingRound);
+            _configManager.StartLevelData(levelType);
         }
 
         _levelPhases = GetPhases(out float time);
@@ -205,7 +222,7 @@ public class GameManager : MonoBehaviour
         List<PhaseData> phases = new()
         {
             GetRandomFirstPhase(),
-            _phases.PhasesTwo,
+            GetPhaseTwo(),
             GetBossPhase()
         };
 
@@ -216,6 +233,13 @@ public class GameManager : MonoBehaviour
         }
 
         return phases;
+    }
+
+    private PhaseData GetPhaseTwo()
+    {
+        PhaseData[] pool = IsTutorialLevel ? _phases.PhasesTwoTutorial : _phases.PhasesTwoRegular;
+        int randomIndex = UnityEngine.Random.Range(0, pool.Length);
+        return pool[randomIndex];
     }
 
     public Phase NextPhase()

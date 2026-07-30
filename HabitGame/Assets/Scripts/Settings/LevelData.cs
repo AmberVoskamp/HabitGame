@@ -10,7 +10,7 @@ public class LevelData
 {
     public int Index;
     public float LevelTime;
-    public bool IsTest;
+    public LevelType Level;
 
     public List<PhaseTimeData> PhaseTimes;
 
@@ -41,6 +41,14 @@ public class LevelData
     public float BossHealthLeft;
     public float TimeLeft;
     #endregion
+}
+
+[Serializable]
+public enum LevelType
+{
+    Tutorial,
+    Training,
+    Test
 }
 
 [Serializable]

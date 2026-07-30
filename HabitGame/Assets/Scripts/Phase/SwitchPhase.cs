@@ -31,6 +31,7 @@ public class SwitchPhase : MonoBehaviour
         Phase nextPhase = Instantiate(next);
         nextPhase.GameManager = _phase.GameManager;
         _phase.GameManager.CurrentPhase = nextPhase;
+        nextPhase.InitializePhase2();
 
         //Send player to the entrance of the next phase
         nextPhase.MainEntrance.PlayerEnter(playerMovement);

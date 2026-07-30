@@ -21,8 +21,16 @@ public class Phase : MonoBehaviour
     private void OnEnable()
     {
         _walkData?.Record(true, PlayerHealth.Instance);
+    }
 
-        if (_phase == Phases.Phase2 && GameManager != null && PlayerHealth.Instance != null)
+    public void InitializePhase2()
+    {
+        if (_phase != Phases.Phase2 || GameManager == null)
+        {
+            return;
+        }
+
+        if (PlayerHealth.Instance != null)
         {
             GameManager.Phase2Entered(PlayerHealth.Instance.GetCurrentHealth);
         }

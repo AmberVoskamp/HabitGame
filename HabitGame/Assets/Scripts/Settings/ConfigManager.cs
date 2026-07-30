@@ -32,11 +32,12 @@ public class ConfigManager : MonoBehaviour
         Config.Save(Config);
     }
 
-    public void StartLevelData(bool isTest)
+    public void StartLevelData(LevelType levelType)
     {
         int bossIndex = 0;
         float bossHealth = 0;
-        bool isFirstTestLevel = isTest;
+        bool isTypeTransition = false;
+
         if (!Config.LevelsData.IsNullOrEmpty())
         {
             LevelData lastLevel = Config.LevelsData[GetCurrentLevelIndex()];
@@ -50,11 +51,12 @@ public class ConfigManager : MonoBehaviour
                 }
             }
             bossHealth = lastLevel.BossHealthLeft;
-             // Reset when test levels start
-            isFirstTestLevel = isTest && !lastLevel.IsTest;
+            
+            // Reset whenever the level type changes (tutorial -> training, training -> test)
+            isTypeTransition = levelType != lastLevel.Level;
         }
 
-        if (isFirstTestLevel)
+        if (isTypeTransition)
         {
             bossIndex = 0;
             bossHealth = 0;
@@ -67,7 +69,7 @@ public class ConfigManager : MonoBehaviour
             SpikeDificulty = Config.CurrentSpikeDificulty,
             CurrentBoss = bossIndex,
             BossHealthLeft = bossHealth,
-            IsTest = isTest,
+            Level = levelType,
         };
 
         Config.LevelsData.Add(newLevelData);
