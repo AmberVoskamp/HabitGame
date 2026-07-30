@@ -43,20 +43,27 @@ public class BossHealth : Health
         _gameManager.EnterBossRoom(CurrentHealth);
     }
 
+    // ------- IF BOSS NOT DEFEATED, BRING REMAINING HEALTH TO THE NEXT LEVEL -------
+    //public void SetBossHealth()
+    //{
+    //    if (ConfigManager == null)
+    //    {
+    //        return;
+    //    }
+    //
+    //    float bossHealth = ConfigManager.GetBossHealth();
+    //    if (bossHealth == 0)
+    //    {
+    //        SetHealth(HealthAmount);
+    //        return;
+    //    }
+    //    SetHealth(bossHealth);
+    //}
+
+    // ------- RESET BOSS HEALTH FOR EACH LEVEL ----------
     public void SetBossHealth()
     {
-        if (ConfigManager == null)
-        {
-            return;
-        }
-
-        float bossHealth = ConfigManager.GetBossHealth();
-        if (bossHealth == 0)
-        {
-            SetHealth(HealthAmount);
-            return;
-        }
-        SetHealth(bossHealth);
+        SetHealth(HealthAmount);
     }
 
     public override void TakeDamage(float damage, DamageType type)
